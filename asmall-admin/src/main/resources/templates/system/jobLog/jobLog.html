@@ -1,0 +1,30 @@
+@layout("/common/_container.html"){
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>定时任务运行日志</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <#inputcon id="condition" name="condition" tagName="名称" />
+                            </div>
+                            <div class="col-sm-3">
+                                <#dictSelectorCon id="state" name="state" placeholder="全部" code="sys_jobLog_state" label="执行状态" />
+                            </div>
+                            <div class="col-sm-3">
+                                <#button name="搜索" icon="fa-search" clickFun="JobLog.search()"/>
+                            </div>
+                        </div>
+                        <#table id="JobLogTable"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/system/jobLog/jobLog.js"></script>
+@}

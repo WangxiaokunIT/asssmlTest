@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinshang.rest.modular.asmall.dao.RepayPlanMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xinshang.rest.modular.asmall.model.RepayPlan">
+        <id column="id" property="id" />
+        <result column="project_id" property="projectId" />
+        <result column="joinin_id" property="joininId" />
+        <result column="member_id" property="memberId" />
+        <result column="lend_amount" property="lendAmount" />
+        <result column="paid_mort" property="paidMort" />
+        <result column="have_mort" property="haveMort" />
+        <result column="paid_tim" property="paidTim" />
+        <result column="have_tim" property="haveTim" />
+        <result column="paid_inter" property="paidInter" />
+        <result column="have_inter" property="haveInter" />
+        <result column="months" property="months" />
+        <result column="statecode" property="statecode" />
+        <result column="paid_tim_date" property="paidTimDate" />
+        <result column="have_tim_date" property="haveTimDate" />
+        <result column="paid_inter_date" property="paidInterDate" />
+        <result column="have_inter_date" property="haveInterDate" />
+        <result column="is_delete" property="isDelete" />
+    </resultMap>
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, project_id, joinin_id, member_id, lend_amount, paid_mort, have_mort, paid_tim, have_tim, paid_inter, have_inter, months, statecode, paid_tim_date, have_tim_date, paid_inter_date, have_inter_date,is_delete
+    </sql>
+
+
+</mapper>

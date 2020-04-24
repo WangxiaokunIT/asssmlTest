@@ -1,0 +1,37 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal" id="categroyInfoForm">
+
+            <input type="hidden" id="id" value="">
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <#input id="code" label="编码" underline="true"/>
+                    <#input id="parentName" label="上级类别" readonly="readonly" hidden="parentId" underline="true"
+                    clickFun="FileCategoryInfoDlg.showCategorySelectTree(); return false;"
+                    selectFlag="true" selectDivId="parentCategoryMenu" selectTreeId="parentCategoryMenuTree" />
+                </div>
+                <div class="col-sm-6">
+                    <#input id="name" label="名称" underline="true"/>
+                    <#input id="sortNum" type="number" label="显示顺序" underline="true"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                     <#textarea id="remark"  labelStyle="width:12.5%"  style="width:117.5%" label="类别描述" underline="true"/>
+                </div>
+            </div>
+
+            <div class="row btn-group-m-t">
+                <div class="col-sm-10">
+                    <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="FileCategoryInfoDlg.addSubmit()"/>
+                    <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="FileCategoryInfoDlg.close()"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/system/fileCategory/fileCategory_info.js"></script>
+@}

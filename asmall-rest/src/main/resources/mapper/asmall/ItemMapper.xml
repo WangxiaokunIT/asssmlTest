@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinshang.rest.modular.asmall.dao.ItemMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xinshang.rest.modular.asmall.model.Item">
+        <id column="id" property="id" />
+        <result column="title" property="title" />
+        <result column="sell_point" property="sellPoint" />
+        <result column="price" property="price" />
+        <result column="profits" property="profits" />
+        <result column="num" property="num" />
+        <result column="limit_num" property="limitNum" />
+        <result column="image" property="image" />
+        <result column="cid" property="cid" />
+        <result column="status" property="status" />
+        <result column="created" property="created" />
+        <result column="updated" property="updated" />
+        <result column="num_all" property="numAll" />
+        <result column="detail_video" property="detailVideo" />
+        <result column="detail_banner" property="detailBanner" />
+        <result column="info_video_image" property="infoVideoImage" />
+        <result column="freight" property="freight" />
+    </resultMap>
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="itemAndSpescResultMap" type="com.xinshang.rest.modular.asmall.dto.ItemAndSpecsDTO">
+        <id column="id" property="id" />
+        <result column="item_number" property="itemNumber" />
+        <result column="cid" property="cid" />
+        <result column="category_id" property="categoryId" />
+        <result column="title" property="title" />
+        <result column="price" property="price" />
+        <result column="vip_discount" property="vipDiscount" />
+        <result column="num" property="num" />
+        <result column="limit_num" property="limitNum" />
+        <result column="freight" property="freight" />
+        <result column="image" property="image" />
+        <result column="profits" property="profits" />
+        <collection property="itemSpecsList" ofType="com.xinshang.rest.modular.asmall.model.ItemSpecs" column="item_no">
+            <id column="s_id" property="id" />
+            <result column="s_item_no" property="itemNo" />
+            <result column="s_specs_no" property="specsNo" />
+            <result column="s_specs_values" property="specsValues" />
+            <result column="s_sort_num" property="sortNum" />
+            <result column="s_stock" property="stock" />
+            <result column="s_price" property="price" />
+            <result column="s_image" property="image" />
+            <result column="s_profits" property="profits" />
+            <result column="s_vip_discount" property="vipDiscount" />
+        </collection>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, title, sell_point, price, group_buying_price, profits, actual_profits, num, limit_num, image, banner, cid, status, created, updated, index_video, period, num_all, explain_image, detail_video, detail_banner, sell_reason, source_price, group_bonus_ratio, index_video_image, info_video_image, audit_status,freight
+    </sql>
+
+
+    <select id="selectByItemNumberOrSpecsNo" resultMap="itemAndSpescResultMap">
+        select i.id,i.item_number,i.cid,i.category_id,i.title,i.price,i.vip_discount,i.num,i.limit_num,i.freight,i.image,i.profits,s.id as s_id,s.item_no as s_item_no,s.specs_no as s_specs_no,s.specs_values as s_specs_values,s.stock as s_stock,s.price as s_price,s.vip_discount as s_vip_discount,s.image as s_image,s.profits as s_profits from tb_item i left join
+        tb_item_specs s on i.item_number=s.item_no and i.status=1
+
+        <if test="specsNo !='' and specsNo!=null ">
+            and s.specs_no=#{specsNo}
+        </if>
+        <where>
+            <if test="itemNumber !='' and itemNumber!=null ">
+                and i.item_number=#{itemNumber}
+            </if>
+
+        </where>
+    </select>
+</mapper>

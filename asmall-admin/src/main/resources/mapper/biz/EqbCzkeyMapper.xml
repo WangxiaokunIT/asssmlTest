@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinshang.modular.biz.dao.EqbCzkeyMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xinshang.modular.biz.model.EqbCzkey">
+        <result column="key" property="key" />
+        <result column="scene_template_id" property="sceneTemplateId" />
+        <result column="segment_templet_id" property="segmentTempletId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        key, scene_template_id, segment_templet_id
+    </sql>
+
+</mapper>

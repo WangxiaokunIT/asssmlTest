@@ -1,0 +1,41 @@
+@layout("/common/_container.html"){
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>参数管理</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <div class="row" id="ParameterTableSearch">
+                            <div class="col-sm-2">
+                                 <#inputcon name="parmName" tagName="参数名"/>
+                            </div>
+                            <div class="col-sm-2">
+                                 <#inputcon name="parmValue" tagName="参数值"/>
+                            </div>
+                            <div class="col-sm-3">
+                                <#button name="搜索" icon="fa-search" clickFun="Parameter.search()"/>
+                            </div>
+                        </div>
+                        <div class="hidden-xs" id="ParameterTableToolbar" role="group">
+                            @if(shiro.hasPermission("/parameter/add")){
+                                <#button name="添加" icon="fa-plus" clickFun="Parameter.openAddParameter()"/>
+                            @}
+                            @if(shiro.hasPermission("/parameter/update")){
+                                <#button name="修改" icon="fa-edit" clickFun="Parameter.openParameterDetail()" space="true"/>
+                            @}
+                            @if(shiro.hasPermission("/parameter/delete")){
+                                <#button name="删除" icon="fa-remove" clickFun="Parameter.delete()" space="true"/>
+                            @}
+                        </div>
+                        <#table id="ParameterTable"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/biz/parameter/parameter.js"></script>
+@}

@@ -1,0 +1,6 @@
+# AutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.xinshang.core.base.controller.GlobalController,\
+com.xinshang.core.config.DefaultFastjsonConfig,\
+com.xinshang.core.config.DefaultProperties,\
+com.xinshang.core.config.DefaultWebConfig

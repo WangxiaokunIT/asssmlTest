@@ -1,0 +1,52 @@
+@layout("/common/_container.html"){
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>审核记录管理</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <!-- 审核记录 start -->
+                        <div class="row">
+                            <h3 class="font-bold"><b>审核记录</b></h3>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="ibox">
+                                    <div class="ibox-content" style="border-style: hidden;">
+                                        <table class="table table-bordered table-my-0" id="auditList"
+                                               style="background-color: #fff;width: 100%">
+                                            <thead>
+                                            <tr>
+                                                <th>操作人</th>
+                                                <th>操作类型</th>
+                                                <th>操作说明</th>
+                                                <th>操作时间</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @for(it in item){
+                                            <tr>
+                                                <td>${it.userName}</td>
+                                                <td>${it.type==2?"商品发布审核":''}</td>
+                                                <td>${it.remarks}</td>
+                                                <td>${it.time}</td>
+                                            </tr>
+                                            @}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 审核记录 end -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@}

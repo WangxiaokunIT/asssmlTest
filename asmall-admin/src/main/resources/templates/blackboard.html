@@ -1,0 +1,214 @@
+@layout("/common/_container.html"){
+<!-- Bootstrap core CSS -->
+<link href="${ctxPath}/static/css/plugins/flatlab/css/bootstrap.css" rel="stylesheet">
+<link href="${ctxPath}/static/css/plugins/flatlab/css/bootstrap-reset.css" rel="stylesheet">
+<!--external css-->
+
+<link href="${ctxPath}/static/css/plugins/flatlab/assets/font-awesome-4_7/css/font-awesome.css" rel="stylesheet" />
+
+<!-- Custom styles for this template -->
+<link href="${ctxPath}/static/css/plugins/flatlab/css/style.css" rel="stylesheet">
+
+<!-- ZUI 标准版压缩后的 CSS 文件 -->
+<link rel="stylesheet" href="//cdn.bootcss.com/zui/1.9.1/css/zui.min.css">
+
+
+<style>
+	[v-cloak] {
+		display: none;
+	}
+
+	.value p {
+		margin-top: 10px !important;
+	}
+
+	.wrapper {
+		margin-top: 0px !important;
+	}
+
+</style>
+
+<div class="container-fluid" style="padding: 0 !important;">
+	<div class="row">
+		<div class="col-sm-12">
+			<div id="container" >
+				<!--main content start-->
+				<div  id="welcome_vue" v-cloak>
+					<div class="wrapper" style="margin-top: 0px;">
+						<!--顶部统计 start-->
+						<div class="row state-overview">
+							<div class="col-lg-3 col-sm-6">
+								<div class="panel">
+									<div class="symbol terques">
+										<i class="fa fa-user-plus"></i>
+									</div>
+									<div class="value">
+										<h1 class="count">
+											{{ statistics.num1 }}
+										</h1>
+										<p>当月新增用户</p>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-3 col-sm-6">
+								<div class="panel">
+									<div class="symbol terques">
+										<i class="fa fa-users"></i>
+									</div>
+									<div class="value">
+										<h1 class=" count2">
+											{{ statistics.num2 }}
+										</h1>
+										<p >累计⽤⼾数</p>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-3 col-sm-6">
+								<div class="panel">
+									<div class="symbol red">
+										<i class="fa fa-user"></i>
+									</div>
+									<div class="value">
+										<h1 class=" count3">
+											{{ statistics.num3 }}
+										</h1>
+										<p>当月新增VIP</p>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-3 col-sm-6">
+								<div class="panel">
+									<div class="symbol red">
+										<i class="fa fa-users"></i>
+									</div>
+									<div class="value">
+										<h1 class=" count4">
+											{{ statistics.num4 }}
+										</h1>
+										<p>累计VIP数量</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row state-overview">
+							<div class="col-lg-3 col-sm-6">
+								<div class="panel">
+									<div class="symbol orange">
+										<i class="fa fa-credit-card"></i>
+									</div>
+									<div class="value">
+										<h1 class="count">
+											{{ statistics.num5 }}
+										</h1>
+										<p>当月加盟额</p>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-3 col-sm-6">
+								<div class="panel">
+									<div class="symbol orange">
+										<i class="fa fa-credit-card"></i>
+									</div>
+									<div class="value">
+										<h1 class=" count2">
+											{{ statistics.num6 }}
+										</h1>
+										<p>累计加盟额</p>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-3 col-sm-6">
+								<div class="panel">
+									<div class="symbol yellow">
+										<i class="fa fa-cny"></i>
+									</div>
+									<div class="value">
+										<h1 class=" count3">
+											{{ statistics.num7 }}
+										</h1>
+										<p>当月待还权益额</p>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-3 col-sm-6">
+								<div class="panel">
+									<div class="symbol yellow">
+										<i class="fa fa-cny"></i>
+									</div>
+									<div class="value">
+										<h1 class=" count4">
+											{{ statistics.num8 }}
+										</h1>
+										<p>累计待还权益额</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--顶部统计 end-->
+
+						<!-- 柱状图 start -->
+						<div class="row">
+							<div class="col-lg-12">
+								<div class="panel">
+									<div class="panel-body">
+										<div id="echartsMain" style="width: 100%;height:400px;"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- 柱状图 end -->
+
+						<!-- 出货量统计 start -->
+						<div class="row">
+							<div class="col-lg-12">
+								<!--work progress start-->
+								<div class="panel">
+									<div class="panel-body progress-panel">
+										<div class="task-progress">
+											<h1>普通商品出货量统计</h1>
+										</div>
+									</div>
+									<table class="table datatable">
+										<thead>
+										<tr>
+											<!-- 以下两列左侧固定 -->
+											<th style="width: 250px">产品ID</th>
+											<th>产品名称</th>
+											<th>出货量</th>
+										</tr>
+										</thead>
+										<tbody>
+										<tr v-for="(item, index) in itemNumList" v-bind:key="index">
+											<td>{{ item.itemId }}</td>
+											<td>{{ item.title }}</td>
+											<td>{{ item.cnum }}</td>
+										</tr>
+										</tbody>
+									</table>
+								</div>
+								<!--work progress end-->
+							</div>
+						</div>
+						<!-- 出货量统计 end -->
+
+
+					</div>
+				</div>
+				<!--main content end-->
+
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+@include("/common/_container_vue.html"){}
+
+<!-- ZUI 标准版压缩后的 JavaScript 文件 -->
+<script src="//cdn.bootcss.com/zui/1.9.1/js/zui.min.js"></script>
+<script src="${ctxPath}/static/js/plugins/echart/echarts.min.js"></script>
+
+<script src="${ctxPath}/static/modular/biz/welcome.js"></script>
+
+@}

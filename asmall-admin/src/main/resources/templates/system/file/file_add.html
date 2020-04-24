@@ -1,0 +1,17 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal">
+            <input type="hidden" id="id" value="">
+            <div class="row">
+                <div id="zyupload" class="zyupload"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="${ctxPath}/static/modular/system/file/file_info.js"></script>
+<script type="text/javascript">
+    FileInfoDlg.fileInfoData.categoryId='${categoryId}';
+</script>
+@}

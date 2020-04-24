@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinshang.modular.biz.dao.ReceiptsPaymentsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xinshang.modular.biz.model.ReceiptsPayments">
+        <id column="id" property="id" />
+        <result column="trade_no" property="tradeNo" />
+        <result column="account_set_name" property="accountSetName" />
+        <result column="change_time" property="changeTime" />
+        <result column="cur_amount" property="curAmount" />
+        <result column="ori_amount" property="oriAmount" />
+        <result column="chg_amount" property="chgAmount" />
+        <result column="cur_freezen_amount" property="curFreezenAmount" />
+        <result column="biz_order_no" property="bizOrderNo" />
+        <result column="extend_info" property="extendInfo" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, trade_no, account_set_name, change_time, cur_amount, ori_amount, chg_amount, cur_freezen_amount, biz_order_no, extend_info, create_time
+    </sql>
+
+</mapper>

@@ -1,0 +1,36 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal">
+
+            <#input id="id" type="hidden" value="${item.id}" />
+            <div class="row">
+                <div class="col-sm-6 b-r">
+                    <#input id="tradeNo" label="收支明细流水号" value="${item.tradeNo}" underline="true"/>
+                    <#input id="accountSetName" label="账户集名称" value="${item.accountSetName}" underline="true"/>
+                    <#input id="changeTime" label="变更时间" value="${item.changeTime}" underline="true"/>
+                    <#input id="curAmount" label="现有金额" value="${item.curAmount}" underline="true"/>
+                    <#input id="oriAmount" label="原始金额" value="${item.oriAmount}" />
+                </div>
+
+                <div class="col-sm-6">
+                    <#input id="chgAmount" label="变更金额" value="${item.chgAmount}" underline="true"/>
+                    <#input id="curFreezenAmount" label="现有冻结金额" value="${item.curFreezenAmount}" underline="true"/>
+                    <#input id="bizOrderNo" label="商户订单号（支付订单）" value="${item.bizOrderNo}" underline="true"/>
+                    <#input id="extendInfo" label="备注" value="${item.extendInfo}" underline="true"/>
+                    <#input id="createTime" label="创建时间" value="${item.createTime}" />
+                </div>
+            </div>
+
+            <div class="row btn-group-m-t">
+                <div class="col-sm-10">
+                    <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="ReceiptsPaymentsInfoDlg.editSubmit()"/>
+                    <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="ReceiptsPaymentsInfoDlg.close()"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/biz/receiptsPayments/receiptsPayments_info.js"></script>
+@}

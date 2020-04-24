@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinshang.modular.im.dao.GroupMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xinshang.modular.im.model.Group">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="avatar" property="avatar" />
+        <result column="user_id" property="userId" />
+        <result column="is_system" property="isSystem" />
+        <result column="gmt_create" property="gmtCreate" />
+        <result column="gmt_modified" property="gmtModified" />
+    </resultMap>
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="InitGroupResultMap" type="com.xinshang.modular.im.dto.InitGroup">
+        <id column="id" property="id" />
+        <result column="name" property="groupname" />
+        <result column="avatar" property="avatar" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, avatar, user_id, is_system, gmt_create, gmt_modified
+    </sql>
+
+    <!-- 根据用户id查询初始化的群信息 -->
+    <select id="initGroupByUserId" resultMap="InitGroupResultMap" parameterType="int">
+        select id,name,avatar from im_group where id in(select distinct group_id from im_group_user where user_id=#{userId})
+    </select>
+</mapper>

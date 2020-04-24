@@ -1,0 +1,106 @@
+@layout("/common/_container.html"){
+<div class="row" xmlns="">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>代码生成</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <div class="form-horizontal" id="generate">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <#input id="projectPath" label="项目路径" value="${params.projectPath}"/>
+                                </div>
+                                <div class="col-sm-4">
+                                    <#input id="projectPackage" label="项目的包" value="${params.projectPackage}"/>
+                                </div>
+                                <div class="col-sm-4">
+                                    <#input id="corePackage" label="核心包" value="${params.corePackage}"/>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <#input id="author" label="作者" value="${params.author!}"/>
+                                </div>
+                                <div class="col-sm-3">
+                                    <#input id="bizName" label="业务名称" />
+                                </div>
+                                <div class="col-sm-3">
+                                    <#input id="moduleName" label="模块名称" value="${params.moduleName}"/>
+                                </div>
+                                <div class="col-sm-3">
+                                    <#input id="parentMenuName" label="父级菜单名称" underline="false" value="${params.parentMenuName}"
+                                            hidden="pid" readonly="readonly"
+                                            clickFun="Code.showMenuSelectTree(); return false;"
+                                            style="background-color: #ffffff !important;"
+                                            selectFlag="true" selectDivId="pcodeTreeDiv" selectTreeId="pcodeTree" selectStyle=""/>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <#input id="tableName" label="表名称" disabled="disabled"/>
+                                </div>
+                                <div class="col-sm-3">
+                                    <#input id="ignoreTabelPrefix" label="表前缀" value="${params.ignoreTabelPrefix}"/>
+                                </div>
+                                <div class="col-sm-3">
+                                    <#input id="className" label="类名"  disabled="disabled"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <button id="genBtn" type="button" class="btn btn-primary mr10"
+                                            onclick="Code.generate()">
+                                        <span style="padding: 5px 20px;">生成</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="padding-top: 10px; overflow: hidden"
+                             class="container-fluid">
+                            <div class="col-md-12">
+                                <div class="row admin-form">
+                                    <div class="col-md-3 col-md-offset-3">
+                                        <h2>数据表</h2>
+                                        <div class="list-group" id="tableList"
+                                             data-bind="foreach: tables"
+                                             style="height: 500px; overflow-y: scroll">
+                                            @for(table in tables!){
+                                                <a href="javascript:void(0)" class="list-group-item" tableName="${table.tableName}" onclick="Code.selectTable('${table.tableName}')">${table.tableName}-${table.tableComment}</a>
+                                            @}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <span><h2 style="display: inline-block" >模板</h2></span>
+                                        <span>
+                                            <button type="button" style="display: inline-block;margin-left: 70px;" class="btn btn-success" onclick="Code.selectAll()">
+                                                <span style="padding: 3px 6px;">全选</span>
+                                            </button>
+                                        </span>
+                                        <div class="list-group" id="templateList"
+                                             style="height: 500px; overflow-y: scroll">
+                                            @for(template in templates!){
+                                                <a href="javascript:void(0)" class="list-group-item" key="${template.key}" onclick="Code.selectTemplate('${template.key}')">${template.desc}</a>
+                                            @}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="nav nav-list">
+                            <li class="divider"></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${ctxPath}/static/js/common/select-list-object.js"></script>
+<script src="${ctxPath}/static/modular/code/gen.js"></script>
+@}
+

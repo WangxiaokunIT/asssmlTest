@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinshang.rest.modular.asmall.dao.AddressMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xinshang.rest.modular.asmall.model.Address">
+        <id column="address_id" property="addressId" />
+        <result column="user_id" property="userId" />
+        <result column="user_name" property="userName" />
+        <result column="tel" property="tel" />
+        <result column="street_name" property="streetName" />
+        <result column="is_default" property="isDefault" />
+        <result column="prov_city_area" property="provCityArea" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        address_id, user_id, user_name, tel, street_name, is_default, prov_city_area
+    </sql>
+
+</mapper>

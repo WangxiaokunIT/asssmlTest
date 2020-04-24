@@ -1,0 +1,98 @@
+@layout("/common/_container.html"){
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>提现审核管理</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <div class="row" id="CashOutTableSearch">
+                            <div class="col-sm-3">
+                                 <#inputcon name="supplierName" id="supplierName" tagName="名称"/>
+                            </div>
+                            <div class="col-sm-3">
+                                 <#inputcon name="bankCardNumber" id="bankCardNumber" tagName="银行卡"/>
+                            </div>
+                            <div class="col-sm-3">
+                                <#inputcon name="startTime" id="startTime" tagName="申请开始时间" readonly="readonly"/>
+                            </div>
+                            <div class="col-sm-3">
+                                <#inputcon name="endTime" id="endTime" tagName="申请结束时间" readonly="readonly"/>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button">
+                                            状态
+                                        </button>
+                                    </div>
+                                    <select class="form-control" id="state" name="state" v-model="selectValue">
+                                        <option value="">- 请选择 -</option>
+                                        <option v-for="(state, index) in select_state" v-bind:key="index" v-bind:value="index" >{{ state }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button">
+                                            类型
+                                        </button>
+                                    </div>
+                                    <select class="form-control" id="type" name="type" >
+                                        <option value="">- 请选择 -</option>
+                                        <option value="1" >客户</option>
+                                        <option value="2" >供应商</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <#button name="搜索" icon="fa-search" clickFun="CashOut.search()"/>
+                            </div>
+                        </div>
+                        <div class="hidden-xs" id="CashOutTableToolbar" role="group">
+
+                        </div>
+                        <#table id="CashOutTable"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 不通过原因填写 start -->
+<div class="modal inmodal" id="reasonModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" id="modal_reason_vue" style="width: 500px;">
+        <div class="modal-content animated bounceInDown">
+            <div class="modal-header modal-header-my-01">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">关闭</span>
+                </button>
+                <h4 class="modal-title">不通过原因填写</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <textarea class="form-control" rows="6" v-model="content" placeholder="请填写不通过的原因..." v-bind:readonly="readonly"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer modal-footer-my">
+                <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" v-on:click="saveAjax" v-show="!readonly">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 不通过原因填写 end -->
+
+@include("/common/_container_vue.html"){}
+
+<script src="${ctxPath}/static/modular/biz/cashOut/cashOut.js"></script>
+
+<script src="${ctxPath}/static/modular/biz/project/reason.js"></script>
+@}

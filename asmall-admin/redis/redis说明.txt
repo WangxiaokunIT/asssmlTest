@@ -1,0 +1,15 @@
+1、根据招募id查询批量代付总批次的订单号
+OrderService_batchAgentPay_ + 招募id = 批量代付总批次的订单号
+
+2、根据总批次的订单号查询招募id
+OrderService_batchAgentPay_ + 总批次的订单号 = 招募id
+
+3、根据招募id查询批次订单号的集合
+OrderService_signalAgentPay_ + 招募id = 单笔批次订单号的集合
+
+4、根据单笔代付订单号查询招募id
+OrderService_signalAgentPay_ + 单笔代付订单号 = 招募id
+
+5、根据单笔代付订单号查询加盟id集合
+OrderService_signalAgentPay_ + 单笔批次订单号 + "_"  + 招募id = 加盟id集合
+

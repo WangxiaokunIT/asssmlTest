@@ -1,0 +1,18 @@
+@layout("/common/_container.html"){
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <#button name="设置支付密码" icon="fa-plus" clickFun="SupplierInfoDlg.payPwdOpt('${setUrl}',1)" space="true"/>
+                        <#button name="修改支付密码" icon="fa-edit" clickFun="SupplierInfoDlg.payPwdOpt('${updateUrl}',2)" space="true"/>
+                        <#button name="重置支付密码" icon="fa-refresh" clickFun="SupplierInfoDlg.payPwdOpt('${resetUrl}',3)" space="true"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/biz/supplier/supplier_info.js"></script>
+@}

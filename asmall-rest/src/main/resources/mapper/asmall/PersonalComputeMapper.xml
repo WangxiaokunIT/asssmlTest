@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinshang.rest.modular.asmall.dao.PersonalComputeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="PCMemberMap" type="com.xinshang.rest.modular.asmall.vo.PCMemberVO">
+        <result column="file" property="file" />
+        <result column="real_name" property="realName" />
+        <result column="phone" property="phone" />
+        <result column="balance" property="balance" />
+        <result column="real_name_authentication" property="realNameAuthentication" />
+        <result column="bind_mobile_number" property="bindMobileNumber" />
+        <result column="bind_bank_card" property="bindBankCard" />
+        <result column="signing_agreement" property="signingAgreement" />
+        <result column="payment_password" property="paymentPassword" />
+        <result column="whether_vip" property="whetherVip" />
+    </resultMap>
+
+    <!-- 用户信息 -->
+    <select id="showMember" resultMap="PCMemberMap">
+        select file,real_name,username as phone,(select available_balance from tb_account where type=1 and master_id = #{id}) as balance ,
+        CASE
+                WHEN (ISNULL(real_name)=1) || (LENGTH(trim(real_name))=0) THEN  1
+                ELSE 2
+        END as real_Name_Authentication,
+        CASE
+                WHEN (ISNULL(phone)=1) || (LENGTH(trim(phone))=0) THEN  1
+                ELSE 2
+        END as bind_Mobile_Number,
+        CASE
+                WHEN (ISNULL(is_Set_Bank_State)=1) || (LENGTH(trim(is_Set_Bank_State))=0) THEN  1
+                ELSE 2
+        END as bind_Bank_Card,
+        CASE
+                WHEN (ISNULL(contract_No)=1) || (LENGTH(trim(contract_No))=0) THEN  1
+                ELSE 2
+        END as signing_Agreement,
+        CASE
+                WHEN (ISNULL(set_Pwd_State)=1) || (LENGTH(trim(set_Pwd_State))=0) THEN  1
+                ELSE 2
+        END as payment_Password,
+        vip as whether_vip
+        from tb_member a
+        where id = #{id}
+    </select>
+
+</mapper>

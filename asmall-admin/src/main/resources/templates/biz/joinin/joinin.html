@@ -1,0 +1,62 @@
+@layout("/common/_container.html"){
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>代理列表</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12" id="JoininTableSearch">
+                        <div class="row" >
+                            <div class="col-sm-3">
+                                <#inputcon name="phone" id="phone" tagName="手机号"/>
+                            </div>
+                            <div class="col-sm-3">
+                                <#inputcon name="number" id="number" tagName="代理编号"/>
+                            </div>
+                            <div class="col-sm-3">
+                                <#inputcon name="name" id="name" tagName="代理名称"/>
+                            </div>
+                            <div class="col-sm-3">
+                                <#dictSelectorCon id="status" name ="status" code="joinin_state" label="代理状态" placeholder="-请选择-" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <#datecon id="startTime" name="startTime" tagName="代理开始时间" isTime="false"/>
+                                    </div>
+                                    <div class="col-sm-5" style="margin-left:-6%">
+                                        <#datecon id="endTime" name="endTime" tagName="-" isTime="false"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <#datecon id="startTime1" name="startTime1" tagName="代理结束时间" isTime="false"/>
+                                    </div>
+                                    <div class="col-sm-5"  style="margin-left:-6%">
+                                        <#datecon id="endTime1" name="endTime1" tagName="-" isTime="false"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <#button name="搜索" icon="fa-search" clickFun="Joinin.search()"/>
+                                <#button name="重置" icon="fa-undo" clickFun="Joinin.clearSearch()"/>
+                                <#button name="结清" icon="fa-mail-reply-all" clickFun="Joinin.repayment()"/>
+                                <#button name="提前结清" icon="fa-mail-reply-all" clickFun="Joinin.tqRepayment()"/>
+                            </div>
+                        </div>
+                        <#table id="JoininTable"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/biz/joinin/joinin.js"></script>
+@}

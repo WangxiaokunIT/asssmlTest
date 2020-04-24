@@ -1,0 +1,20 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal">
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <#input id="jobName" label="任务执行类" value="${item.jobName}" />
+                    <#input id="jobGroup" label="任务执行结果" value="${item.state}" />
+                    <#input id="description" label="任务描述" value="${item.description}" />
+                    <#textarea id="methodName"  label="任务执行信息" value="${item.jobMessage}" />
+                    <#textarea id="methodName" rows="5" label="任务执行异常" value="${item.exceptionInfo}" />
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/system/jobLog/jobLog_info.js"></script>
+@}

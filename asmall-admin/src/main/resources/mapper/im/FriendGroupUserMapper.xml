@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinshang.modular.im.dao.FriendGroupUserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xinshang.modular.im.model.FriendGroupUser">
+        <id column="id" property="id" />
+        <result column="group_id" property="groupId" />
+        <result column="user_id" property="userId" />
+        <result column="gmt_create" property="gmtCreate" />
+        <result column="gmt_modified" property="gmtModified" />
+    </resultMap>
+
+    <resultMap id="InitFriendGroupResultMap" type="com.xinshang.modular.im.dto.InitFriendGroup">
+        <id column="id" property="id" />
+        <result column="group_name" property="groupname" />
+        <collection property="list" ofType="com.xinshang.modular.im.dto.InitUser">
+            <id column="uid" property="id"/>
+            <result column="username" property="username"/>
+            <result column="sign" property="sign"/>
+            <result column="avatar" property="avatar"/>
+        </collection>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, group_id, user_id, gmt_create, gmt_modified
+    </sql>
+
+    <select id="initFriendGroupByUserId" parameterType="int" resultMap="InitFriendGroupResultMap">
+        select fg.id,fg.group_name, u.id as uid, u.username, u.avatar, u.sign from
+        (select id,name as group_name from im_friend_group where user_id=#{userId}) fg
+        left join im_friend_group_user fgu on fg.id=fgu.group_id
+        inner join im_user u on fgu.user_id=u.id
+    </select>
+
+</mapper>

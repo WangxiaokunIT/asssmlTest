@@ -1,0 +1,25 @@
+@layout("/common/_container.html"){
+
+@include("/common/_container_vue.html"){}
+
+
+<div class="ibox float-e-margins" id="wx_vue" v-cloak>
+    <div class="ibox-content">
+        <div class="ibox-content" id="defaultForm">
+            <h1>微信授权测试</h1>
+        </div>
+    </div>
+    <!-- 操作按钮 -->
+    <div class="modal-footer modal-footer-my">
+        <a-button v-on:click="openWx">打开微信授权</a-button>
+    </div>
+</div>
+
+
+
+
+
+<script src="${ctxPath}/static/modular/biz/wx/wx.js"></script>
+
+
+@}

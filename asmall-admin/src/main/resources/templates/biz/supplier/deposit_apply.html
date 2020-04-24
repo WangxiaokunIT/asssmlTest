@@ -1,0 +1,65 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal">
+            <h3 class="content-title-h3">账户信息</h3>
+            <hr class="content-title-hr">
+            <#input id="id" type="hidden" value="${item.id}" />
+            <div class="row">
+                <div class="col-sm-6">
+                    <#input label="姓名"  readonly="true" value="${item.name}"/>
+                    <#input label="账户状态" readonly="true" value="${item.stateName}"/>
+                </div>
+                <div class="col-sm-6">
+                    <#input label="账户总额" readonly="true" value="${account.totleAmount}" addonValue="元"/>
+                    <#input label="冻结金额" readonly="true" value="${account.freezingAmount}" addonValue="元"/>
+                    <#input label="可用余额" readonly="true" value="${account.availableBalance}" addonValue="元"/>
+                </div>
+            </div>
+            <h3 class="content-title-h3">充值信息</h3>
+            <hr class="content-title-hr">
+            <div class="row">
+                <div class="col-sm-12">
+                    <#dictSelector name="payMethod" type="radio" code="admin_payment_type" label="支付方式" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <#input id="amount" label="充值金额" type="number" min="1" max="10000000" step="0.01" addonValue="元" />
+                </div>
+                <div class="col-sm-6">
+                    <span id="bankCardNoSpan"><#select id="bankCardNo" label="充值银行卡" tableName="tb_bank" valueColumn="bank_card_no"
+                    textColumn="bank_card_no" whereColumn="biz_user_id" whereValue="${item.bizUserId}"/>
+                    </span>
+                    <span id="payMethodSpan"><#dictSelector id="payType" code="getwey_payment_type" label="交易类型" placeholder="-请选择-" /></span>
+                </div>
+            </div>
+            <p style="color:#A52A2A">充值说明:每次最多充值5000元,可以多次充值</p>
+            <div class="row btn-group-m-t">
+                <div class="col-sm-10">
+                    <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="SupplierInfoDlg.depositApply()"/>
+                    <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="SupplierInfoDlg.close()"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/biz/supplier/supplier_info.js"></script>
+<script>
+    $(function() {
+        //支付类型
+        $("input:radio[name='payMethod']").on('ifChecked', function(event){
+            //快捷支付
+            if($(this).val()==2){
+                $("#payMethodSpan").hide();
+                $("#bankCardNoSpan").show();
+            }else{//网关支付
+                $("#payMethodSpan").show();
+                $("#bankCardNoSpan").hide();
+            }
+        });
+
+        $(".i-checks:eq(0)").iCheck('check');
+    });
+</script>
+@}

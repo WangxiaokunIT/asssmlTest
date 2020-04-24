@@ -1,0 +1,57 @@
+@layout("/common/_container.html"){
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>订单管理</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <div class="row" id="OrderTableSearch">
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    <div class="col-lg-12 col-sm-12">
+                                        <div class="row">
+                                            <div class="col-lg-2 col-sm-2">
+                                                <#dictSelectorCon id="orderStatus" name ="orderStatus" code="biz_orderStatus" label="订单状态" placeholder="-请选择-" />
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <#inputcon name="orderId" tagName="订单号" />
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <#inputcon name="payNum" tagName="支付编号" />
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <#inputcon name="buyerNick" tagName="客户账号" />
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <#inputcon name="realName" tagName="客户姓名" />
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <#dictSelectorCon id="customType" name ="customType" code="order_type" label="订单类型" placeholder="-请选择-" />
+                                            </div>
+                                            <#button name="搜索" icon="fa-search" clickFun="Order.search()"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hidden-xs" id="OrderTableToolbar" role="group">
+                            <#button name="发货" icon="fa-rocket" clickFun="Order.openDelivery()"/>
+                            <#button name="修改价格" btnType="warning" icon="fa-cny" clickFun="Order.updatePrice()" space="true"/>
+                            <#button name="强制取消" btnType="danger" icon="fa-close" clickFun="Order.openCancel()" space="true"/>
+                            <#button name="强制取消并退款" btnType="danger" icon="fa-close" clickFun="Order.openCancelFreight()" space="true"/>
+                        </div>
+                        <#table id="OrderTable"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="${ctxPath}/static/modular/biz/order/order.js"></script>
+<script src="${ctxPath}/static/js/distpicker.js"></script>
+@}

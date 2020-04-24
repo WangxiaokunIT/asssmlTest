@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- scan: 当此属性设置为true时，配置文件如果发生改变，将会被重新加载，默认值为true。
+　　　scanPeriod: 设置监测配置文件是否有修改的时间间隔，如果没有给出时间单位，默认单位是毫秒。当scan为true时，此属性生效。默认的时间间隔为1分钟。
+　　　debug: 当此属性设置为true时，将打印出logback内部日志信息，实时查看logback运行状态。默认值为false。
+         property：该配置文件中通用的变量，name是变量的名称，value是变量定义的值，在该文件中可以通过${name}的方式来调用；
+        appender:日志输出节点，常用的有console、file、rollingfile和socker，其中console是指输出到控制台的输出节点，file是指输出到指定文件的输出节点，rollingfile是指超过指定大小自动归档（rolling）旧的创建新的日志的输出节点，socket是指输出到其他服务器中的输出节点；
+        encoder:日志文件输出格式；
+        file:日志输出路径及文件名；
+        rollingPolicy:日志滚动策略，例子中配置为按照时间滚动；
+        fileNamePattern:滚动日志文件路径及文件名配置；
+        maxFileSize:最大日志文件大小；
+        maxHistory:日志文件最大保留天数；
+        filter:日志过滤器，在appender中配置，有 三个返回值，分别是deny，neutral，accept。返回deny，表示日志将立即被抛弃；返回neutral，表示进入到下一个过滤器中进行处理；返回accept，日志会被立即处理，不再经过剩余过滤器，如果appender中有多个过滤器则按照顺序依次进行处理；
+        levelFilter:级别过滤器，该过滤器有三个子节点器：level、onMatch、OnMismatch,它会根据onMatch 和 onMismatch选择接收或拒绝日志,但该过滤器只会过滤出刚好符合日志级别的日志，此外还有一个过滤器为ThresholdFilter，这个过滤器会过滤掉低于指定临界值的日志，当日志级别等于或高于临界值时，过滤器返回NEUTRAL；当日志级别低于临界值时，日志会被拒绝；
+————————————————
+版权声明：本文为CSDN博主「key2017」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/key2017/article/details/90251047
+-->
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+
+    <contextName>asmall-rest</contextName>
+
+    <!--项目名称-->
+    <property name="PROJECT_NAME" value="asmall-rest"/>
+
+    <!-- ****************************************************************************************** -->
+    <!-- ****************************** 本地开发只在控制台打印日志 *********************************** -->
+    <!-- ****************************************************************************************** -->
+
+   <!-- <springProfile name="!dev">-->
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <!--encoder 默认配置为PatternLayoutEncoder-->
+            <encoder>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+                <charset>utf-8</charset>
+            </encoder>
+        </appender>
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    <!--</springProfile>-->
+
+    <!-- ****************************************************************************************** -->
+    <!-- ********************** 放到服务器上不管在什么环境都只在文件记录日志 *************************** -->
+    <!-- ****************************************************************************************** -->
+
+    <!--<springProfile name="dev">
+        &lt;!&ndash; 日志记录器，日期滚动记录 &ndash;&gt;
+        <appender name="INFO_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            &lt;!&ndash; 正在记录的日志文件的路径及文件名 &ndash;&gt;
+            <file>${LOG_PATH}/${PROJECT_NAME}-info.log</file>
+            &lt;!&ndash; 日志文件的格式 &ndash;&gt;
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+                <charset>utf-8</charset>
+            </encoder>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>${LOG_PATH}/${PROJECT_NAME}-info-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+                <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <maxFileSize>100MB</maxFileSize>
+                </timeBasedFileNamingAndTriggeringPolicy>
+                <maxHistory>15</maxHistory>
+            </rollingPolicy>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <level>info</level>
+                <onMatch>ACCEPT</onMatch>
+                <onMismatch>DENY</onMismatch>
+            </filter>
+        </appender>
+
+        <root level="INFO">
+            <appender-ref ref="INFO_FILE"/>
+        </root>
+
+    </springProfile>-->
+
+    <logger name="org.mybatis" level="DEBUG" />
+
+</configuration>
+
+

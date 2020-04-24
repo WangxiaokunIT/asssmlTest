@@ -1,0 +1,139 @@
+#项目设置
+asmall:
+  oss-open: true             #是否开启oss上传 (true/false),true上传文件到阿里云OSS,false文件存储到本地目录
+  file-upload-path: /usr/local/tmp   #文件上传目录(不配置的话为java.io.tmpdir目录)
+  swagger-open: false              #是否开启swagger (true/false)
+  kaptcha-open: false             #是否开启登录时验证码 (true/false)
+  spring-session-open: false      #是否开启spring session,如果是多机环境需要开启(true/false)
+  session-invalidate-time: 1800     #session失效时间(只在单机环境下生效，多机环境在SpringSessionConfig类中配置) 单位：秒
+  session-validation-interval: 900  #多久检测一次失效的session(只在单机环境下生效) 单位：秒
+  scheduler-open: false             #是否开启定时任务
+  project-url: http://58.56.184.202:50000            #项目回调地址
+  limit-date: 2020-03-20
+#阿里云OSS设置
+aliyun:
+  oss:
+    endpoint: oss-cn-zhangjiakou.aliyuncs.com           #访问域名
+    accessKeyId: LTAI4FfygTTGWS5JVFVG1Z5V               #访问ID
+    accessKeySecret: DgUCyeQuY0cJIEkSsPFMnZVGbJY7xN     #访问密钥
+    bucketName: asmall-test                             #存储空间
+    dir: test/                                        #存储目录
+#数据源设置
+spring:
+  datasource:
+    url: jdbc:mysql://192.168.1.254:3306/asmall?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
+    username: root
+    password: SL_docker@mysql2802
+    db-name: asmall #用来搜集数据库的所有表
+    filters: wall,mergeStat
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  output:
+    ansi:
+      enabled: always
+  #spring-redis设置
+  redis:
+    #数据库索引
+    database: 1
+    host: 192.168.1.254
+    port: 6379
+    password:
+    lettuce:
+      pool:
+        #最大连接数
+        max-active: 8
+        #最大阻塞等待时间(负数表示没限制)
+        max-wait: -1
+        #最大空闲
+        max-idle: 8
+        #最小空闲
+        min-idle: 0
+    #连接超时时间(毫秒)
+    timeout: 5000
+  activemq:
+    user: admin
+    password: admin
+    broker-url: tcp://192.168.1.254:61616
+    in-memory: false
+    pool:
+      enabled: true
+      max-connections: 20
+    packages:
+      trust-all: true   #是否信任所有包，信任后所有包内的对象均可序列化传输
+    #MQ队列名称
+    queue-name: asmall.test.message.queue
+
+###################################################快捷签#################################################
+#存证FTL/Html/PDF存放路径
+##项目ID(公共应用ID)-模拟环境,正式环境下贵司将拥有独立的应用ID
+eqb:
+
+  #公司印章
+  aisai-seal: /usr/local/template/contract/protocol/aisai.png
+
+  #法人印章
+  legal-seal: /usr/local/template/contract/protocol/fr.png
+
+  #合同模板服务器路径
+  template-path: /usr/local/template/contract/
+
+  #字体路径
+  font-path: /usr/local/template/contract/font/SIMSUN.TTC
+
+  project-id: 4438777861
+
+  ## 项目Secret(公共应用Secret)-模拟环境,正式环境下贵司将拥有独立的应用Secret
+  project-secret: f6e2a7d573a329824b039d41293933f8
+
+  ## 快捷签地址
+  kje-init-url: http://121.40.164.61:8080/tgmonitor/rest/app!getAPIInfo2
+
+  ##创建行业类型API接口调用地址(模拟地址)-创建所属行业类型
+  http-bus-url: http://smlcunzheng.tsign.cn:8083/evi-service/evidence/v1/sp/temp/bus/add
+
+  ## 创建存证场景类型API接口调用地址(模拟地址)
+  http-scene-url: http://smlcunzheng.tsign.cn:8083/evi-service/evidence/v1/sp/temp/scene/add
+
+  ## 创建存证场景环节类型API接口调用地址(模拟地址)
+  http-seg-url: http://smlcunzheng.tsign.cn:8083/evi-service/evidence/v1/sp/temp/seg/add
+
+  ## 创建存证场景环节类型API接口调用地址(模拟地址)
+  http-segprop-url: http://smlcunzheng.tsign.cn:8083/evi-service/evidence/v1/sp/temp/seg-prop/add
+
+  ## 创建存证环节(原文基础版)API接口调用地址(模拟地址)
+  http-original-standard-url: http://smlcunzheng.tsign.cn:8083/evi-service/evidence/v1/sp/segment/original-std/url
+
+  ## 创建存证环节(原文高级版)API接口调用地址(模拟地址)
+  http-original-advanced-url: http://smlcunzheng.tsign.cn:8083/evi-service/evidence/v1/sp/segment/original-adv/url
+
+  ## 创建存证环节(摘要版)API接口调用地址(模拟地址)
+  http-original-digest-url: http://smlcunzheng.tsign.cn:8083/evi-service/evidence/v1/sp/segment/abstract/url
+
+  ## 构建证据链API接口调用地址(模拟地址)
+  http-voucher-url: http://smlcunzheng.tsign.cn:8083/evi-service/evidence/v1/sp/scene/voucher
+
+  ## 追加证据链API接口调用地址(模拟地址)
+  http-voucher-append-url: http://smlcunzheng.tsign.cn:8083/evi-service/evidence/v1/sp/scene/append
+
+  ## 场景式存证编号关联到指定的用户API接口调用地址(模拟地址)
+  http-relate-url: http://smlcunzheng.tsign.cn:8083/evi-service/evidence/v1/sp/scene/relate
+
+  # 存证证明查看页面Url(模拟地址)
+  https-viewpage-url: https://smlcunzheng.tsign.cn/evi-web/static/certificate-info.html
+#通联支付配置
+allinpay:
+  server-url: https://fintech.allinpay.com/service/soa    #接口地址
+  version: 2.0                                         #接口版本
+  sys-id: 1912131617401390151                          #应用系统编号
+  path: ${user.home}/1912131617401390151.pfx  #私钥证书路径
+  pwd: 9789395384                                      #证书密码
+  alias: 1912131617401390151                           #别名
+  account-set-no: 400295                               #托管账户集编号
+  sub-app-id: wxdead3a2b6d67c0e7                       #微信端应用id
+  tl-cert-path: ${user.home}/TLCert-prod.cer  #生产环境请使用生产证书
+  sign-contract-url: https://fintech.allinpay.com/yungateway/member/signContract.html #电子协议签约地址
+  set-pay-pwd-url: https://fintech.allinpay.com/yungateway/pwd/setPayPwd.html #设置支付密码地址
+  update-pay-pwd-url: https://fintech.allinpay.com/yungateway/pwd/updatePayPwd.html #修改支付密码地址
+  reset-pay-pwd-url: https://fintech.allinpay.com/yungateway/pwd/resetPayPwd.html #重置支付密码地址
+  pay-order-url: https://fintech.allinpay.com/yungateway/frontTrans.do      #确认支付（前台+短信验证验证版）
+  pay-confirm-password-url: https://fintech.allinpay.com/yungateway/pwd/payOrder.html #密码验证确认支付
+  biz-user-id: STz5z7z5910184011                     #分账人

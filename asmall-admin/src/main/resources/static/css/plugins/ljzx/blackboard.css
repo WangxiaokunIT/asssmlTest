@@ -1,0 +1,18 @@
+[v-cloak] {
+    display: none;
+}
+
+.row-my-0 {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    margin-left: 0px;
+}
+
+.row-5 {
+    margin: 35px 15px 0 15px;
+}
+
+.ibox-content-my-0 {
+    border-style: solid solid solid;
+    border-width: 1px 1px;
+}

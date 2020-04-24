@@ -1,0 +1,64 @@
+@layout("/common/_container.html"){
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>管理</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <div class="row" id="ReceiptsPaymentsTableSearch">
+                            <div class="col-lg-3 col-sm-3">
+                                <#datecon id="dateStart" value="${beforeDate}"  name="dateStart" tagName="开始日期" isTime="false"/>
+                            </div>
+                            <div class="col-lg-3 col-sm-3">
+                                <#datecon id="dateEnd" value="${curDate}" name="dateEnd" tagName="结束日期" isTime="false"/>
+                            </div>
+                            <input type="hidden" id="queryType" name="queryType" value="${queryType}">
+                            @if(queryType==1){
+                            <div class="col-lg-3 col-sm-3">
+                                <#dictSelectorCon id="accountSetName" name ="accountSetName" code="account_set_name" label="账户集编码	"
+                                underline="true"/>
+                            </div>
+                            @}
+                            @if(queryType==2){
+                            <div class="col-lg-3 col-sm-3">
+                                <#inputcon id="bizUserId" name="bizUserId" tagName="通联用户标识" placeholder="客户或者供应商" />
+                            </div>
+                            @}
+
+
+                            <div class="col-sm-3">
+                                <#button name="搜索" icon="fa-search" clickFun="ReceiptsPayments.search()"/>
+                            </div>
+                        </div>
+                        @if(queryType==1){
+                        <div>
+                            <div class="col-lg-2 col-sm-2" style="color: red;">
+                                账户总额:<a id="totalMoney">${totalMoney}</a>
+                            </div>
+
+                            <div class="col-lg-2 col-sm-2" style="color: red;">
+                                账户冻结额:<a id="freezenAmount">${freezenAmount}</a>
+                            </div>
+
+                            <div class="col-lg-2 col-sm-2" style="color: red;">
+                              可结算余额:<a id="cjsAmount">${cjsAmount}</a>
+                            </div>
+                        </div>
+                        @}
+                        <#table id="ReceiptsPaymentsTable"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@include("/common/_container_vue.html"){}
+<script src="${ctxPath}/static/modular/biz/receiptsPayments/receiptsPayments.js"></script>
+
+<script src="${ctxPath}/static/js/plugins/laydate/laydate.js"></script>
+
+
+@}

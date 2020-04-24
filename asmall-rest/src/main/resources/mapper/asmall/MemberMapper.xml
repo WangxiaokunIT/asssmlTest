@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinshang.rest.modular.asmall.dao.MemberMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xinshang.rest.modular.asmall.model.Member">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="phone" property="phone"/>
+        <result column="email" property="email"/>
+        <result column="created" property="created"/>
+        <result column="updated" property="updated"/>
+        <result column="sex" property="sex"/>
+        <result column="age" property="age"/>
+        <result column="address" property="address"/>
+        <result column="state" property="state"/>
+        <result column="file" property="file"/>
+        <result column="description" property="description"/>
+        <result column="points" property="points"/>
+        <result column="real_name" property="realName"/>
+         <result column="vip" property="vip"/>
+        <result column="vip_start_time" property="vipStartTime"/>
+        <result column="vip_end_time" property="vipEndTime"/>
+        <result column="nickname" property="nickname"/>
+        <result column="card_number" property="cardNumber"/>
+        <result column="audit_status" property="auditStatus"/>
+        <result column="biz_user_id" property="bizUserId"/>
+        <result column="allinpay_user_id" property="allinpayUserId"/>
+        <result column="contract_no" property="contractNo"/>
+        <result column="openid" property="openid"/>
+    </resultMap>
+
+    <resultMap id="bankResultMap" type="com.xinshang.rest.modular.asmall.vo.BankVO" extends="BaseResultMap">
+        <id column="id" property="id"/>
+        <result column="bank_card_no" property="bankCardNo"/>
+        <result column="bank_name" property="bankName"/>
+        <result column="card_type" property="cardType"/>
+        <result column="bank_card_pro" property="bankCardPro"/>
+        <result column="is_default" property="isDefault"/>
+        <result column="set_pwd_state" property="setPwdState"/>
+    </resultMap>
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, username, password, phone, email, created, updated, sex, age, address, state, file, description, points, source, recommended_nickname, recommended_phone, vip, vip_start_time, vip_end_time, area, area_name, nickname, card_number,audit_status,biz_user_id,allinpay_user_id,contract_no
+    </sql>
+
+    <select id="selectDetailbyId" resultMap="bankResultMap">
+        SELECT c.username,c.phone,c.email,c.biz_user_id,c.file,c.nickname,c.bank_name,c.bank_card_no,c.card_type,c.bank_card_pro,c.type,c.is_default,
+        c.vip,c.points,c.documen_type,c.real_name,c.real_name_state,c.set_pwd_state,c.contract_no,c.openid FROM
+        (SELECT a.*,b.master_id,b.bank_name,b.bank_card_no,b.card_type,b.bank_card_pro,b.is_default,b.create_time,b.type
+        FROM tb_member a LEFT JOIN (select * from tb_bank where type = 1 ) b ON a.id=b.master_id ) c
+        WHERE c.id=#{id} limit 0,1
+    </select>
+
+</mapper>

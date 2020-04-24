@@ -1,0 +1,61 @@
+@layout("/common/_container.html"){
+<div class="row" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>客户积分流水管理</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <div class="row" id="IntegralLogMoneysTableSearch">
+                            <div class="col-sm-2">
+                                 <#inputcon id="userName" name="userName" tagName="客户用户名"/>
+                            </div>
+                            <div class="col-sm-2">
+                                 <#inputcon id="integral" name="integral" tagName="积分"/>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button">
+                                            积分来源
+                                        </button>
+                                    </div>
+                                    <select class="form-control" id="dataSrc" name="dataSrc">
+                                        <option value="">- 请选择 -</option>
+                                        <option v-for="(dataSrc, index) in data_src_state" v-bind:key="index" v-bind:value="dataSrc.code">{{ dataSrc.name }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button">
+                                            积分标志
+                                        </button>
+                                    </div>
+                                    <select class="form-control" id="moneyType" name="moneyType">
+                                        <option value="">- 请选择 -</option>
+                                        <option v-for="(moneyType, index) in money_type_state" v-bind:key="index" v-bind:value="moneyType.code">{{ moneyType.name }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <#button name="搜索" icon="fa-search" clickFun="IntegralLogMoneys.search()"/>
+
+                                <button type="button" class="btn btn-white button-margin" onclick="IntegralLogMoneys.clearSearch()">
+                                    <i class="fa fa-refresh" ></i>&nbsp;重置
+                                </button>
+                            </div>
+                        </div>
+                        <#table id="IntegralLogMoneysTable"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@include("/common/_container_vue.html"){}
+<script src="${ctxPath}/static/modular/biz/integralLogMoneys/integralLogMoneys.js"></script>
+@}

@@ -1,0 +1,96 @@
+@layout("/common/_container.html"){
+<link href="${ctxPath}/static/css/vueCss/select.css" rel="stylesheet">
+<link href="${ctxPath}/static/css/biz/project.css" rel="stylesheet">
+<style>
+    .ibox-tools-my-02 {
+        color: #9c3328;
+        padding-right: 27px;
+        font-weight: inherit;
+        font-size: 15px;
+    }
+</style>
+<div class="ibox float-e-margins" id="app_set_vue" v-cloak>
+    <div class="ibox-content">
+        <div class="ibox-content" id="defaultForm">
+            <!-- 用户协议 start -->
+            <div class="row">
+                <div class="ibox-tools ibox-tools-my-01 ibox-tools-my-02" >
+                    支持选中多个图片拖拽入编辑框
+                </div>
+                <h3 class="font-bold" >用户协议</h3>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <textarea name="userAgreement" id="userAgreement"/></textarea>
+                </div>
+            </div>
+            <!-- 用户协议 end -->
+
+            <!-- 隐私协议 start -->
+            <div class="row">
+                <div class="ibox-tools ibox-tools-my-01 ibox-tools-my-02">
+                    支持选中多个图片拖拽入编辑框
+                </div>
+                <h3 class="font-bold" >隐私协议</h3>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <textarea name="privacyProtocol" id="privacyProtocol"/></textarea>
+                </div>
+            </div>
+            <!-- 隐私协议 end -->
+
+            <!-- 代理协议 start -->
+            <div class="row">
+                <div class="ibox-tools ibox-tools-my-01 ibox-tools-my-02">
+                    支持选中多个图片拖拽入编辑框
+                </div>
+                <h3 class="font-bold" >代理协议</h3>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <textarea name="agentProtocol" id="agentProtocol"/></textarea>
+                </div>
+            </div>
+            <!-- 代理协议 end -->
+
+            <!-- vip说明 start -->
+            <div class="row">
+                <div class="ibox-tools ibox-tools-my-01 ibox-tools-my-02">
+                    支持选中多个图片拖拽入编辑框
+                </div>
+                <h3 class="font-bold" >vip说明</h3>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <textarea name="vipDescription" id="vipDescription"/></textarea>
+                </div>
+            </div>
+            <!-- vip说明 end -->
+            <!-- 代理说明 start -->
+            <div class="row">
+                <div class="ibox-tools ibox-tools-my-01 ibox-tools-my-02">
+                    支持选中多个图片拖拽入编辑框
+                </div>
+                <h3 class="font-bold" >代理说明</h3>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <textarea name="agentDescription" id="agentDescription"/></textarea>
+                </div>
+            </div>
+            <!-- 代理说明 end -->
+        </div>
+    </div>
+    <!-- 操作按钮 -->
+    <div class="modal-footer modal-footer-my">
+        <button type="button" class="btn btn-primary" v-on:click="saveAppSet" >提交</button>
+    </div>
+</div>
+
+@include("/common/_container_vue.html"){}
+
+<script src="${ctxPath}/static/js/plugins/ckeditor4/ckeditor.js"></script>
+<script src="${ctxPath}/static/modular/biz/appSet/appSet_info.js"></script>
+
+@}

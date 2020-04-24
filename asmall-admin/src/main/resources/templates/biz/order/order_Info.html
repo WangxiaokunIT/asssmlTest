@@ -1,0 +1,144 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal">
+            <input type="hidden" id="orderId" value="${orderId}">
+            <div class="row">
+                <h3 class="font-bold"><b>订单详情</b></h3>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3">
+                    <#input id="createTime" readonly="readonly" label="创建时间" value="${order.createTime}"/>
+                </div>
+                <div class="col-sm-3">
+                    <#input id="orderId" readonly="readonly" label="订单编号" value="${order.orderId}"/>
+                </div>
+                <div class="col-sm-3">
+                    <input id="customTypeHidden" type="hidden" value="${order.customType}"/>
+                    <#input id="customType" readonly="readonly" label="订单类型"/>
+                </div>
+                <div class="col-sm-3">
+                    <#input id="orderId" readonly="readonly" label="订单状态" value="${order.statusName}"/>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3">
+                    <#input id="payment" readonly="readonly" label="订单金额" value="${order.payment}"/>
+                </div>
+                <div class="col-sm-3">
+                    <#input id="freight" readonly="readonly" label="运费" value="${order.freight}"/>
+                </div>
+                <div class="col-sm-3">
+                    <#input id="profitsGoods" readonly="readonly" label="订单利润" value="${order.profitsGoods}"/>
+                </div>
+                <div class="col-sm-3">
+                    <#input id="buyerNick" readonly="readonly" label="买家手机" value="${order.buyerNick}"/>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3">
+                    <#input id="closeTime" readonly="readonly" label="关闭时间" value="${order.closeTime}"/>
+                </div>
+                <div class="col-sm-3">
+                    <#input id="buyerMessage" readonly="readonly" label="订单备注" value="${order.buyerMessage}"/>
+                </div>
+            </div>
+
+            <div class="row">
+                <h3 class="font-bold"><b>支付信息</b></h3>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <#input id="paymentTime" readonly="readonly" label="支付时间" value="${order.paymentTime}"/>
+                </div>
+                <div class="col-sm-3">
+                    <#input id="payment" readonly="readonly" label="支付金额" value="${order.payment}"/>
+                </div>
+                <div class="col-sm-3">
+                    <#input id="payNum" readonly="readonly" label="支付编号" value="${order.payNum}"/>
+                </div>
+                <div class="col-sm-3">
+                    <input id="paymentTypeHidden" type="hidden" value="${order.paymentType}"/>
+                    <#input id="paymentType" readonly="readonly" label="支付方式" />
+                </div>
+            </div>
+            <div class="row">
+                <h3 class="font-bold"><b>发货信息</b></h3>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <#input id="consignTime" readonly="readonly" label="发货时间" value="${order.consignTime}"/>
+                </div>
+                <div class="col-sm-3">
+                    <#input id="shippingName" readonly="readonly" label="物流名称" value="${order.shippingName}"/>
+                </div>
+                <div class="col-sm-3">
+                    <#input id="shippingCode" readonly="readonly" label="物流单号" value="${order.shippingCode}"/>
+                </div>
+                <div class="col-sm-3">
+                    <#input id="postFee" readonly="readonly" label="支付邮费" value="${order.postFee}"/>
+                </div>
+            </div>
+            <div class="row">
+                <h3 class="font-bold"><b>收货信息</b></h3>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <#input readonly="readonly" label="收货时间" value="${order.endTime}"/>
+                </div>
+                <div class="col-sm-3">
+                    <#input readonly="readonly" label="收货人称" value="${orderShipping.receiverName}"/>
+                </div>
+                <div class="col-sm-3">
+                    <#input readonly="readonly" label="收货电话" value="${orderShipping.receiverPhone}"/>
+                </div>
+                <div class="col-sm-3">
+                    <#input readonly="readonly" labelCol="0" valueCol="12" label="" value="${orderShipping.receiverAddress}"/>
+                </div>
+            </div>
+
+            <div class="row">
+                <h3 class="font-bold"><b>商品信息</b></h3>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <table class="table table-bordered">
+                        <tr style="background-color:#F5F5F6;font-weight: bold">
+                            <td style="width: 60px;">图片</td>
+                            <td>名称</td>
+                            <td style="width: 150px">商品编码</td>
+                            <td style="width: 150px">规格编码</td>
+                            <td style="width: 150px">规格信息</td>
+                            <td style="width: 150px">数量</td>
+                            <td style="width: 150px">单价</td>
+                            <td style="width: 150px">总价</td>
+                        </tr>
+                        @for(item in items){
+                        <tr>
+                            <td style="padding: 0"><img src="${item.picPath}" title="${item.title}" style="height: 40px;"></td>
+                            <td>${item.title}</td>
+                            <td>${item.itemNumber}</td>
+                            <td>${item.itemSpecsNo!}</td>
+                            <td>${item.specsValues}</td>
+                            <td>${item.num}</td>
+                            <td>${item.price}</td>
+                            <td>${item.totalFee}</td>
+                        </tr>
+                        @}
+                    </table>
+                </div>
+            </div>
+            <div class="row btn-group-m-t">
+                <div class="col-sm-10">
+                    <#button btnCss="danger" name="关闭" id="cancel" icon="fa-close" clickFun="OrderInfoDlg.close()"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/biz/order/order_info.js"></script>
+@}

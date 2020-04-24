@@ -1,0 +1,52 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal">
+            <h3 class="content-title-h3">详细信息</h3>
+            <hr class="content-title-hr">
+            <#input id="id" type="hidden" value="${item.id}" />
+            <div class="row">
+                <div class="col-sm-6">
+                    <#input label="公司名称" readonly="true" value="${item.name}"/>
+                    <#input label="法人姓名" readonly="true" value="${item.legalName}"/>
+                    <#input label="法人手机号" readonly="true" value="${item.phone}"/>
+                    <#input label="证件类型" readonly="true" value="${item.identityTypeName}" />
+                    <#input label="证件号码" readonly="true" value="${item.identityNo}" />
+                    <#input label="贷款总额度" readonly="true" value="${item.loanLimit}"/>
+                    <#input label="通联用户标识" readonly="true" value="${item.bizUserId}"/>
+                    <#input label="可用额度" readonly="true" value="${item.loanLimit-item.usedLoanAmount}"/>
+                </div>
+
+                <div class="col-sm-6">
+                    <span id="authTypeDiv">
+                        <#input label="对公账户" readonly="true" value="${item.accountNo}"/>
+                        <#input label="开户银行" readonly="true" value="${item.parentBankMame}"/>
+                        <#input label="开户行支行" readonly="true" value="${item.bankName}"/>
+                        <#input label="支付行号" readonly="true" value="${item.unionbank}" />
+                        <#input label="认证类型" readonly="true" value="${item.authTypeName}"/>
+                        @if(item.authType==2){
+                            <#input label="统一社会信用" readonly="true" value="${item.uniCredit}"/>
+                        @}else{
+                            <#input label="营业执照号" readonly="true" value="${item.businessLicense}"/>
+                            <#input label="组织机构代码" readonly="true" value="${item.organizationCode}"/>
+                            <#input label="税务登记证" readonly="true" value="${item.taxRegister}"/>
+                        @}
+                    </span>
+                </div>
+            </div>
+            <h3 class="content-title-h3">账户信息</h3>
+            <hr class="content-title-hr">
+            <div class="row">
+                <div class="col-sm-6">
+                    <#input label="账户状态" readonly="true" value="${item.stateName}"/>
+                    <#input label="账户总额" readonly="true" value="${account.totleAmount}"/>
+                </div>
+                <div class="col-sm-6">
+                    <#input label="冻结金额" readonly="true" value="${account.freezingAmount}"/>
+                    <#input label="可用余额" readonly="true" value="${account.availableBalance}"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@}

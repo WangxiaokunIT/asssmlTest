@@ -1,0 +1,35 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+	<div class="ibox-content">
+		<div class="form-horizontal" id="menuInfoForm">
+		
+			<input type="hidden" id="id" value="">
+
+			<div class="row">
+				<div class="col-sm-6 b-r">
+					<#input id="name" label="名称" underline="true" />
+					<#input id="code" label="菜单编号" underline="true" />
+					<#input id="parentName" label="父级" underline="true" hidden="parentId" readonly="readonly"
+							clickFun="MenuInfoDlg.showMenuSelectTree(); return false;"
+							selectFlag="true" selectDivId="parentIdTreeDiv" selectTreeId="parentIdTree" />
+					<#dictSelector id="isMenu" name ="isMenu" code="sys_menu_is_menu" label="是否是菜单" underline="true" placeholder="-请选择-"  />
+				</div>
+				<div class="col-sm-6">
+					<#input id="url" label="请求地址" underline="true" />
+					<#input id="sortNum" label="排序" underline="true" />
+					<#input id="icon" label="图标" underline="false" />
+				</div>
+			</div>
+
+			<div class="row btn-group-m-t">
+				<div class="col-sm-10">
+					<#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="MenuInfoDlg.addSubmit()"/>
+					<#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="MenuInfoDlg.close()"/>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+<script src="${ctxPath}/static/modular/system/menu/menu_info.js"></script>
+@}

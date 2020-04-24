@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinshang.modular.system.dao.FileMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xinshang.modular.system.model.File">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="category_id" property="categoryId" />
+        <result column="original_name" property="originalName" />
+        <result column="type" property="type" />
+        <result column="view_amt" property="viewAmt" />
+        <result column="download_amt" property="downloadAmt" />
+        <result column="size" property="size" />
+        <result column="state" property="state" />
+        <result column="md5_val" property="md5Val" />
+        <result column="save_path" property="savePath" />
+        <result column="remark" property="remark" />
+        <result column="gmt_create" property="gmtCreate" />
+        <result column="gmt_modified" property="gmtModified" />
+        <result column="creator" property="creator" />
+        <result column="creator_name" property="creatorName" />
+        <result column="modifier" property="modifier" />
+        <result column="store_type" property="storeType" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, category_id AS categoryId, original_name AS originalName, type, view_amt AS viewAmt, download_amt AS downloadAmt, size, state, md5_val AS md5Val, save_path AS savePath, remark, gmt_create AS gmtCreate, gmt_modified AS gmtModified, creator, modifier,store_type AS storeType
+    </sql>
+
+    <select id="selectFile" resultType="map">
+        select
+        <include refid="Base_Column_List" />,(select name from sys_user where id=creator) as creatorName
+        from sys_file
+        where state != 0
+        <if test="name != null and name != ''">
+            and original_name like CONCAT('%',#{name},'%')
+        </if>
+        <if test="categoryId != null and categoryId != 0">
+            and  category_id IN ( SELECT id FROM sys_file_category WHERE seq LIKE ( select  CONCAT(seq,'%') from sys_file_category where id=#{categoryId} ))
+        </if>
+        <if test="beginTime != null and beginTime != '' and endTime != null and endTime != ''">
+            and (gmt_create between CONCAT(#{beginTime},' 00:00:00') and CONCAT(#{endTime},' 23:59:59'))
+        </if>
+    </select>
+
+
+</mapper>

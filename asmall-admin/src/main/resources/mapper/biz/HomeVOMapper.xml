@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinshang.modular.biz.dao.HomeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xinshang.modular.biz.vo.HomeVO">
+        <result column="num1" property="num1" />
+        <result column="num2" property="num2" />
+        <result column="num3" property="num3" />
+        <result column="time" property="time" />
+    </resultMap>
+
+
+
+    <!-- 用户数量 -->
+    <select id="showUserNum" resultMap="BaseResultMap">
+        select count(*) as num1, vip as num2 from tb_member
+        <where>
+            <if test="param.startTime != null and param.startTime != ''">
+                and DATE_FORMAT(created,'%Y-%m-%d') &gt;= #{param.startTime}
+            </if>
+            <if test="param.endTime != null and param.endTime != ''">
+                and DATE_FORMAT(created,'%Y-%m-%d') &lt;= #{param.endTime}
+            </if>
+        </where>
+        group by vip
+    </select>
+
+    <!-- 柱状图 -->
+    <select id="showStatisticsSystem" resultMap="BaseResultMap">
+        select DATE_FORMAT(close_time,'%Y-%m') as time,sum(pay_amount) as num1,sum(profits_goods) as num2,0 as num3
+        from tb_order
+        <where>
+            and status = 5
+            <if test="param.startTime != null and param.startTime != ''">
+                and DATE_FORMAT(close_time,'%Y-%m-%d') &gt;= #{param.startTime}
+            </if>
+        </where>
+        group by time
+    </select>
+
+    <!-- 加盟额 -->
+    <select id="showJoinIn" resultMap="BaseResultMap">
+        select sum(investment_amount) as num1 from tb_joinin
+        <where>
+            <if test="param.startTime != null and param.startTime != ''">
+                and DATE_FORMAT(investment_time,'%Y-%m-%d') &gt;= #{param.startTime}
+            </if>
+        </where>
+    </select>
+
+    <!-- 待还权益额 -->
+    <select id="showEquity" resultMap="BaseResultMap">
+        select sum(paid_inter) as num1 from tb_repay_plan
+        <where>
+            and statecode = 1
+            and have_inter_date is null
+            <if test="param.startTime != null and param.startTime != ''">
+                and DATE_FORMAT(paid_inter_date,'%Y-%m-%d') &gt;= #{param.startTime}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

@@ -1,0 +1,54 @@
+@layout("/common/_container.html"){
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>客户管理管理</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <div class="row" id="MemberTableSearch">
+                            <div class="col-sm-2">
+                                 <#inputcon name="username" tagName="用户名"/>
+                            </div>
+                            <div class="col-sm-2">
+                                 <#inputcon name="phone" tagName="注册手机号"/>
+                            </div>
+                            <div class="col-lg-2">
+                                <#datecon id="created" name="created" tagName="创建时间" isTime="false"/>
+                            </div>
+                            <div class="col-sm-2">
+                                 <#inputcon name="address" tagName="地址"/>
+                            </div>
+                            <div class="col-sm-2">
+                                 <#inputcon name="cardNumber" tagName="身份证号码"/>
+                            </div>
+                            <div class="col-sm-3">
+                                @if(shiro.hasPermission("/member/add1")){
+                                <#button name="激活" icon="fa-plus" clickFun="Member.active()"/>
+                                @}
+                                <#button name="搜索" icon="fa-search" clickFun="Member.search()"/>
+                            </div>
+                        </div>
+                        <div class="hidden-xs" id="MemberTableToolbar" role="group">
+                            @if(shiro.hasPermission("/member/add")){
+                                <#button name="添加" icon="fa-plus" clickFun="Member.openAddMember()"/>
+                            @}
+                            @if(shiro.hasPermission("/member/update")){
+                                <#button name="修改" icon="fa-edit" clickFun="Member.openMemberDetail()" space="true"/>
+                            @}
+                            @if(shiro.hasPermission("/member/delete")){
+                                <#button name="删除" icon="fa-remove" clickFun="Member.delete()" space="true"/>
+                            @}
+
+                        </div>
+                        <#table id="MemberTable"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/biz/member/member.js"></script>
+@}

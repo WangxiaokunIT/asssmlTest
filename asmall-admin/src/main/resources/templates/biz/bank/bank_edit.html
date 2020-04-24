@@ -1,0 +1,36 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal">
+
+            <#input id="id" type="hidden" value="${item.id}" />
+            <div class="row">
+                <div class="col-sm-6 b-r">
+                    <#input id="masterId" label="所属客户id/供应商id" value="${item.masterId}" underline="true"/>
+                    <#input id="bankCardNo" label="银行卡号" value="${item.bankCardNo}" underline="true"/>
+                    <#input id="bankName" label="银行名称" value="${item.bankName}" underline="true"/>
+                    <#input id="cardType" label="银行卡类型[1:借记卡,2:信用卡]" value="${item.cardType}" underline="true"/>
+                    <#input id="bankCardPro" label="账户属性[0:个人银行卡,1:企业对公账号]" value="${item.bankCardPro}" />
+                </div>
+
+                <div class="col-sm-6">
+                    <#input id="isDefault" label="是否默认[0:否,1:是]" value="${item.isDefault}" underline="true"/>
+                    <#input id="createTime" label="创建时间" value="${item.createTime}" underline="true"/>
+                    <#input id="updateTime" label="更新时间" value="${item.updateTime}" underline="true"/>
+                    <#input id="type" label="用户类型[1:用户,2:供应商]" value="${item.type}" underline="true"/>
+                    <#input id="bankCode" label="银行代码" value="${item.bankCode}" />
+                </div>
+            </div>
+
+            <div class="row btn-group-m-t">
+                <div class="col-sm-10">
+                    <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="BankInfoDlg.editSubmit()"/>
+                    <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="BankInfoDlg.close()"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/biz/bank/bank_info.js"></script>
+@}

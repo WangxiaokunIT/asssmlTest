@@ -1,0 +1,13 @@
+.w-e-text-container {
+    z-index: 0 !important;
+}
+
+.spiner-example {
+    padding-top: 200px;
+}
+
+.sk-spinner-wave.sk-spinner {
+    width: 55px;
+    color: #ffffff;
+}
+

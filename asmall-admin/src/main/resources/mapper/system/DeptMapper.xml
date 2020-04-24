@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinshang.modular.system.dao.DeptMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xinshang.modular.system.model.Dept">
+        <id column="id" property="id"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="sort_num" property="sortNum"/>
+        <result column="level" property="level"/>
+        <result column="seq" property="seq"/>
+        <result column="simple_name" property="simpleName"/>
+        <result column="full_name" property="fullName"/>
+        <result column="remark" property="remark"/>
+        <result column="version" property="version"/>
+        <result column="creator" property="creator" />
+        <result column="gmt_create" property="gmtCreate" />
+        <result column="modifier" property="modifier" />
+        <result column="gmt_modified" property="gmtModified" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,parent_id,sort_num,level,seq,simple_name,full_name,remark,version,creator,gmt_create,modifier,gmt_modified
+    </sql>
+
+    <select id="listTree" resultType="com.xinshang.core.node.ZTreeNode">
+		select id,parent_id as parentId,simple_name as name,
+		(
+		CASE
+		WHEN (parent_id = 0 OR parent_id IS NULL) THEN
+		'true'
+		ELSE
+		'false'
+		END
+		) as isOpen from sys_dept
+	</select>
+
+    <!-- 异步获取ztree的节点查询部门及岗位-->
+    <select id="syncDeptAndPositionTree" parameterType="java.lang.Integer" resultType="com.xinshang.core.node.ZTreeNode">
+		select id,name,type,sum(childrenNum) as childrenNum,(case when sum(childrenNum)>0 then 'true' else 'false' end) as isParent from (
+        select id,simple_name as name,1 as type ,((select count(id) from sys_dept where parent_id=d.id)+(select count(id) from sys_position where dept_id=d.id and level=2)) as childrenNum from sys_dept d where parent_id=#{parentId}
+        union all
+         select p.id,p.name,2 as type,((select count(id) from sys_position where parent_id=p.id)) as childrenNum from sys_position p where p.dept_id=#{parentId}
+         and p.level=2 ) t group by t.id,t.name,t.type order by t.type ,t.id
+	</select>
+</mapper>

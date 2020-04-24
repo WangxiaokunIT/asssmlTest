@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinshang.modular.biz.dao.SupplierMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xinshang.modular.biz.model.Supplier">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="type" property="type" />
+        <result column="phone" property="phone" />
+        <result column="identity_type" property="identityType" />
+        <result column="identity_no" property="identityNo" />
+        <result column="is_auth" property="isAuth" />
+        <result column="auth_type" property="authType" />
+        <result column="legal_name" property="legalName" />
+        <result column="account_no" property="accountNo" />
+        <result column="parent_bank_mame" property="parentBankMame" />
+        <result column="bank_name" property="bankName" />
+        <result column="unionbank" property="unionbank" />
+        <result column="loan_limit" property="loanLimit" />
+        <result column="used_loan_amount" property="usedLoanAmount" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="biz_user_id" property="bizUserId"/>
+        <result column="allinpay_user_id" property="allinpayUserId"/>
+        <result column="contract_no" property="contractNo"/>
+        <result column="is_set_pay_pwd" property="isSetPayPwd"/>
+        <result column="remark" property="remark"/>
+        <result column="allin_pay_state" property="allinPayState"/>
+        <result column="fail_reason" property="failReason"/>
+        <result column="company_address" property="companyAddress"/>
+    </resultMap>
+
+    <resultMap id="SearchVoMap" type="com.xinshang.modular.biz.vo.SearchVO" extends="BaseResultMap">
+        <result column="search_content" property="searchContent" />
+    </resultMap>
+
+    <resultMap id="VOResultMap" type="com.xinshang.modular.biz.vo.SupplierVO">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="type" property="type" />
+        <result column="phone" property="phone" />
+        <result column="identity_type" property="identityType" />
+        <result column="identity_no" property="identityNo" />
+        <result column="is_auth" property="isAuth" />
+        <result column="auth_type" property="authType" />
+        <result column="legal_name" property="legalName" />
+        <result column="account_no" property="accountNo" />
+        <result column="parent_bank_mame" property="parentBankMame" />
+        <result column="bank_name" property="bankName" />
+        <result column="unionbank" property="unionbank" />
+        <result column="loan_limit" property="loanLimit" />
+        <result column="used_loan_amount" property="usedLoanAmount" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="biz_user_id" property="bizUserId"/>
+        <result column="allinpay_user_id" property="allinpayUserId"/>
+        <result column="contract_no" property="contractNo"/>
+        <result column="is_set_pay_pwd" property="isSetPayPwd"/>
+        <result column="remark" property="remark"/>
+        <result column="allin_pay_state" property="allinPayState"/>
+        <result column="fail_reason" property="failReason"/>
+        <result column="bank_count" property="bankCount"/>
+        <result column="totle_amount" property="totleAmount"/>
+        <result column="freezing_amount" property="freezingAmount"/>
+        <result column="available_balance" property="availableBalance"/>
+        <result column="company_address" property="companyAddress"/>
+
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, type, phone, identity_type, identity_no, is_auth, company_address, auth_type, legal_name, legalids, legal_phone, account_no, parent_bank_mame, bank_name, unionbank, create_time, update_time,loan_limit,used_loan_amount,biz_user_id,allinpay_user_id,contract_no
+    </sql>
+
+    <select id="searchSupplier" resultMap="SearchVoMap">
+        select s.*, CONCAT(id, '| ', name, ' | ', phone, ' | ', identity_no) as search_content  from tb_supplier s
+        <where>
+            and (
+            phone like CONCAT('%',#{search},'%')
+            or
+            name like CONCAT('%',#{search},'%')
+            or
+            identity_no like CONCAT('%',#{search},'%')
+
+            )
+        </where>
+
+        order by create_time desc
+    </select>
+
+    <select id="selectPageInfo" resultMap="VOResultMap">
+        select s.*,(select count(id) from tb_bank b where b.master_id = s.id and b.type = 2) as bank_count
+        from tb_supplier s
+        <where>
+            <if test="supplier.name !=null and supplier.name !=''">
+                and s.name like CONCAT('%',#{supplier.name},'%')
+            </if>
+            <if test="supplier.phone !=null and supplier.phone !=''">
+                and s.name like CONCAT('%',#{supplier.phone},'%')
+            </if>
+            <if test="supplier.phone !=null and supplier.phone !=''">
+                and s.type = #{supplier.type}
+            </if>
+        </where>
+    </select>
+</mapper>

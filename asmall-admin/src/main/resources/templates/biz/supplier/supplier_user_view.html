@@ -1,0 +1,38 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal">
+            <h3 class="content-title-h3">详细信息</h3>
+            <hr class="content-title-hr">
+            <#input id="id" type="hidden" value="${item.id}" />
+            <div class="row">
+                <div class="col-sm-6">
+                    <#input label="姓名"  readonly="true" value="${item.name}"/>
+                    <#input label="证件类型"  readonly="true" value="${item.identityTypeName}"/>
+                    <#input label="所属企业" readonly="true" value="${item.remark}" />
+                    <#input label="法人代表" readonly="true" value="${item.legalName}"/>
+                    <#input label="通联用户标识"  readonly="true" value="${item.bizUserId}"/>
+                </div>
+                <div class="col-sm-6">
+                    <#input label="手机号"  readonly="true" value="${item.phone}"/>
+                    <#input label="证件号码"  readonly="true" value="${item.identityNo}" />
+                    <#input label="企业地址" value="${item.companyAddress}" />
+                    <#input label="贷款总额度"  readonly="true" value="${item.loanLimit}"/>
+                </div>
+            </div>
+            <h3 class="content-title-h3">账户信息</h3>
+            <hr class="content-title-hr">
+            <div class="row">
+                <div class="col-sm-6">
+                    <#input label="账户状态" readonly="true" value="${item.stateName}" />
+                    <#input label="账户总额" readonly="true" value="${account.totleAmount}" addonValue="元"/>
+                </div>
+                <div class="col-sm-6">
+                    <#input label="冻结金额" readonly="true" value="${account.freezingAmount}" addonValue="元"/>
+                    <#input label="可用余额" readonly="true" value="${account.availableBalance}" addonValue="元"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@}

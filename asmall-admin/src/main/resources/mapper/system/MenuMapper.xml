@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinshang.modular.system.dao.MenuMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.xinshang.modular.system.model.Menu">
+		<id column="id" property="id" />
+		<result column="code" property="code" />
+		<result column="parent_id" property="parentId" />
+		<result column="seq" property="seq" />
+		<result column="name" property="name" />
+		<result column="icon" property="icon" />
+		<result column="url" property="url" />
+		<result column="sort_num" property="sortNum" />
+		<result column="level" property="level" />
+		<result column="is_menu" property="isMenu" />
+		<result column="remark" property="remark" />
+		<result column="state" property="state" />
+		<result column="is_open" property="isOpen" />
+        <result column="creator" property="creator" />
+        <result column="gmt_create" property="gmtCreate" />
+        <result column="modifier" property="modifier" />
+        <result column="gmt_modified" property="gmtModified" />
+	</resultMap>
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="MenuNodeResultMap" type="com.xinshang.core.node.MenuNode">
+        <id column="id" property="id" />
+        <result column="parent_id" property="parentId" />
+        <result column="name" property="name" />
+        <result column="icon" property="icon" />
+        <result column="url" property="url" />
+        <result column="sort_num" property="sortNum" />
+        <result column="level" property="level" />
+        <result column="is_menu" property="isMenu" />
+    </resultMap>
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="ZTreeNodeResultMap" type="com.xinshang.core.node.ZTreeNode">
+        <id column="id" property="id" />
+        <result column="parent_id" property="parentId" />
+        <result column="open" property="open" />
+        <result column="checked" property="checked" />
+        <result column="name" property="name" />
+        <result column="icon" property="icon" />
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+       id,parent_id,code,name,icon,url,seq,sort_num,level,is_menu,state,is_open,remark,creator,gmt_create,modifier,gmt_modified
+    </sql>
+
+    <select id="selectMenus" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_menu
+        where state = 1
+        <if test="condition != null and condition != ''">
+            and (name like CONCAT('%',#{condition},'%') or code like CONCAT('%',#{condition},'%'))
+        </if>
+        <if test="level != null and level != ''">
+            and level = #{level}
+        </if>
+    </select>
+
+    <select id="getMenuIdsByRoleId" resultType="int">
+        select menu_id from
+        sys_role_menu where role_id = #{roleId}
+    </select>
+
+    <select id="menuTreeList" resultMap="ZTreeNodeResultMap">
+        SELECT
+        m1.id AS id,
+        (
+        CASE
+        WHEN (m2.id = 0 OR m2.id IS NULL) THEN
+        0
+        ELSE
+        m2.id
+        END
+        ) AS parent_id,
+        m1. NAME
+        AS NAME,
+        (
+        CASE
+        WHEN (m2.id = 0 OR m2.id IS NULL) THEN
+        'true'
+        ELSE
+        'false'
+        END
+        ) as open
+        FROM
+        sys_menu m1
+        LEFT join sys_menu m2 ON m1.parent_id = m2.id
+        ORDER BY
+        m1.id ASC
+    </select>
+
+    <select id="menuTreeListByMenuIds" resultMap="ZTreeNodeResultMap">
+        SELECT
+        m1.id AS id,
+        (
+        CASE
+        WHEN (m2.id = 0 OR m2.id IS NULL) THEN
+        0
+        ELSE
+        m2.id
+        END
+        ) AS parent_id,
+        m1. NAME AS NAME,
+        (
+        CASE
+        WHEN (m2.id = 0 OR m2.id IS
+        NULL) THEN
+        'true'
+        ELSE
+        'false'
+        END
+        ) as open,
+        (
+        CASE
+        WHEN (m3.ID = 0 OR m3.ID
+        IS NULL) THEN
+        'false'
+        ELSE
+        'true'
+        END
+        ) as checked
+        FROM
+        sys_menu m1
+        LEFT JOIN
+        sys_menu m2
+        ON m1.parent_id = m2.id
+        left join (
+        SELECT
+        ID
+        FROM
+        sys_menu
+        WHERE
+        ID IN
+        <foreach collection="list" index="index" item="i" open="(" separator="," close=")">
+            #{i}
+        </foreach>
+        ) m3 on m1.id = m3.id
+        ORDER BY
+        m1.id ASC
+    </select>
+
+    <delete id="deleteRoleMenuByMenuId">
+        delete from sys_role_menu where menu_id = #{menuId}
+    </delete>
+
+    <select id="getResUrlsByRoleId" resultType="string">
+        select url from
+        sys_role_menu rel
+        inner join sys_menu m on rel.menu_id = m.id
+        where rel.role_id = #{roleId}
+    </select>
+
+    <select id="getMenusByRoleIds" resultMap="MenuNodeResultMap">
+        SELECT
+        m1.id AS id,
+        m1.icon AS icon,
+        (
+        CASE
+        WHEN (m2.id = 0 OR m2.id IS NULL) THEN
+        0
+        ELSE
+        m2.id
+        END
+        ) AS parent_id,
+        m1.NAME as name,
+        m1.url as url,
+        m1.level as level,
+        m1.is_menu as is_menu,
+        m1.sort_num as sort_num
+        FROM
+        sys_menu m1
+        LEFT join sys_menu m2 ON m1.parent_id = m2. id
+        INNER JOIN (
+        SELECT
+        ID
+        FROM
+        sys_menu
+        WHERE
+        ID IN (
+        SELECT
+        menu_id
+        FROM
+        sys_role_menu rela
+        WHERE
+        rela.role_id IN
+        <foreach collection="list" index="index" item="i" open="(" separator="," close=")">
+            #{i}
+        </foreach>
+        )
+        ) m3 ON m1.id = m3.id
+        where m1.is_menu = 1
+        order by level,sort_num asc
+    </select>
+
+</mapper>

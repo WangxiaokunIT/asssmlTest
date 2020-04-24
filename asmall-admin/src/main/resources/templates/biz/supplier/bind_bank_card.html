@@ -1,0 +1,27 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal">
+            <#input id="bizUserId" type="hidden" value="${item.bizUserId}" />
+            <div class="row">
+                <div class="col-sm-12 b-r">
+                    <#input id="name" label="姓名"  value="${item.name}"/>
+                    <#input id="cardNo" label="银行卡号" />
+                    <#input id="phone" type="number" label="银行预留手机"  value="${item.phone}"/>
+                    <#dictSelector code="identity_type" label="证件类型" id="identityType" value="${item.identityType}" />
+                    <#input id="identityNo" label="证件号码"  value="${item.identityNo}" />
+                    <#dictSelector code="bank_is_default" label="是否默认" id="isDefault" value="1" />
+                </div>
+            </div>
+            <div class="row btn-group-m-t">
+                <div class="col-sm-10">
+                    <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="BankInfoDlg.bindBankCard()"/>
+                    <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="BankInfoDlg.close()"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/biz/supplier/supplier_bank_info.js"></script>
+
+@}

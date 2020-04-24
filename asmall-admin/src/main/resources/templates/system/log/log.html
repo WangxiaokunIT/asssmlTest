@@ -1,0 +1,42 @@
+@layout("/common/_container.html"){
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>业务日志</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <#datecon id="beginTime" tagName="开始时间"/>
+                            </div>
+                            <div class="col-sm-2">
+                                <#datecon id="endTime" tagName="结束时间"/>
+                            </div>
+                            <div class="col-sm-2">
+                                <#inputcon id="logName" name="logName" tagName="日志名称" />
+                            </div>
+                            <div class="col-sm-2">
+                                <#dictSelectorCon id="logType" name="logType" code="sys_log_type" label="日志类型" />
+                            </div>
+                            <div class="col-sm-2">
+                                <#button name="搜索" icon="fa-search" clickFun="OptLog.search()"/>
+                            </div>
+                        </div>
+                        <div class="hidden-xs" id="OptLogTableToolbar" role="group">
+                            <#button name="查看详情" icon="fa-eye" clickFun="OptLog.detail()"/>
+                            @if(shiro.hasPermission("/log/delLog")){
+                                <#button name="清空日志" icon="fa-remove" clickFun="OptLog.delLog()" space="true"/>
+                            @}
+                        </div>
+                        <#table id="OptLogTable"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/system/log/log.js"></script>
+@}

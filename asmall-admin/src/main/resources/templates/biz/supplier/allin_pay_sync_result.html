@@ -1,0 +1,20 @@
+@layout("/common/_container.html"){
+<script src="${ctxPath}/static/modular/biz/supplier/supplier_info.js"></script>
+<script>
+    $(function() {
+        if('${result!}'){
+            if('${result!}'=="OK"){
+                Feng.success("${msg}");
+            }else{
+                Feng.error("${msg}");
+            }
+
+            if(window.parent.Supplier){
+                window.parent.Supplier.table.refresh();
+            }
+            parent.layer.close(window.parent.Supplier.layerIndex);
+            SupplierInfoDlg.close();
+        }
+    });
+</script>
+@}

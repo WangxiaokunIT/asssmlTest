@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinshang.modular.biz.dao.OrderBackMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xinshang.modular.biz.model.OrderBack">
+        <id column="id" property="id" />
+        <result column="order_id" property="orderId" />
+        <result column="state" property="state" />
+        <result column="operator_user" property="operatorUser" />
+        <result column="operator_time" property="operatorTime" />
+        <result column="back_remark" property="backRemark" />
+        <result column="audit_user" property="auditUser" />
+        <result column="audit_time" property="auditTime" />
+        <result column="refuse_remark" property="refuseRemark" />
+        <result column="back_order_id" property="backOrderId" />
+        <result column="back_address" property="backAddress" />
+        <result column="back_seller" property="backSeller" />
+        <result column="back_seller_phone" property="backSellerPhone" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, order_id, state, operator_user, operator_time, back_remark, audit_user, audit_time, refuse_remark, back_order_id, back_address, back_seller, back_seller_phone
+    </sql>
+
+</mapper>

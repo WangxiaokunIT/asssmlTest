@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinshang.rest.modular.asmall.dao.ProjectMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xinshang.rest.modular.asmall.model.Project">
+        <id column="id" property="id" />
+        <result column="number" property="number" />
+        <result column="name" property="name" />
+        <result column="brief_introduction" property="briefIntroduction" />
+        <result column="start_time" property="startTime" />
+        <result column="end_time" property="endTime" />
+        <result column="supplier_id" property="supplierId" />
+        <result column="min_money" property="minMoney" />
+        <result column="max_money" property="maxMoney" />
+        <result column="repayment_method" property="repaymentMethod" />
+        <result column="recruitment_cycle" property="recruitmentCycle" />
+        <result column="unit" property="unit" />
+        <result column="equity_rate" property="equityRate" />
+        <result column="details" property="details" />
+        <result column="start_record_time" property="startRecordTime" />
+        <result column="end_record_time" property="endRecordTime" />
+        <result column="state" property="state" />
+        <result column="create_time" property="createTime" />
+        <result column="create_user_id" property="createUserId" />
+    </resultMap>
+
+    <resultMap id="ProjectVo" type="com.xinshang.rest.modular.asmall.vo.ProjectVO" extends="BaseResultMap" >
+        <result column="create_user_name" property="createUserName" />
+        <result column="supplier_name" property="supplierName" />
+        <result column="repayment_method_name" property="repaymentMethodName" />
+        <result column="investment_amount" property="investmentAmount" />
+    </resultMap>
+
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, number, name, brief_introduction, start_time, end_time, supplier_id, min_money, max_money, repayment_method, recruitment_cycle, unit, equity_rate, details, state, create_time, create_user_id
+    </sql>
+
+    <select id="showProject" resultMap="ProjectVo">
+        select p.*,u.name as create_user_name, s.name as supplier_name, di.name as repayment_method_name, IFNULL(jo.investment_amount, 0.00) as investment_amount from (
+        select * from tb_project
+        <where>
+            and DATE_FORMAT(start_time,'%Y-%m-%d') &lt;= DATE_FORMAT(now(),'%Y-%m-%d')
+            and DATE_FORMAT(end_time,'%Y-%m-%d') &gt;= DATE_FORMAT(now(),'%Y-%m-%d')
+            and state = 2
+        </where>
+        ) p
+        left join sys_user u
+        on p.create_user_id = u.id
+        left join tb_supplier s
+        on s.id = p.supplier_id
+        left join (select * from sys_dict where parent_id = (select id from sys_dict where code = 'way_of_restitution')) di
+        on p.repayment_method = di.code
+        left join (select project_id,sum(investment_amount) as investment_amount from tb_joinin
+        where project_id in
+        ( select id from tb_project
+        WHERE DATE_FORMAT(start_time,'%Y-%m-%d') &lt;= DATE_FORMAT(now(),'%Y-%m-%d')
+        and DATE_FORMAT(end_time,'%Y-%m-%d') &gt;= DATE_FORMAT(now(),'%Y-%m-%d'))
+        group by project_id) jo
+        on jo.project_id = p.id
+
+        order by create_time desc
+    </select>
+
+    <select id="showProjectDetail" resultMap="ProjectVo">
+        select p.*,u.name as create_user_name, s.name as supplier_name, di.name as repayment_method_name, IFNULL(jo.investment_amount, 0.00) as investment_amount from (
+        select * from tb_project
+        where id = #{param.id}
+        ) p
+        left join sys_user u
+        on p.create_user_id = u.id
+        left join tb_supplier s
+        on s.id = p.supplier_id
+        left join (select * from sys_dict where parent_id = (select id from sys_dict where code = 'way_of_restitution')) di
+        on p.repayment_method = di.code
+        left join (select project_id,sum(investment_amount) as investment_amount from tb_joinin
+        where project_id = #{param.id}
+        group by project_id) jo
+        on jo.project_id = p.id
+    </select>
+
+</mapper>

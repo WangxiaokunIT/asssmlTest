@@ -1,0 +1,121 @@
+@layout("/common/_container.html"){
+<style>
+    .input-group {
+        margin-right: 12px !important;
+        width: 70% !important;
+        float: right !important;
+    }
+
+</style>
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal">
+            <div class="row">
+                <div class="col-sm-9">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" >关联商品</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control col-sm-9" id="title" name="关联商品" placeholder="根据商品标题模糊搜索" ><!--id="testNoBtn"-->
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-white dropdown-toggle" data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /btn-group -->
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-9">
+                    <#input id="sortNum" label="排序" type="number"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-9">
+                    <#dictSelector code="banner_state" label="是否显示" name="state" id="state"/>
+                </div>
+                <div class="col-sm-9">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                            图片
+                        </label>
+                        <div class="col-sm-9">
+                            <img id="banner_img">
+                            <#input id="bannerPath" type="hidden"/>
+                        </div>
+                        <div class="col-sm-12">
+                            <div id="zyupload" class="zyupload"></div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="row btn-group-m-t">
+                <div class="col-sm-10">
+                    <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="BannerInfoDlg.addSubmit()"/>
+                    <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="BannerInfoDlg.close()"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="${ctxPath}/static/js/plugins/suggest/bootstrap-suggest.min.js"></script>
+<script src="${ctxPath}/static/modular/biz/banner/banner_info.js"></script>
+<link rel="stylesheet" href="${ctxPath}/static/css/plugins/zyupload/skins/zyupload-1.0.0.min.css"/>
+<script type="text/javascript">
+    var path ="";
+    // 初始化插件
+    $("#zyupload").zyUpload({
+        width: "650px",                 // 宽度
+        height: "100%",                 // 宽度
+        itemWidth: "140px",                 // 文件项的宽度
+        itemHeight: "125px",                 // 文件项的高度
+        url: Feng.ctxPath + "/item/upload",  // 上传文件的路径
+        fileType: ["JPG", "jpg", "png", "gif"],// 上传文件的类型
+        fileSize: 51200000,                // 上传文件的大小
+        multiple: false,                    // 是否可以多个文件上传
+        dragDrop: true,                    // 是否可以拖动上传文件
+        tailor: true,                    // 是否可以裁剪图片
+        del: true,                    // 是否可以删除文件
+        finishDel: true,  				  // 是否在上传文件完成后删除预览
+        /* 外部获得的回调接口 */
+        onSelect: function (selectFiles, allFiles) {    // 选择文件的回调方法  selectFile:当前选中的文件  allFiles:还没上传的全部文件
+            console.info("当前选择了以下文件：");
+            console.info(selectFiles);
+        },
+        onDelete: function (file, files) {              // 删除一个文件的回调方法 file:当前删除的文件  files:删除之后的文件
+            console.info("当前删除了此文件：");
+            console.info(file.name);
+        },
+        onSuccess: function (file, response) {          // 文件上传成功的回调方法
+            console.info("上次成功:" + response);
+            if (response) {
+                var obj = JSON.parse(response);
+                $("#uploadInf").append(obj.message + ",");
+                $("#uploadPannel").fadeIn();
+                path = obj.url;
+                /*window.parent.Item.table.refresh();*/
+            }
+            $("#bannerPath").val(path);
+            $("#banner_img").attr("height", "180px");
+            $("#banner_img").attr("src", path);
+
+        },
+        onFailure: function (file, response) {          // 文件上传失败的回调方法
+            console.info("此文件上传失败：");
+            console.info(file.name);
+        },
+        onComplete: function (response) {           	  // 上传完成的回调方法
+            console.info("文件上传完成");
+            console.info(response);
+        }
+    });
+
+</script>
+@}

@@ -1,0 +1,23 @@
+.btn-default {
+    background-color: #ffffff;
+    border-color: #ccc;
+    color: #333;
+}
+
+.btn-default:hover, .btn-default:focus, .btn-default:active,
+.btn-default.active, .open .dropdown-toggle.btn-default {
+    background:#fff;
+    color:#333;
+}
+
+.bootstrap-select > .dropdown-toggle.bs-placeholder, .bootstrap-select > .dropdown-toggle.bs-placeholder:hover, .bootstrap-select > .dropdown-toggle.bs-placeholder:focus, .bootstrap-select > .dropdown-toggle.bs-placeholder:active {
+    color: #999999;
+}
+
+.btn-default.active.focus, .btn-default.active:focus, .btn-default.active:hover, .btn-default:active.focus, .btn-default:active:focus, .btn-default:active:hover, .open>.dropdown-toggle.btn-default.focus, .open>.dropdown-toggle.btn-default:focus, .open>.dropdown-toggle.btn-default:hover {
+    background-color: #ffffff;
+}
+
+.ibox .open > .dropdown-menu {
+    z-index: 99999;
+}

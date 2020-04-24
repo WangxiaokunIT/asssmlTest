@@ -1,0 +1,27 @@
+@layout("/common/_container.html"){
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <div class="hidden-xs" id="BankTableToolbar" role="group">
+                            <#button name="绑定" icon="fa-plus" clickFun="Bank.openBindingBankCard('${supplierId}')" space="true"/>
+                            <#button name="解绑" icon="fa-remove" clickFun="Bank.relieveBindingBankCard()" space="true"/>
+                        </div>
+                        <#table id="BankTable"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/biz/supplier/supplier_info.js"></script>
+<script>
+    $(function () {
+        var defaultColunms = Bank.initColumn();
+        var table = new BSTable(Bank.id, "/supplier/bankPageList/${supplierId}", defaultColunms);
+        Bank.table = table.init();
+    });
+</script>
+@}

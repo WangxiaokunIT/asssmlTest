@@ -1,0 +1,48 @@
+@layout("/common/_container.html"){
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>商品管理</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <div class="row" id="ItemTableSearch">
+                            <div class="col-sm-2">
+                                <#dictSelectorCon name="cid"  code="goods_type" label="商品分类" placeholder="-请选择-" />
+                            </div>
+                            <div class="col-sm-2">
+                                <#inputcon name="title" tagName="名称"/>
+                            </div>
+                            <div class="col-sm-2">
+                                <#dictSelectorCon name="status" code="item_status" label="状态" placeholder="-请选择-" />
+                            </div>
+                            <div class="col-sm-2">
+                                <#dictSelectorCon name="isWarning" code="is_warning" label="库存预警" placeholder="-请选择-" />
+                            </div>
+
+                            <div class="col-sm-2">
+                                <#inputcon name="numAllCon" tagName="销量" placeholder="最小值-最大值"/>
+                            </div>
+                            <div class="col-sm-2">
+                                <#inputcon name="numCon" tagName="库存量" placeholder="最小值-最大值"/>
+                            </div>
+                        </div>
+                        <div class="hidden-xs" id="ItemTableToolbar" role="group">
+                            <#button name="搜索" icon="fa-search" clickFun="Item.search()"/>
+
+                            @if(shiro.hasPermission("/item/add")){
+                            <#button name="添加商品" icon="fa-plus" clickFun="Item.openAddItem()"/>
+                            @}
+
+                        </div>
+                        <#table id="ItemTable"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/biz/item/item.js"></script>
+@}

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <title>爱赛商城后台管理系统</title>
+    <link rel="shortcut icon" href="${ctxPath}/static/favicon.ico">
+    <link href="${ctxPath}/static/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="${ctxPath}/static/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="${ctxPath}/static/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="${ctxPath}/static/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="${ctxPath}/static/layui/css/layui.css">
+</head>
+
+<body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
+    <div id="wrapper">
+    
+        <!--左侧导航开始-->
+        	@include("/common/_tab.html"){}
+        <!--左侧导航结束-->
+        
+        <!--右侧部分开始-->
+        	@include("/common/_right.html"){}
+        <!--右侧部分结束-->
+        
+        <!--右侧边栏开始-->
+        	@include("/common/_theme.html"){}
+        <!--右侧边栏结束-->
+       
+    </div>
+
+    <!-- 全局js -->
+    <script src="${ctxPath}/static/js/jquery.min.js?v=2.1.4"></script>
+    <script src="${ctxPath}/static/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="${ctxPath}/static/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="${ctxPath}/static/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="${ctxPath}/static/js/plugins/layer/layer.js"></script>
+    <!-- 自定义js -->
+    <script src="${ctxPath}/static/js/hplus.js?v=4.1.0"></script>
+    <script type="text/javascript" src="${ctxPath}/static/js/contabs.js"></script>
+    <!-- 第三方插件 -->
+    <script src="${ctxPath}/static/js/plugins/pace/pace.min.js"></script>
+    <script src="${ctxPath}/static/js/plugins/toastr/toastr.min.js"></script>
+    <script src="${ctxPath}/static/layui/layui.js"></script>
+
+</body>
+<script>
+    toastr.options = {
+        closeButton: true,
+        debug: false,
+        progressBar: true,
+        positionClass: "toast-bottom-right",
+        onclick: null,
+        showDuration: "300",
+        hideDuration: "1000",
+        timeOut: "10000",
+        extendedTimeOut: "2000",
+        showEasing: "swing",
+        hideEasing: "linear",
+        showMethod: "fadeIn",
+        hideMethod: "fadeOut"
+    };
+    var websocket = null;
+
+    function start(){
+
+        layui.use('layim', function(layim){
+
+
+            //基础配置
+            layim.config({
+
+                //初始化接口
+                init: {
+                    url: "/im/init",data: {}
+                }
+
+                //查看群员接口
+                ,members: {
+                    url: '/im/members'
+                    ,data: {}
+                }
+
+                //上传图片接口
+                ,uploadImage: {
+                    url: '/im/upload/image/14' //（返回的数据格式见下文）
+                    ,type: '' //默认post
+                }
+
+                //上传文件接口
+                ,uploadFile: {
+                    url: '/im/upload/file/14' //（返回的数据格式见下文）
+                    ,type: '' //默认post
+                }
+
+                ,isAudio: false //开启聊天工具栏音频
+                ,isVideo: false //开启聊天工具栏视频
+
+              /*  //扩展工具栏
+                ,tool: [{
+                    alias: 'code'
+                    ,title: '代码'
+                    ,icon: '&#xe64e;'
+                }]*/
+
+                //,brief: true //是否简约模式（若开启则不显示主面板）
+
+                ,title: '在线聊天' //自定义主面板最小化时的标题
+                //,right: '100px' //主面板相对浏览器右侧距离
+                //,minRight: '90px' //聊天面板最小化时相对浏览器右侧距离
+                ,initSkin: '2.jpg' //1-5 设置初始背景
+                //,skin: ['aaa.jpg'] //新增皮肤
+                ,isfriend: true //是否开启好友
+                //,isgroup: false //是否开启群组
+                ,min: true //是否始终最小化主面板，默认false
+                ,notice: true //是否开启桌面消息提醒，默认false
+                ,voice: true //声音提醒，默认开启，声音文件为：default.mp3
+
+               /* ,msgbox: layui.cache.dir + 'css/modules/layim/html/msgbox.html' //消息盒子页面地址，若不开启，剔除该项即可
+                ,find: layui.cache.dir + 'css/modules/layim/html/find.html' //发现页面地址，若不开启，剔除该项即可
+                ,chatLog: layui.cache.dir + 'css/modules/layim/html/chatlog.html' //聊天记录页面地址，若不开启，剔除该项即可*/
+
+            });
+
+            //监听在线状态的切换事件
+            layim.on('online', function(data){
+                console.log("修改状态为:"+data);
+            });
+
+            //监听签名修改
+            layim.on('sign', function(value){
+                $.ajax({
+                    type: "PUT",
+                    url: "/im/sign",
+                    data: {"userId":"${shiro.getUser().id}","sign":value},
+                    success: function(data){
+                        console.log("您的签名已修改为:"+value);
+                    }
+                });
+            });
+
+            //监听自定义工具栏点击，以添加代码为例
+            layim.on('tool(code)', function(insert){
+                layer.prompt({
+                    title: '插入代码'
+                    ,formType: 2
+                    ,shade: 0
+                }, function(text, index){
+                    layer.close(index);
+                    insert('[pre class=layui-code]' + text + '[/pre]'); //将内容插入到编辑器
+                });
+            });
+
+            //监听layim建立就绪
+            layim.on('ready', function(res){
+
+              /*  layim.msgbox(5);
+
+
+               setTimeout(function(){
+                    layim.getMessage({
+                      username: "系统"
+                      ,avatar: "http://tp1.sinaimg.cn/1571889140/180/40030060651/1"
+                      ,id: "1"
+                      ,type: "friend"
+                      ,content: "嗨，你好！欢迎体验匿名聊"
+                    });
+
+                }, 3000);*/
+            });
+
+            //监听发送消息
+            layim.on('sendMessage', function(event){
+                console.log("发送消息:",event);
+                var to = event.to;
+                var mine=event.mine;
+
+
+                if(to.type === 'friend'){
+                    //layim.setChatStatus('<span style="color:#FF5722;">对方正在输入。。。</span>');
+                }
+
+                websocket.send(JSON.stringify({
+                    type:to.type,
+                    data:{
+                        mine: mine,
+                        to:to
+                    }
+                }));
+
+            });
+
+            //监听查看群员
+            layim.on('members', function(data){
+                //console.log(data);
+            });
+
+
+            //监听聊天窗口的切换
+            layim.on('chatChange', function(res){
+                /*var type = res.data.type;
+                console.log(res.data.id)
+                if(type === 'friend'){
+                    //模拟标注好友状态
+                    //layim.setChatStatus('<span style="color:#FF5722;">在线</span>');
+                } else if(type === 'group'){
+                    //模拟系统消息
+                    layim.getMessage({
+                        system: true
+                        ,id: res.data.id
+                        ,type: "group"
+                        ,content: '模拟群员'+(Math.random()*100|0) + '加入群聊'
+                    });
+                }*/
+            });
+
+
+
+            //判断当前浏览器是否支持WebSocket
+            if('WebSocket' in window){
+                websocket = new WebSocket("ws://${request.serverName}:${request.serverPort}/wsServer/${shiro.getUser().id}");
+            } else{
+                alert('Not support websocket')
+            }
+
+            //连接发生错误的回调方法
+            websocket.onerror = function(){
+                console.log("连接服务器错误");
+            };
+
+            //连接成功建立的回调方法
+            websocket.onopen = function(event){
+                console.log("已连接到服务器");
+            }
+
+            //接收到消息的回调方法
+            websocket.onmessage = function(event) {
+                //console.log("收到消息：" + event.data);
+                var result = JSON.parse(event.data);
+
+                if (result.type == "friend"){
+                    layim.getMessage(result);
+                    console.log("收到好友["+result.id+"]发来的消息");
+                }else if(result.type=="group") {
+                    layim.getMessage(result);
+                    console.log("收到群["+result.id+"]发来的消息");
+                }else if (result.type == "offline") {
+                    layim.setFriendStatus(result.userId, 'offline');
+                    console.log("好友["+result.userId+"]已下线");
+                }else if (result.type == "online") {
+                    layim.setFriendStatus(result.userId, 'online');
+                    console.log("好友["+result.userId+"]已上线");
+                }else if (result.type == "updateSign") {
+                    $(".layim-friend" + result.userId).find("p").text(result.sign);
+                    console.log("好友["+result.userId+"]修改了签名");
+                }else if(result.type=="systemMsg"){
+                    console.log("系统消息:"+result.msg);
+                }
+            }
+
+            //连接关闭的回调方法
+            websocket.onclose = function(){
+                console.log("已断开和服务器的连接");
+            }
+
+            //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+            window.onbeforeunload = function(){
+                websocket.close();
+            }
+
+            //发送消息
+            function send(){
+                var message = document.getElementById('text').value;
+                websocket.send(message);
+            }
+
+        });
+
+    }
+
+
+
+    $(function () {
+        //start();
+    })
+
+
+</script>
+</html>

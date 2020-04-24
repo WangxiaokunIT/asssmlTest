@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinshang.modular.biz.dao.ExamineMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xinshang.modular.biz.model.Examine">
+        <id column="id" property="id"/>
+        <result column="type" property="type"/>
+        <result column="project_id" property="projectId"/>
+        <result column="state" property="state"/>
+        <result column="remarks" property="remarks"/>
+        <result column="user_id" property="userId"/>
+        <result column="user_name" property="userName"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <!-- examinVo映射结果-->
+    <resultMap id="ExaminVo" type="com.xinshang.modular.biz.vo.ExamineVO" extends="BaseResultMap">
+        <result column="typeName" property="typeName"/>
+        <result column="stateName" property="stateName"/>
+        <result column="time" property="time"/>
+    </resultMap>
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, type, project_id, state, remarks, user_id, user_name, create_time
+    </sql>
+
+
+    <select id="selectlistById" resultMap="ExaminVo">
+
+           select t.id,t.type,t.project_id,t.state AS stateName,t.remarks,t.user_id,t.user_name,t.create_time AS time from tb_examine t WHERE project_id = #{itemId}
+    </select>
+    <select id="selectlistByIdDesc" resultMap="ExaminVo">
+
+           select t.id,t.type,t.project_id,t.state AS stateName,t.remarks,t.user_id,t.user_name,t.create_time AS time from tb_examine t  WHERE project_id = #{itemId} order by t.id desc
+    </select>
+</mapper>

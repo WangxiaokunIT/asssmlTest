@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinshang.rest.modular.asmall.dao.JoininMapper">
+
+    <resultMap id="BaseResultMap" type="com.xinshang.rest.modular.asmall.model.Joinin">
+        <id column="join_id" property="joinId" />
+        <result column="custom_id" property="customId" />
+        <result column="project_id" property="projectId" />
+        <result column="investment_amount" property="investmentAmount" />
+        <result column="investment_time" property="investmentTime" />
+        <result column="payment_method" property="paymentMethod" />
+        <result column="status" property="status" />
+        <result column="create_time" property="createTime" />
+        <result column="create_user_id" property="createUserId" />
+        <result column="biz_order_no" property="bizOrderNo" />
+    </resultMap>
+
+    <resultMap id="JoininVO" type="com.xinshang.rest.modular.asmall.vo.JoininVO" extends="BaseResultMap" >
+        <result column="number" property="number" />
+        <result column="name" property="name" />
+        <result column="brief_introduction" property="briefIntroduction" />
+        <result column="recruitment_cycle" property="recruitmentCycle" />
+        <result column="equity_rate" property="equityRate" />
+        <result column="investment_amount" property="investmentAmount" />
+        <result column="state" property="state" />
+        <result column="project_id" property="projectId" />
+        <result column="repayment_method" property="repaymentMethod" />
+        <result column="details" property="details" />
+        <result column="start_record_time" property="startRecordTime" />
+        <result column="end_record_time" property="endRecordTime" />
+        <result column="id" property="id" />
+        <result column="unit" property="unit" />
+    </resultMap>
+
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="contractMap" type="com.xinshang.rest.modular.asmall.model.ContractInfo">
+        <result column="number" property="number" />
+        <result column="name" property="name" />
+        <result column="brief_introduction" property="briefIntroduction" />
+        <result column="start_time" property="startTime" />
+        <result column="end_time" property="endTime" />
+        <result column="supplier_id" property="supplierId" />
+        <result column="min_money" property="minMoney" />
+        <result column="max_money" property="maxMoney" />
+        <result column="repayment_method" property="repaymentMethod" />
+        <result column="recruitment_cycle" property="recruitmentCycle" />
+        <result column="unit" property="unit" />
+        <result column="equity_rate" property="equityRate" />
+        <result column="details" property="details" />
+        <result column="sname" property="sname"/>
+        <result column="company_address" property="company_address"/>
+        <result column="legal_name" property="legal_name"/>
+    </resultMap>
+
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, number, name, brief_introduction, start_time, end_time, supplier_id, min_money, max_money, repayment_method, recruitment_cycle, unit, equity_rate, details, state, create_time, create_user_id
+    </sql>
+
+    <select id="showJoinin"  resultMap="JoininVO">
+     SELECT
+        SUM(investment_amount) AS investment_amount,
+        tj.project_id, tp.details,tp.start_record_time,tp.end_record_time,tp.unit,
+        tp.repayment_method,tp.number,tp.name,
+        tp.brief_introduction,tp.equity_rate,
+        tp.recruitment_cycle ,tp.state,tec.id,tj.join_id
+        FROM tb_joinin tj
+        INNER JOIN tb_project tp ON tj.project_id=tp.id
+        INNER JOIN tb_eqb_contract tec on tec.join_id=tj.join_id AND tec.status=1
+     WHERE tj.custom_id=#{member_id}   GROUP BY project_id ORDER BY tj.join_id desc
+    </select>
+
+    <select id="joinListByProjectId"  parameterType="java.lang.Long" resultMap="contractMap">
+        SELECT tj.*,ts.remark AS sname,ts.company_address,ts.legal_name
+        FROM tb_project   tj
+        JOIN tb_supplier ts ON tj.supplier_id=ts.id
+        where tj.id=#{projectId}
+    </select>
+
+
+</mapper>

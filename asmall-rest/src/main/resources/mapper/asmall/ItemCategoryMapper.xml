@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinshang.rest.modular.asmall.dao.ItemCategoryMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xinshang.rest.modular.asmall.model.ItemCategory">
+        <id column="id" property="id" />
+        <result column="parent_id" property="parentId" />
+        <result column="name" property="name" />
+        <result column="icon" property="icon" />
+        <result column="remark" property="remark" />
+        <result column="sort_num" property="sortNum" />
+        <result column="level" property="level" />
+        <result column="seq" property="seq" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <resultMap id="CategoryMap" type="com.xinshang.rest.modular.asmall.model.Category">
+        <id column="id" property="id" />
+        <result column="parentId" property="parentId" />
+        <result column="name" property="name" />
+        <result column="icon" property="icon" />
+        <result column="sortNum" property="sortNum" />
+        <result column="level" property="level" />
+        <result column="seq" property="seq" />
+        <result column="isOpen" property="isOpen" />
+    </resultMap>
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, parent_id, name, icon, remark, sort_num, level, seq, create_time, update_time
+    </sql>
+
+    <select id="loadTree" resultMap="CategoryMap">
+		select id,parent_id as parentId,name,icon,sort_num as sortNum,level,
+		(
+		CASE
+		WHEN (level= 3) THEN
+		'true'
+		ELSE
+		'false'
+		END
+		) as isOpen from tb_item_category  where parent_id > 0 and  is_enabled =1 order by sort_num asc
+	</select>
+</mapper>

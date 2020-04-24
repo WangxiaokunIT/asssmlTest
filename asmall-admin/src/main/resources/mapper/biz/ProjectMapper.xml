@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinshang.modular.biz.dao.ProjectMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xinshang.modular.biz.model.Project">
+        <id column="id" property="id" />
+        <result column="number" property="number" />
+        <result column="name" property="name" />
+        <result column="brief_introduction" property="briefIntroduction" />
+        <result column="start_time" property="startTime" />
+        <result column="end_time" property="endTime" />
+        <result column="supplier_id" property="supplierId" />
+        <result column="min_money" property="minMoney" />
+        <result column="max_money" property="maxMoney" />
+        <result column="repayment_method" property="repaymentMethod" />
+        <result column="recruitment_cycle" property="recruitmentCycle" />
+        <result column="unit" property="unit" />
+        <result column="equity_rate" property="equityRate" />
+        <result column="details" property="details" />
+        <result column="start_record_time" property="startRecordTime" />
+        <result column="end_record_time" property="endRecordTime" />
+        <result column="state" property="state" />
+        <result column="biz_batch_no" property="bizBatchNo" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="create_user_id" property="createUserId" />
+
+    </resultMap>
+
+    <resultMap id="ProjectVo" type="com.xinshang.modular.biz.vo.ProjectVO" extends="BaseResultMap" >
+        <result column="create_user_name" property="createUserName" />
+        <result column="supplier_name" property="supplierName" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, number, name, brief_introduction, start_time, end_time, supplier_id, min_money, max_money, repayment_method, recruitment_cycle, unit, equity_rate, details, state, create_time, create_user_id
+    </sql>
+
+    <select id="getMaxNumber" resultType="java.lang.Integer">
+        select CONVERT(right(max(IFNULL(number, 0)),3),SIGNED) number
+        from tb_project
+        where left(number,8) = DATE_FORMAT(NOW(), '%Y%m%d')
+    </select>
+
+    <select id="listUp" resultMap="ProjectVo">
+        select p.*,u.name as create_user_name, s.name as supplier_name from (
+        select * from tb_project
+        <where>
+            <if test="param.startTime != null and param.startTime != ''">
+                and DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= #{param.startTime}
+            </if>
+            <if test="param.endTime != null and param.endTime != ''">
+                and DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= #{param.endTime}
+            </if>
+            <if test="param.projectName != null and param.projectName != ''">
+                and name like CONCAT('%', #{param.projectName}, '%')
+            </if>
+            <if test="param.projectNumber != null and param.projectNumber != ''">
+                and number like CONCAT('%', #{param.projectNumber}, '%')
+            </if>
+            <if test="param.state != null and param.state != ''">
+                and state =  #{param.state}
+            </if>
+            <if test="param.state == null and param.states != null">
+                and state in (${param.states})
+            </if>
+            <if test="param.supplierName != null and param.supplierName != ''">
+                and supplier_id in (
+                select id from tb_supplier where name like CONCAT('%', #{param.supplierName}, '%')
+                )
+            </if>
+
+        </where>
+        ) p
+        left join sys_user u
+        on p.create_user_id = u.id
+        left join tb_supplier s
+        on s.id = p.supplier_id
+
+        order by create_time desc
+    </select>
+
+</mapper>

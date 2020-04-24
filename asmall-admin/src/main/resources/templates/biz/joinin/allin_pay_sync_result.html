@@ -1,0 +1,20 @@
+@layout("/common/_container.html"){
+<script src="${ctxPath}/static/modular/biz/joinin/joinin_info.js"></script>
+<script>
+    $(function() {
+        if('${result!}'){
+            if('${result!}'=="success"){
+                Feng.success("${msg}");
+            }else{
+                Feng.error("${msg}");
+            }
+
+            if(window.parent.Joinin){
+                window.parent.Joinin.table.refresh();
+            }
+            parent.layer.close(window.parent.Joinin.layerIndex);
+            JoininInfoDlg.close();
+        }
+    });
+</script>
+@}

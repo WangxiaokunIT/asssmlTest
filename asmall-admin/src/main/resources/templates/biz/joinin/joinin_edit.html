@@ -1,0 +1,35 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal">
+
+            <#input id="joinId" type="hidden" value="${item.joinId}" />
+            <div class="row">
+                <div class="col-sm-6 b-r">
+                    <#input id="joinId" label="" value="${item.joinId}" underline="true"/>
+                    <#input id="custom" label="客户" value="${item.custom}" underline="true"/>
+                    <#input id="recruitmentNformation" label="招募信息" value="${item.recruitmentNformation}" underline="true"/>
+                    <#input id="investmentAmount" label="投资金额" value="${item.investmentAmount}" underline="true"/>
+                    <#input id="investmentTime" label="投资时间" value="${item.investmentTime}" />
+                </div>
+
+                <div class="col-sm-6">
+                    <#input id="paymentMethod" label="支付方式" value="${item.paymentMethod}" underline="true"/>
+                    <#input id="Status" label="状态" value="${item.Status}" underline="true"/>
+                    <#input id="createTime" label="创建时间" value="${item.createTime}" underline="true"/>
+                    <#input id="createUserId" label="创建人ID" value="${item.createUserId}" />
+                </div>
+            </div>
+
+            <div class="row btn-group-m-t">
+                <div class="col-sm-10">
+                    <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="JoininInfoDlg.editSubmit()"/>
+                    <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="JoininInfoDlg.close()"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/biz/joinin/joinin_info.js"></script>
+@}

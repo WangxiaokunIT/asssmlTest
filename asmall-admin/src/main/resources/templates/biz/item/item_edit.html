@@ -1,0 +1,243 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal" id="itemInfoForm">
+            <#input id="id" type="hidden" value="${item.id}" />
+            <#input id="attrInfo" type="hidden" value="${item.attrInfo}"/>
+            <h3 class="content-title-h3">商品信息</h3>
+            <hr class="content-title-hr">
+            <div class="row">
+                <div class="col-sm-4">
+                    <input id="attrInfo" type="hidden">
+                    <#dictSelector code="goods_type" label="类型" name="cid" id="cid" value="${item.cid}"/>
+                    <#input id="title" required="true" label="标题" value="${item.title}"/>
+                    <#input id="stockWarning" required="true" label="库存预警数量" type="number" value="${item.stockWarning}"/>
+                    <#input id="vipDiscount" required="true" label="vip价格" type="number" value="${item.vipDiscount}" />
+                </div>
+                <div class="col-sm-4">
+                    <#input id="parentName" required="true" label="所属分类" readonly="readonly" hidden="categoryId"
+                    clickFun="ItemInfoDlg.showSelectTree();"
+                    selectFlag="true" selectDivId="parentCategorySelect" selectTreeId="parentIdTree" value="${item.categoryName}" hiddenValue="${item.categoryId}" />
+                    <#input id="numAll" label="销量" type="number" value="${item.numAll}" />
+                    <#input id="limitNum" required="true" label="售卖数量限制" type="number" value="${item.limitNum}" />
+                    <#input id="profits" label="利润" type="number"  value="${item.profits}"/>
+                </div>
+                <div class="col-sm-4">
+                    <#input id="itemNumber" label="商品编号" readonly="true"  value="${item.itemNumber}"/>
+                    <#input id="num" required="true" label="库存数量" type="number" value="${item.num}" />
+                    <#input id="price" required="true" label="价格" type="number" value="${item.price}"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <#textarea labelCol="1" valueCol="11" value="${item.sellPoint}" id="sellPoint" label="商品描述" />
+                </div>
+            </div>
+            <h3 class="content-title-h3">属性规格</h3> <span style="color: red">提示:先维护好规格属性在使用</span>
+            <hr class="content-title-hr">
+            <div id="attrContent"></div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <#button btnCss="info" name="追加规格" title="勾选规格属性生成规格商品" icon="fa-plus" clickFun="ItemInfoDlg.addSpecs()"/>
+                    <#button btnCss="info" name="同步商品信息" title="同步主商品的价格、VIP价格、商品图片" icon="fa-exchange" clickFun="ItemInfoDlg.synchronizationItem()"/>
+                    <table class="table table-bordered" id="specs-able">
+                        <thead><tr>
+                            @for(an in attrNames){
+                            <th style="text-align:center" width="100">${an}</th>
+                            @}
+                            <th style="text-align:center" width="100">单价</th>
+                            <th style="text-align:center" width="100">VIP价格</th>
+                            <th style="text-align:center" width="100">商品库存</th>
+                            <th style="text-align:center" width="100">库存预警值</th>
+                            <th style="text-align:center" width="150">SKU编号</th>
+                            <th style="text-align:center" width="200">图片</th>
+                            <!--<th style="text-align:center" width="50">操作</th>-->
+                        </tr>
+                        </thead>
+                        <tbody id="specs-div">
+                        @ var tbIndex = 0;
+                        @for(iss in itemSpecs){
+                        @ tbIndex++;
+                        <tr id="td_${tbIndex}">
+                            @for(sv in iss.specsValuesArr){
+                            <td style="text-align:center"><input readonly value="${strutil.split(sv,':')[1]}" data-attrid="${strutil.split(sv,':')[0]}" data-index="${tbIndex}" class="form-control"></td>
+                            @}
+                            <td style="text-align:center"><input type="number" value="${iss.price}" data-index="${tbIndex}" class="form-control"></td>
+                            <td style="text-align:center"><input type="number" value="${iss.vipDiscount}" data-index="${tbIndex}" class="form-control"></td>
+                            <td style="text-align:center"><input type="number" value="${iss.stock}" data-index="${tbIndex}" class="form-control"></td>
+                            <td style="text-align:center"><input type="number" value="${iss.stockWarning}" data-index="${tbIndex}" class="form-control"></td>
+                            <td style="text-align:center"><input readonly value="${iss.specsNo}" data-index="${tbIndex}" class="form-control"></td>
+                            <td style="padding: 0;">
+                                <img  id="image-show-${tbIndex}" style="display: inline-block;margin-right: 5px;" width="45px" height="45px" src="${iss.image}"><input type='hidden' value="${iss.image}" data-index="${tbIndex}" id="image-path-${tbIndex}"><input style="display: inline-block;width: 170px;" type="file" name="file" accept="png,jpeg,jpg" id="upload-btn-${tbIndex}" onchange="ItemInfoDlg.uploadFileToServer(${tbIndex});">
+                            </td>
+                            <!--<td><button type="button" class="btn btn-info" onClick="ItemInfoDlg.deleteSpecs(${tbIndex})"><i class="fa fa-close"></i></button></td>-->
+                        </tr>
+                        @}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <h3 class="content-title-h3">运费模版</h3>
+            <hr class="content-title-hr">
+            <div class="col-sm-12" id="areaDiv">
+                <div id="new-value-div-4" class="input-group" style="display: inline-flex;margin-right: 10px;">
+                    <input type="text" id="fee" style="width: 100px;" class="form-control">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-info" title="添加属性" onclick="ItemInfoDlg.addPostage()"><i class="fa fa-plus"></i></button></span>
+                </div>
+            </div>
+            <div class="form-horizontal" id="areaSelect" >
+                <div class="row" style="margin-bottom: 10px;">
+                @for(an in postages){
+                    @if(an.area=='默认运费'){
+                    <div class="col-xs-8">
+                        <input type="text" style="color:#0d8ddb" class='form-control' readonly value='默认运费' >
+                    </div>
+                    @}else{
+                    <div class="col-xs-8">
+                        <div class="input-group">
+                            <span class="input-group-addon">地区</span>
+                            <input type="text" class='form-control' readonly value='${an.area}' >
+                        </div>
+                    </div>
+                    @}
+
+                    <div class="col-xs-4">
+                        <div class="input-group">
+                            <input type="number" class='form-control' value='${an.freight}'>
+                            <span class="input-group-addon">元</span>
+                        </div>
+                    </div>
+                    @}
+                </div>
+            </div>
+
+            <h3 class="content-title-h3">商品详情</h3>
+            <hr class="content-title-hr">
+            <div class="row">
+                <div class="col-sm-4">
+                    <#uploadFile id="image" required="true" label="商品图" width="200px" maxsize="10" height="200px" placeholder="推荐分辨率:200*200" type="img" value="${item.image}"/>
+                </div>
+                <div class="col-sm-4">
+                    <#uploadFile id="infoVideoImage" label="视频封面" width="200px" maxsize="10" placeholder="推荐分辨率:800*800" height="200px" type="img" value="${item.infoVideoImage}"/>
+                </div>
+                <div class="col-sm-4">
+                    <#uploadFile id="detailVideo" label="视频" width="300px" maxsize="10" height="200px" type="video" value="${item.detailVideo}"/>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="row">
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">
+                        &nbsp; &nbsp;&nbsp;轮播图<span style="color: red">*</span>
+                    </label>
+                    <div class="col-sm-7">
+                        <div class="item-banner">
+                            <ul></ul>
+                        </div>
+                        <div id="detailBannerZyUpload" class="zyupload"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <h3 class="font-bold"><b>商品详情</b></h3>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <textarea name="detail" id="detail"/></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row btn-group-m-t">
+        <div class="col-sm-10">
+            <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="ItemInfoDlg.editSubmit()"/>
+            <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="ItemInfoDlg.close()"/>
+        </div>
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/biz/item/item_info.js"></script>
+<script src="${ctxPath}/static/js/plugins/ckeditor4/ckeditor.js"></script>
+<script type="text/javascript">
+    /**
+     * 初始化 富文本
+     */
+    $(function () {
+        function initCK(fun) {
+            CKEDITOR.replace('detail', {
+                filebrowserImageUploadUrl: "/editor/upload?",
+                removePlugins: 'elementspath,resize',
+                codeSnippet_theme: 'zenburn',
+                height: '500',
+                toolbar:
+                    [
+                        //加粗     斜体，     下划线      穿过线      下标字        上标字
+                        ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript'],
+                        // 数字列表          实体列表            减小缩进    增大缩进
+                        ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent'],
+                        //左对 齐             居中对齐          右对齐          两端对齐
+                        ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+                        //超链接  取消超链接 锚点
+                        ['Link', 'Unlink', 'Anchor'],
+                        //图片    flash    表格       水平线            表情       特殊字符        分页符
+                        ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak'],
+                        '/',
+                        // 样式       格式      字体    字体大小
+                        ['Styles', 'Format', 'Font', 'FontSize'],
+                        //文本颜色     背景颜色
+                        ['TextColor', 'BGColor'],
+                        //全屏           显示区块
+                        ['Maximize', 'ShowBlocks', '-']
+                    ]
+            });
+
+            if (typeof fun === 'function') {
+                fun();
+            }
+        }
+
+        initCK(function () {
+            CKEDITOR.instances.detail.setData(`${item.detail}`);
+        });
+    //初始化轮播图
+        let itemBanner = "${item.detailBanner}";
+        if(itemBanner.length>0){
+            let itemBanners = itemBanner.split(",");
+            for (let i = 0; i <itemBanners.length ; i++) {
+                if(!itemBanners[i]) continue;
+                let liHtml = "<li id=\"item-banner-li-"+ItemInfoDlg.itemBannerIndex+"\"><img src=\""+itemBanners[i]+"\" >" +
+                    "<input name=\"detailBanner\" type=\"hidden\" value=\""+itemBanners[i]+"\"><div>"+
+                    "<button type=\"button\" class=\"btn btn-danger\"  onclick=\"ItemInfoDlg.deleteItemBanner("+ItemInfoDlg.itemBannerIndex+")\" >\n" +
+                    "<i class=\"fa fa-close\"></i>&nbsp;删除\n" +
+                    "</button></div>" +
+                    "</li>";
+                ItemInfoDlg.itemBannerIndex++;
+                $(".item-banner ul").append(liHtml);
+            }
+            ItemInfoDlg.renderItemBanner();
+        }
+
+        tbIndex = ${tbIndex+1};
+        //初始化规格属性
+        ItemInfoDlg.showSpecsAttribute(${item.categoryId});
+        //初始化运费
+        var selectedProvinces = "";
+        @for(an in postages){
+            selectedProvinces+=",${an.area}";
+        @}
+        let provinceCheck ="";
+        for (let i = 0; i < ItemInfoDlg.province.length; i++) {
+            if(selectedProvinces.indexOf(ItemInfoDlg.province[i]) !=-1){
+                provinceCheck+="<label class=\"checkbox-inline i-checks\" title=\"已添加\" style=\"color: green;cursor:not-allowed\"><div class=\"icheckbox_square-green\" style=\"position: relative;\"><input type=\"checkbox\" value=\""+ItemInfoDlg.province[i]+"\" disabled=\"disabled\" style=\"position: absolute; opacity: 0;\"><ins class=\"iCheck-helper\" style=\"position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;\"></ins></div>"+ItemInfoDlg.province[i]+"</label>";
+            }else{
+                provinceCheck+="<label class=\"checkbox-inline i-checks\"><div class=\"icheckbox_square-green\" style=\"position: relative;\"><input type=\"checkbox\" value=\""+ItemInfoDlg.province[i]+"\" style=\"position: absolute; opacity: 0;\"><ins class=\"iCheck-helper\" style=\"position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;\"></ins></div>"+ItemInfoDlg.province[i]+"</label>";
+            }
+
+        }
+        $("#areaDiv").prepend(provinceCheck);
+
+    });
+
+</script>
+@}

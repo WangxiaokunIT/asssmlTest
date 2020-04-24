@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinshang.modular.system.dao.JobMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xinshang.modular.system.model.Job">
+        <result column="trigger_name" property="triggerName" />
+        <result column="trigger_group" property="triggerGroup" />
+        <result column="job_name" property="jobName" />
+        <result column="job_group" property="jobGroup" />
+        <result column="job_class_name" property="jobClassName" />
+        <result column="description" property="description" />
+        <result column="prev_fire_time" property="prevFireTime" />
+        <result column="next_fire_time" property="nextFireTime" />
+        <result column="cron_expression" property="cronExpression" />
+        <result column="trigger_state" property="triggerState" />
+    </resultMap>
+
+   <select id="getJobByJobClassNameAndJobGroup" parameterType="java.lang.String"  resultMap="BaseResultMap">
+      select
+            t.trigger_name,
+            t.trigger_group,
+            jd.job_name,
+            jd.job_group,
+            jd.job_class_name,
+            jd.description,
+            from_unixtime( t.prev_fire_time / 1000, '%Y-%m-%d %T' ) as prev_fire_time,
+            from_unixtime( t.next_fire_time / 1000, '%Y-%m-%d %T' ) as next_fire_time,
+            ct.cron_expression,
+            t.trigger_state
+        from
+            qrtz_job_details jd
+            join qrtz_triggers t
+            join qrtz_cron_triggers ct on jd.job_name = t.job_name
+            and t.trigger_name = ct.trigger_name
+            and t.trigger_group = ct.trigger_group
+            where jd.job_class_name=#{jobClassName} and jd.job_group=#{jobGroup}
+    </select>
+
+    <select id="listByCondition" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+            t.trigger_name,
+            t.trigger_group,
+            jd.job_name,
+            jd.job_group,
+            jd.job_class_name,
+            jd.description,
+            from_unixtime( t.prev_fire_time / 1000, '%Y-%m-%d %T' ) as prev_fire_time,
+            from_unixtime( t.next_fire_time / 1000, '%Y-%m-%d %T' ) as next_fire_time,
+            ct.cron_expression,
+            t.trigger_state
+        from
+            qrtz_job_details jd
+            join qrtz_triggers t
+            join qrtz_cron_triggers ct on jd.job_name = t.job_name
+            and t.trigger_name = ct.trigger_name
+            and t.trigger_group = ct.trigger_group
+        <where>
+            <if test="condition != null and condition != ''">
+                and t.trigger_name like CONCAT('%',#{condition},'%') or jd.job_name like CONCAT('%',#{condition},'%')
+            </if>
+        </where>
+    </select>
+</mapper>

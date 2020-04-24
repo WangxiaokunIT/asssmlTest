@@ -1,0 +1,63 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal">
+
+            <div class="row">
+                <div class="col-sm-6 b-r">
+                    <#input id="orderId" label="订单id" underline="true"/>
+                    <#input id="spellId" label="拼团id" underline="true"/>
+                    <#input id="postFee" label="邮费" underline="true"/>
+                    <#input id="status" label="状态 0全部 1待付款 2待收货 3已完成 4已取消 5已结束 6退货中 7退货完成 8待发货" underline="true"/>
+                    <#input id="createTime" label="订单创建时间" underline="true"/>
+                    <#input id="updateTime" label="订单更新时间" underline="true"/>
+                    <#input id="consignTime" label="发货时间" underline="true"/>
+                    <#input id="endTime" label="交易完成时间" underline="true"/>
+                    <#input id="closeTime" label="交易关闭时间" underline="true"/>
+                    <#input id="shippingName" label="物流名称" underline="true"/>
+                    <#input id="shippingCode" label="物流单号" underline="true"/>
+                    <#input id="userId" label="用户id" underline="true"/>
+                    <#input id="buyerMessage" label="买家留言" underline="true"/>
+                    <#input id="buyerNick" label="买家昵称" underline="true"/>
+                    <#input id="buyerComment" label="买家是否已经评价" underline="true"/>
+                    <#input id="payAmount" label="订单金额" underline="true"/>
+                    <#input id="profitsGoods" label="订单利润" underline="true"/>
+                    <#input id="profitsActual" label="订单实际利润" underline="true"/>
+                    <#input id="customType" label="[0: 普通购买,1:参加拼团,2:会员服务,3:兑换商品]"/>
+                </div>
+
+                <div class="col-sm-6">
+                    <#input id="areaId" label="所属区域id" underline="true"/>
+                    <#input id="areaName" label="所属区域name" underline="true"/>
+                    <#input id="referees" label="推荐人昵称" underline="true"/>
+                    <#input id="refereesPhone" label="推荐⼈⼿机号" underline="true"/>
+                    <#input id="soybean" label="推荐人知⾖收益" underline="true"/>
+                    <#input id="spellbean" label="完成拼团知豆收益" underline="true"/>
+                    <#input id="agentmoneyCity" label="市代理收益" underline="true"/>
+                    <#input id="agentmoneyArea" label="区代理收益" underline="true"/>
+                    <#input id="isExchange" label="(废弃)是否为兑换订单，0非兑换订单 1兑换订单" underline="true"/>
+                    <#input id="payment" label="支付金额" underline="true"/>
+                    <#input id="paymentTime" label="支付时间" underline="true"/>
+                    <#input id="payNum" label="支付编号" underline="true"/>
+                    <#input id="paymentType" label="支付类型 1支付宝 2微信" underline="true"/>
+                    <#input id="refundNum" label="退款编号[微信退款需要，支付宝退款无需生成退款编号]" underline="true"/>
+                    <#input id="spellMember" label="拼团发起人" underline="true"/>
+                    <#input id="cityAgent" label="市代理" underline="true"/>
+                    <#input id="areaAgent" label="区代理" underline="true"/>
+                    <#input id="isFree" label="是否免单" underline="true"/>
+                    <#input id="isHidden" label="app是否显示[0不显示，1显示]" underline="true"/>
+                </div>
+            </div>
+
+            <div class="row btn-group-m-t">
+                <div class="col-sm-10">
+                    <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="OrderInfoDlg.addSubmit()"/>
+                    <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="OrderInfoDlg.close()"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/biz/order/order_info.js"></script>
+@}

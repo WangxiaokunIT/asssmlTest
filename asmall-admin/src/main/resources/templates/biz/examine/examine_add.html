@@ -1,0 +1,32 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal">
+
+            <div class="row">
+                <div class="col-sm-6 b-r">
+                    <#input id="type" label="审核类型 1招募发布" underline="true"/>
+                    <#input id="projectId" label="审批的项目id" underline="true"/>
+                    <#input id="state" label="审核状态 1 申请 2审核通过 3审核不通过 4取消"/>
+                </div>
+
+                <div class="col-sm-6">
+                    <#input id="remarks" label="备注" underline="true"/>
+                    <#input id="userId" label="申请人id/审核人id" underline="true"/>
+                    <#input id="userName" label="申请人/审核人姓名" underline="true"/>
+                    <#input id="createTime" label="创建时间" underline="true"/>
+                </div>
+            </div>
+
+            <div class="row btn-group-m-t">
+                <div class="col-sm-10">
+                    <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="ExamineInfoDlg.addSubmit()"/>
+                    <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="ExamineInfoDlg.close()"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/biz/examine/examine_info.js"></script>
+@}

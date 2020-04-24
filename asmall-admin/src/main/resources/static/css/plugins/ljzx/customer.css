@@ -1,0 +1,68 @@
+[v-cloak] {
+    display: none;
+}
+
+.timeline-item .content:hover {
+    background: initial;
+}
+
+
+.timeline-item-0 {
+    border: 1px solid #e7eaec;
+}
+
+.content-0 {
+    border-top: 0px !important;
+    padding: 15px 27px 0px 15px;
+}
+
+.customer-right {
+    padding: 15px 15px 15px 35px;
+}
+
+.row-0 {
+    margin-bottom: 15px;
+}
+
+.row-1:hover {
+    margin-right: -14px;
+    margin-left: -14px;
+}
+
+.timeline-item-0:hover {
+    background: #fdfdfd;
+}
+
+.row-2 {
+    float: right;
+    margin-right: 19px;
+    margin-top: 10px;
+}
+
+.p-0 {
+    float: right;
+}
+
+.table-my-0 > thead > tr > th, .table-my-0 > thead > tr > td {
+    text-align: center
+}
+
+.table-my-0 > tbody > tr > td {
+    text-align: center
+}
+
+.project-h {
+    min-height: 242px !important;
+}
+
+.project-h a {
+    color: #205fd2 !important;
+}
+
+.file-name-my {
+    width:260px;
+    word-break:keep-all;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}

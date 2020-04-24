@@ -1,0 +1,43 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal">
+
+            <input type="hidden" id="id" value="${item.id}">
+
+            <div class="row">
+                <div class="col-sm-6 b-r">
+                            <#input id="id" label="id" value="${item.id}" underline="true"/>
+                            <#input id="name" label="文件名" value="${item.name}" underline="true"/>
+                            <#input id="categoryId" label="类别id" value="${item.categoryId}" underline="true"/>
+                            <#input id="originalName" label="原始名称" value="${item.originalName}" underline="true"/>
+                            <#input id="type" label="文件类型" value="${item.type}" underline="true"/>
+                            <#input id="viewAmt" label="查看次数" value="${item.viewAmt}" underline="true"/>
+                            <#input id="downloadAmt" label="下载次数" value="${item.downloadAmt}" underline="true"/>
+                            <#input id="size" label="文件大小" value="${item.size}" />
+                </div>
+
+                <div class="col-sm-6">
+                            <#input id="state" label="状态(0无效,1有效)" value="${item.state}" underline="true"/>
+                            <#input id="md5Val" label="md5值" value="${item.md5Val}" underline="true"/>
+                            <#input id="savePath" label="保存路径" value="${item.savePath}" underline="true"/>
+                            <#input id="remark" label="描述" value="${item.remark}" underline="true"/>
+                            <#input id="gmtCreate" label="创建时间" value="${item.gmtCreate}" underline="true"/>
+                            <#input id="gmtModified" label="更新时间（审批时间）" value="${item.gmtModified}" underline="true"/>
+                            <#input id="creator" label="创建人" value="${item.creator}" underline="true"/>
+                            <#input id="modifier" label="修改人" value="${item.modifier}" />
+                </div>
+            </div>
+
+            <div class="row btn-group-m-t">
+                <div class="col-sm-10">
+                    <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="FileInfoDlg.editSubmit()"/>
+                    <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="FileInfoDlg.close()"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/system/file/file_info.js"></script>
+@}

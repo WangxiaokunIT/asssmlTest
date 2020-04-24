@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinshang.modular.system.dao.SystemMapper">
+
+    <resultMap id="BaseResultMap" type="com.xinshang.modular.system.transfer.UserPosition">
+        <id column="id" property="id" />
+        <result column="account" property="account" />
+        <result column="name" property="name" />
+        <result column="full_name" property="fullName" />
+        <result column="birthday" property="birthday" />
+        <result column="sex" property="sex" />
+        <result column="email" property="email" />
+        <result column="phone" property="phone" />
+        <result column="role_id" property="roleId" />
+        <result column="dept_id" property="deptId" />
+        <result column="gmt_modified" property="gmtModified" />
+        <result column="position_code" property="positionCode" />
+        <result column="position_name" property="positionName" />
+    </resultMap>
+
+
+    <!-- 添加-->
+    <update id="addSeqAndLevelByIdAndParentId" >
+        update ${tableName}
+        set level=(select t1.level from (select (case count(id) when 0 then 2 else level+1 end) as level from ${tableName} where id=#{parentId}) t1),
+        seq=(select t2.seq from (select (case count(id) when 0 then 0 else concat(ifnull(seq,'0.'),#{id},'.') end ) as seq from ${tableName} where id=#{parentId}) t2)
+        where id=#{id}
+    </update>
+
+    <!--更新变更的节点及其一下节点 -->
+    <update id="updateSeqAndLevelById" >
+       	update ${tableName} t1,${tableName} t2
+        set t1.level=ifnull(t2.level,1)+1,
+        t1.seq=concat(ifnull(t2.seq,'0.'),t1.id,'.')
+        where t1.parent_id=t2.id and t1.id in(select * from (select id from ${tableName} where seq like (select concat(seq,'%') from ${tableName} where id=#{id})  order by ifnull(level,99999),id) t)
+
+    </update>
+
+    <!-- 更新全部表的seq和level [sys_dept,sys_file_category,sys_menu,sys_position,sys_role] -->
+    <update id="updateAllSeqAndLevel" >
+        <!--update ${tableName} set seq=concat('0.',id,'.'),level=2 where parent_id = 0 -->
+
+        update ${tableName} t1,${tableName} t2
+        set t1.level=ifnull(t2.level,1)+1,
+        t1.seq=concat(ifnull(t2.seq,'0.'),t1.id,'.')
+         where t1.parent_id=t2.id and t1.id in(select * from (select id from ${tableName} order by ifnull(level,99999),id) t)
+    </update>
+
+    <!--根据职位id查询该职位的人员及子职位下面的人员 -->
+    <select id="getPositionUserByPositionId" resultMap="BaseResultMap">
+        select u.*,pc.code,pc.name from sys_user u
+        inner join sys_position_user pu on u.id=pu.user_id
+        inner join sys_position p on pu.position_id=p.id
+            and seq LIKE (SELECT concat( seq, '%' ) FROM sys_position WHERE id =#{positionId})
+        left join (select * from sys_dict where parent_id = (select id from sys_dict where code ='sys_position')) pc on pc.code=p.code
+    </select>
+
+    <!--根据用户id查询该用户所在职位的人员及子职位下面的人员 -->
+    <select id="getPositionUserByUserId" resultMap="BaseResultMap">
+     select u.*,pc.code,pc.name from sys_user u
+     inner join sys_position_user pu on u.id=pu.user_id
+     inner join sys_position p on pu.position_id=p.id
+        and seq LIKE (SELECT concat( seq, '%' ) FROM sys_position WHERE id IN ( SELECT id FROM sys_position WHERE id IN ( SELECT position_id FROM sys_position_user WHERE user_id = #{userId} ) ))
+     left join (select * from sys_dict where parent_id = (select id from sys_dict where code ='sys_position')) pc on pc.code=p.code
+    </select>
+
+    <!-- 判断用户职位是否该职位-->
+    <select id="judgeUserHasPositionByUserIdAndPositionCode" resultMap="BaseResultMap">
+      select count(id) from sys_position where id=(select position_id from sys_position_user where user_id=#{userId}) and code=#{positionCode}
+    </select>
+
+    <!--  根据职位编码查询与该职位相同的人-->
+    <select id="getSamePositionUserByPositionCode" resultMap="BaseResultMap">
+      select * from sys_user where id in(select user_id from sys_position_user where position_id in(select id from sys_position where code=#{positionCode}))
+    </select>
+
+    <!--  根据职位编码查询与该职位相同的人-->
+    <select id="getSamePositionUserByPositionCodes" resultMap="BaseResultMap">
+      select * from sys_user where id in(
+      select user_id from sys_position_user
+      where position_id in(
+      select id from sys_position
+       <where>
+           <if test="positionCodes != null and positionCodes != ''">
+               and code in (${positionCodes})
+           </if>
+       </where>
+      ))
+    </select>
+
+    <!--  根据表名和字段名查询-->
+    <select id="getByTableAndField" parameterType="com.xinshang.modular.system.model.GeneralTable" resultType="com.xinshang.modular.system.model.GeneralTable">
+        select distinct ${targetColumn} as targetColumn,${relationColumn} as relationColumn from ${tableName}
+        <where>
+            <if test="whereColumn != null and whereColumn != '' and whereValue != null and whereValue != ''">
+                ${whereColumn} = #{whereValue}
+            </if>
+        </where>
+    </select>
+
+</mapper>

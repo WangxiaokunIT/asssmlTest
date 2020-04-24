@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinshang.modular.biz.dao.IntegralLogMoneysMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xinshang.modular.biz.model.IntegralLogMoneys">
+        <id column="id" property="id" />
+        <result column="client_id" property="clientId" />
+        <result column="user_name" property="userName" />
+        <result column="integral" property="integral" />
+        <result column="data_src" property="dataSrc" />
+        <result column="money_type" property="moneyType" />
+        <result column="delete_flg" property="deleteFlg" />
+        <result column="create_time" property="createTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, client_id, user_name, integral, data_src, money_type, delete_flg, create_time, remark
+    </sql>
+
+</mapper>

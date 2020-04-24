@@ -1,0 +1,51 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal">
+            <div class="row">
+                <div class="col-sm-12">
+                    <#dictSelector code="supplier_type" type="radio"  label="类型" name="type" />
+                    <#input labelId="nameLabel" id="name" label="姓名" />
+                    <#input labelId="phoneLabel" id="phone" type="number" label="手机号" />
+                    <#dictSelector id="identityType" code="identity_type"  label="证件类型"  />
+                    <#input id="identityNo" label="证件号码" />
+                    <#input id="legalName" label="法人代表" placeholder="法人代表姓名"/>
+                    <#input id="remark" label="所属企业" placeholder="所属企业名称" />
+                    <#input id="companyAddress" label="企业地址" placeholder="企业地址" />
+                    <#input id="loanLimit" required="required" value="0"  min="0" step="1" max="99999999" type="number" label="贷款总额度" addonValue="元"/>
+                    <span id="bankInfo">
+                        <#input id="accountNo" label="法人对公账户" />
+                        <#input id="parentBankMame" label="开户银行名称" />
+                        <#input id="bankName" label="开户行支行名称" />
+                        <#input id="unionbank" label="支付行号" />
+                    </span>
+                    <span id="authTypeDiv">
+                        <#dictSelector code="auth_type" type="radio"  label="认证类型" name="authType"/>
+                        <span id="oneCertificatesDiv">
+                            <#input id="uniCredit" label="统一社会信用"/>
+                        </span>
+                        <span id="threeCertificatesDiv">
+                            <#input id="businessLicense" label="营业执照号"/>
+                            <#input id="organizationCode" label="组织机构代码"/>
+                            <#input id="taxRegister" label="税务登记证"/>
+                        </span>
+                    </span>
+                </div>
+            </div>
+
+            <div class="row btn-group-m-t">
+                <div class="col-sm-10">
+                    <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="SupplierInfoDlg.addSubmit()"/>
+                    <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="SupplierInfoDlg.close()"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/biz/supplier/supplier_info.js"></script>
+<script>
+    $(function() {
+        SupplierInfoDlg.addOrEditHandler(0,1);
+    });
+</script>
+@}

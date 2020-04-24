@@ -1,0 +1,145 @@
+@layout("/common/_container.html"){
+
+
+<link href="${ctxPath}/static/css/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet"/>
+
+<link href="${ctxPath}/static/css/vueCss/select.css" rel="stylesheet">
+<link href="${ctxPath}/static/css/biz/project.css" rel="stylesheet">
+@include("/common/_container_vue.html"){}
+<style>
+    .ibox-tools-my-02 {
+        color: #9c3328;
+        padding-right: 27px;
+        font-weight: inherit;
+        font-size: 15px;
+    }
+</style>
+
+<div class="ibox float-e-margins" id="project_info_vue" v-cloak>
+    <div class="ibox-content">
+        <div class="ibox-content" id="defaultForm">
+
+            <!-- 供应商信息选择 start -->
+            <div class="row">
+                <h3 class="font-bold" ><b>供应商信息</b></h3>
+            </div>
+           <div class="row">
+               <div class="col-sm-12">
+                   <my-a-auto-complete
+                           v-bind:dataSource="dataSource"
+                           v-bind:title="'abc'"
+                           v-on:select="onSelect"
+                           v-on:search="handleSearch"
+                   ></my-a-auto-complete>
+               </div>
+            </div>
+            <div class="row">
+               <div class="col-sm-12">
+                   <h3><strong>{{ supplier.name }}</strong></h3>
+                   <address v-if="supplier.id != null && supplier.id != ''">
+                       法人：<strong>{{supplier.legalName || '无'}}</strong> &nbsp;&nbsp;
+                       手机号：<strong>{{supplier.phone || '无'}}</strong> &nbsp;&nbsp;
+                       证件号： <strong>{{supplier.identityNo || '无'}}</strong> &nbsp;&nbsp;
+<!--                       企业地址：<strong>{{supplier.companyAddress || '无' }}</strong>-->
+                   </address>
+                   <address v-if="supplier.id == null || supplier.id == ''" style="color:red;">
+                       &nbsp;&nbsp;&nbsp;&nbsp;还未选择供应商
+                   </address>
+                   <hr>
+               </div>
+           </div>
+            <!-- 供应商信息选择 end -->
+
+            <!-- 代理信息填写 start -->
+            <div class="row">
+                <div class="ibox-tools ibox-tools-my-01">
+                    代理编号：<span class="project-number">{{obj.number}}</span>
+                </div>
+                <h3 class="font-bold" ><b>代理信息</b></h3>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <name-con name="代理名称" v-model="obj.name"></name-con>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <textarea class="form-control" rows="3" placeholder="请填写代理简介..." v-model="obj.briefIntroduction"></textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4" >
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button data-toggle="dropdown" class="btn btn-white dropdown-toggle"
+                                    type="button">招募开始时间
+                            </button>
+                        </div>
+                        <input type="text" class="form-control layer-date" id="startTime" id="startTime" readonly="readonly" />
+                    </div>
+                </div>
+                <div class="col-sm-4" >
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button data-toggle="dropdown" class="btn btn-white dropdown-toggle"
+                                    type="button">招募结束时间
+                            </button>
+                        </div>
+                        <input type="text" class="form-control layer-date" id="endTime" name="endTime" readonly="readonly" />
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <name-con name="代理周期" v-model="obj.recruitmentCycle" placeholder="月数"></name-con>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <name-con name="最低代理保证金" v-model="obj.minMoney"></name-con>
+                </div>
+                <div class="col-sm-3">
+                    <name-con name="最高代理保证金" v-model="obj.maxMoney" v-bind:placeholder="'最高 '+quota+' 元'"></name-con>
+                </div>
+                <div class="col-sm-3">
+                    <select-con  name="归还方式" v-model="obj.repaymentMethod" v-bind:options="select_way_of_restitution"></select-con>
+                </div>
+                <div class="col-sm-2">
+                    <name-con name="权益值" v-model="obj.equityRate" ></name-con>
+                </div>
+            </div>
+            <!-- 代理信息填写 end -->
+
+            <!-- 代理积分奖励介绍，代理权益详情（支持附件） start -->
+            <div class="row">
+                <div class="ibox-tools ibox-tools-my-01 ibox-tools-my-02">
+                    支持选中多个图片拖拽入编辑框
+                </div>
+                <h3 class="font-bold" ><b>代理积分奖励介绍  /  代理权益详情</b></h3>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <textarea name="description" id="description"/></textarea>
+                </div>
+            </div>
+            <!-- 代理积分奖励介绍，代理权益详情（支持附件） end -->
+        </div>
+    </div>
+    <!-- 操作按钮 -->
+    <div class="modal-footer modal-footer-my">
+        <a-button v-on:click="closeWindow">关闭</a-button>
+        <a-button type="primary" v-on:click="saveProject" >申请</a-button>
+<!--        <button type="button" class="btn btn-white btn-close" data-dismiss="modal" v-on:click="closeWindow">关闭</button>-->
+<!--        <button type="button" class="btn btn-primary" v-on:click="saveProject" >申请</button>-->
+    </div>
+</div>
+
+<!-- vue包装组件 -->
+<script src="${ctxPath}/static/js/vueCommon/AAutoComplete.js"></script>
+
+<script src="${ctxPath}/static/js/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+<script src="${ctxPath}/static/js/plugins/suggest/bootstrap-suggest.min.js"></script>
+
+<script src="${ctxPath}/static/js/plugins/ckeditor4/ckeditor.js"></script>
+<script src="${ctxPath}/static/modular/biz/project/project_info_ant.js"></script>
+
+
+@}

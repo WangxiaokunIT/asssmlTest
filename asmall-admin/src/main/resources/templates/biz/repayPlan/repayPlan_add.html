@@ -1,0 +1,41 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal">
+
+            <div class="row">
+                <div class="col-sm-6 b-r">
+                    <#input id="projectId" label="招募ID" underline="true"/>
+                    <#input id="joininId" label="加盟ID" underline="true"/>
+                    <#input id="memberId" label="客户ID" underline="true"/>
+                    <#input id="lendAmount" label="投资金额" underline="true"/>
+                    <#input id="paidMort" label="应还本息" underline="true"/>
+                    <#input id="haveMort" label="实还本息" underline="true"/>
+                    <#input id="paidTim" label="应还本金" underline="true"/>
+                    <#input id="haveTim" label="实还本金"/>
+                </div>
+
+                <div class="col-sm-6">
+                    <#input id="paidInter" label="应还利息" underline="true"/>
+                    <#input id="haveInter" label="实还利息" underline="true"/>
+                    <#input id="months" label="还款期数" underline="true"/>
+                    <#input id="statecode" label="还款状态" underline="true"/>
+                    <#input id="paidTimDate" label="应还本金日期" underline="true"/>
+                    <#input id="haveTimDate" label="实还本金日期" underline="true"/>
+                    <#input id="paidInterDate" label="应还利息日期" underline="true"/>
+                    <#input id="haveInterDate" label="实还利息日期" underline="true"/>
+                </div>
+            </div>
+
+            <div class="row btn-group-m-t">
+                <div class="col-sm-10">
+                    <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="RepayPlanInfoDlg.addSubmit()"/>
+                    <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="RepayPlanInfoDlg.close()"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/biz/repayPlan/repayPlan_info.js"></script>
+@}

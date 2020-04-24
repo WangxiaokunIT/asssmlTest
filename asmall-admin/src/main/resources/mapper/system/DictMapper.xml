@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinshang.modular.system.dao.DictMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xinshang.modular.system.model.Dict">
+        <id column="id" property="id"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="sort_num" property="sortNum"/>
+        <result column="name" property="name"/>
+        <result column="code" property="code"/>
+        <result column="remark" property="remark"/>
+        <result column="creator" property="creator" />
+        <result column="gmt_create" property="gmtCreate" />
+        <result column="modifier" property="modifier" />
+        <result column="gmt_modified" property="gmtModified" />
+    </resultMap>
+
+    <resultMap id="dictVo" type="com.xinshang.modular.system.vo.DictVo">
+        <result column="id" property="id"/>
+        <result column="sort_num" property="num"/>
+        <result column="parent_id" property="pId"/>
+        <result column="name" property="name"/>
+        <result column="code" property="code"/>
+        <result column="remark" property="remark"/>
+        <result column="pid_code" property="pidCode"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+		id,parent_id,code,name,sort_num,remark,creator,gmt_create,modifier,gmt_modified
+	</sql>
+
+
+    <select id="selectByParentCode" resultType="com.xinshang.modular.system.model.Dict">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_dict
+        where parent_id in(select id  from sys_dict where code = #{code}) order by sort_num asc
+    </select>
+
+    <select id="list" resultType="map">
+
+        select p.*,group_concat(t.name) as detail from (
+        select * from sys_dict  where parent_id = 0
+        <if test="condition != null and condition != ''">
+            AND name like CONCAT('%',#{condition},'%')
+        </if>
+        order by sort_num asc) p
+        left join (select concat(CODE,':',name) as name ,parent_id from sys_dict order by sort_num asc) t on p.id=t.parent_id
+        group by p.id
+        order by p.id ASC
+    </select>
+
+    <select id="listAllDictCodeAndName" resultType="java.util.Map">
+        select p.code as pcode, c.code,c.name from sys_dict p
+        left join sys_dict c on p.id=c.parent_id
+        where c.code is not null
+    </select>
+
+    <select id="selectByNames" resultMap="dictVo">
+        SELECT
+        a.id, a.sort_num, a.parent_id, a.name, a.code, a.remark
+        <if test="codes != null and codes != ''">
+            ,b.code AS pid_code
+        </if>
+        FROM sys_dict AS a
+        <if test="codes != null and codes != ''">
+            RIGHT JOIN sys_dict AS b
+            ON a.parent_id = b.id
+        </if>
+        <where>
+            <if test="codes != null and codes != ''">
+                AND b.code IN (${codes})
+            </if>
+        </where>
+        ORDER BY sort_num
+    </select>
+
+</mapper>

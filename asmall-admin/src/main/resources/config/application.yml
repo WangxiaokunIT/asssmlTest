@@ -1,0 +1,69 @@
+#项目端口号
+server:
+  port: 50000
+asmall:
+  xss-filter-urls:
+    - /notice/update
+    - /notice/add
+    - /msgTemplate/add
+    - /msgTemplate/update
+    - /project/add
+    - /project/update
+    - /item/add
+    - /item/update
+    - /appSet/update
+#spring设置
+spring:
+  profiles:
+    active: dev   #激活环境设置（dev|prod|test）
+  mvc:
+    static-path-pattern: /static/**   #静态资源路径
+    view:
+      prefix: /templates     #视图前路径
+  servlet:
+    multipart:
+      max-request-size: 100MB
+      max-file-size: 100MB
+  main:
+    allow-bean-definition-overriding: true #当遇到同样名字的时候，是否允许覆盖注册
+  quartz:
+    #相关属性配置
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceName: clusteredScheduler
+            instanceId: AUTO
+          jobStore:
+            class: org.quartz.impl.jdbcjobstore.JobStoreTX
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+            tablePrefix: QRTZ_
+            isClustered: true
+            clusterCheckinInterval: 10000
+            useProperties: false
+          threadPool:
+            class: org.quartz.simpl.SimpleThreadPool
+            threadCount: 10
+            threadPriority: 5
+            threadsInheritContextClassLoaderOfInitializingThread: true
+    #数据库方式
+    job-store-type: jdbc
+#mybatis-plus设置
+mybatis-plus:
+  typeAliasesPackage: com.xinshang.modular.*.model
+  mapper-locations: classpath:/mapper/**/*.xml
+
+#日志保存路径
+logging:
+  path: /usr/local/tomcat/logs/asmall-admin/
+  config: classpath:config/logback-spring.xml
+#邮箱参数
+system:
+  email:
+    nickname: asmall
+    username: mary@xinshangjk.com
+    password: Liejin123
+    protocol: smtp
+    host: smtp.exmail.qq.com
+    port: 465
+    enterprise: true

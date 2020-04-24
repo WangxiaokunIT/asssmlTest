@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinshang.modular.biz.dao.BannerMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xinshang.modular.biz.model.Banner">
+        <id column="id" property="id"/>
+        <result column="banner_path" property="bannerPath"/>
+        <result column="link" property="link"/>
+        <result column="sort_num" property="sortNum"/>
+        <result column="state" property="state"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="item_number" property="itemNumber"/>
+    </resultMap>
+    <resultMap id="ItemResultMap" type="com.xinshang.modular.biz.model.Item"
+               extends="com.xinshang.modular.biz.dao.ItemMapper.BaseResultMap">
+    </resultMap>
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, banner_path, link, sort_num, state, create_time, update_time,item_number
+    </sql>
+
+    <select id="searchItem" parameterType="string" resultMap="ItemResultMap">
+    select bb.*,aa.title as tittle 	FROM (select * from tb_item where title	like CONCAT('%', #{tittle},'%'))aa LEFT JOIN tb_item bb ON aa.id=bb.id ORDER BY created desc
+    </select>
+</mapper>

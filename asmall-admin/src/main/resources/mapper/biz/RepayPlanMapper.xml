@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinshang.modular.biz.dao.RepayPlanMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xinshang.modular.biz.model.RepayPlan">
+        <id column="id" property="id" />
+        <result column="project_id" property="projectId" />
+        <result column="joinin_id" property="joininId" />
+        <result column="member_id" property="memberId" />
+        <result column="lend_amount" property="lendAmount" />
+        <result column="paid_mort" property="paidMort" />
+        <result column="have_mort" property="haveMort" />
+        <result column="paid_tim" property="paidTim" />
+        <result column="have_tim" property="haveTim" />
+        <result column="paid_inter" property="paidInter" />
+        <result column="have_inter" property="haveInter" />
+        <result column="months" property="months" />
+        <result column="statecode" property="statecode" />
+        <result column="paid_tim_date" property="paidTimDate" />
+        <result column="have_tim_date" property="haveTimDate" />
+        <result column="paid_inter_date" property="paidInterDate" />
+        <result column="have_inter_date" property="haveInterDate" />
+        <result column="is_delete" property="isDelete" />
+    </resultMap>
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, project_id, joinin_id, member_id, lend_amount, paid_mort, have_mort, paid_tim, have_tim, paid_inter, have_inter, months, statecode, paid_tim_date, have_tim_date, paid_inter_date, have_inter_date,is_delete
+    </sql>
+
+    <update id="updateRepay" parameterType="com.xinshang.modular.biz.model.Joinin">
+        update tb_repay_plan
+         set
+            have_tim=#{joinin.investmentAmount},
+			have_tim_date=#{joinin.createTime}
+		where  project_id=#{joinin.projectId}  and joinin_id=#{joinin.joinId} and member_id=#{joinin.customId}
+    </update>
+    <update id="updateStateById" parameterType="com.xinshang.modular.biz.model.RepayPlan">
+
+        update tb_repay_plan
+         set
+            is_delete=1
+		where  project_id=#{repayPlan.projectId}  and joinin_id=#{repayPlan.joininId} and id !=#{repayPlan.id} and statecode=1
+    </update>
+
+    <select id="repayPlanByProjectId"  parameterType="java.lang.Long" resultMap="BaseResultMap">
+         SELECT * FROM tb_repay_plan WHERE project_id=#{projectId} ORDER BY months DESC LIMIT 0,1
+    </select>
+
+    <select id="repayPlanByJoinId"  parameterType="java.lang.Long" resultMap="BaseResultMap">
+         SELECT * FROM tb_repay_plan WHERE joinin_id=#{joininId} ORDER BY months DESC LIMIT 0,1
+    </select>
+
+    <select id="repayPlanList"  parameterType="java.lang.Long" resultMap="BaseResultMap">
+         SELECT * FROM tb_repay_plan WHERE project_id=#{projectId}  and statecode=2
+    </select>
+
+
+</mapper>

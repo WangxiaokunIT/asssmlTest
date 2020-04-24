@@ -1,0 +1,30 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal">
+
+            <#input id="id" type="hidden" value="${item.id}" />
+            <div class="row">
+                <div class="col-sm-9">
+                    <#input id="nickname" label="昵称" value="${item.nickname}" underline="true"/>
+                    <#input id="phone" label="注册手机号" value="${item.phone}" underline="true" readonly="readonly"/>
+                    <#input id="points" label="积分余额" type="number" value="${item.points}" underline="true"/>
+                    <#input id="balance" label="账户余额" type="number" value="${item.balance}" underline="true"/>
+                    <#input id="vip" label="是否是VIP" value="${item.vip}" underline="true" readonly="readonly"/>
+                    <#avatar_2 name="file" id="file" userId="${item.id}" label="头像" avatarImg="${item.file}" underline="true"/>
+                </div>
+            </div>
+
+            <div class="row btn-group-m-t">
+                <div class="col-sm-10">
+                    <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="MemberInfoDlg.editSubmit()"/>
+                    <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="MemberInfoDlg.close()"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/biz/member/member_info.js"></script>
+
+@}

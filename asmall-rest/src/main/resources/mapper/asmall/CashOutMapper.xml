@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinshang.modular.biz.dao.CashOutMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xinshang.rest.modular.asmall.model.CashOut">
+        <id column="id" property="id" />
+        <result column="supplier_id" property="supplierId" />
+        <result column="balance" property="balance" />
+        <result column="money" property="money" />
+        <result column="state" property="state" />
+        <result column="bank_card_id" property="bankCardId" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="create_user_id" property="createUserId" />
+        <result column="remarks" property="remarks" />
+        <result column="type" property="type" />
+        <result column="biz_order_no" property="bizOrderNo" />
+    </resultMap>
+
+    <resultMap id="CashOutVo" type="com.xinshang.rest.modular.asmall.vo.CashOutVO" extends="BaseResultMap">
+        <result column="create_user_name" property="createUserName" />
+        <result column="supplier_name" property="supplierName" />
+        <result column="bank_name" property="bankCardName" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, supplier_id, balance, money, state, bank_card_id, create_time, create_user_id
+    </sql>
+
+    <select id="showCashOut" resultMap="CashOutVo">
+        select * from (
+
+        <!-- 供应商 -->
+        <if test="param.type == 2 or param.type == null">
+            select a.*,b.bank_card_no as bank_name, c.name as supplier_name, d.name as create_user_name
+            from (
+            select * from tb_cash_out
+            <where>
+                and type = 2
+                <if test="param.startTime != null and param.startTime != ''">
+                    and DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= #{param.startTime}
+                </if>
+                <if test="param.endTime != null and param.endTime != ''">
+                    and DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= #{param.endTime}
+                </if>
+                <if test="param.state != null and param.state != ''">
+                    and state =  #{param.state}
+                </if>
+
+            </where>
+            ) a
+            left join tb_bank b
+            on a.bank_card_id = b.id
+            and b.type = 2
+            left join tb_supplier c
+            on a.supplier_id = c.id
+            left join sys_user d
+            on a.create_user_id = d.id
+        </if>
+
+        <if test="param.type == null">
+        union all
+        </if>
+
+
+        <!-- 客户 -->
+        <if test="param.type == 1 or param.type == null">
+            select a.*,b.bank_card_no as bank_name, c.username as supplier_name, d.name as create_user_name
+            from (
+            select * from tb_cash_out
+            <where>
+                and type = 1
+                <if test="param.startTime != null and param.startTime != ''">
+                    and DATE_FORMAT(create_time,'%Y-%m-%d') &gt;= #{param.startTime}
+                </if>
+                <if test="param.endTime != null and param.endTime != ''">
+                    and DATE_FORMAT(create_time,'%Y-%m-%d') &lt;= #{param.endTime}
+                </if>
+                <if test="param.state != null and param.state != ''">
+                    and state =  #{param.state}
+                </if>
+
+            </where>
+            ) a
+            left join tb_bank b
+            on a.bank_card_id = b.id
+            and b.type = 1
+            left join tb_member c
+            on a.supplier_id = c.id
+            left join sys_user d
+            on a.create_user_id = d.id
+        </if>
+
+        ) cas
+
+        <where>
+            <if test="param.bankName != null and param.bankName != ''">
+                and b.bank_name  like CONCAT('%', #{param.bankName}, '%')
+            </if>
+            <if test="param.supplierName != null and param.supplierName != ''">
+                and c.name  like CONCAT('%', #{param.supplierName}, '%')
+            </if>
+        </where>
+
+
+    </select>
+
+
+</mapper>

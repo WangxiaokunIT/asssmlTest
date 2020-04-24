@@ -1,0 +1,130 @@
+@layout("/common/_container.html"){
+
+<div class="ibox float-e-margins" id="joinin_info_vue" v-cloak xmlns:c="http://www.w3.org/1999/XSL/Transform">
+    <div class="ibox-content">
+        <div class="ibox-content" id="defaultForm">
+            <!-- 加盟信息 start -->
+            <div class="row">
+                <h3 class="font-bold" ><b>代理信息</b></h3>
+            </div>
+            <div class="row">
+                <div class="col-sm-2">
+                    <name-con name="应还总本息" v-model="obj.paidMort" readonly="readonly"></name-con>
+                </div>
+                <div class="col-sm-2">
+                    <name-con name="实还总本息" v-model="obj.haveMort" readonly="readonly"></name-con>
+                </div>
+                <div class="col-sm-2">
+                    <name-con name="应还总本金" v-model="obj.paidTim" readonly="readonly"></name-con>
+                </div>
+                <div class="col-sm-2">
+                    <name-con name="实还总本金" v-model="obj.haveTim" readonly="readonly"></name-con>
+                </div>
+                <div class="col-sm-2">
+                    <name-con name="应还总利息" v-model="obj.paidInter" readonly="readonly"></name-con>
+                </div>
+                <div class="col-sm-2">
+                    <name-con name="实还总利息" v-model="obj.haveInter" readonly="readonly"></name-con>
+                </div>
+                <div class="col-sm-2">
+                    <name-con name="加盟总金额" v-model="obj.paidTim" readonly="readonly"></name-con>
+                </div>
+            </div>
+            <!-- 加盟信息 end -->
+
+
+
+            <!-- 还款计划 start -->
+            <div class="row">
+                <h3 class="font-bold" ><b>归还计划</b></h3>
+            </div>
+            <div class="row">
+                <div class="col-sm-12" >
+                    <div class="ibox">
+                        <div class="ibox-content" style="border-style: hidden;">
+                            <table class="table table-bordered table-my-0" style="background-color: #fff;width: 100%" >
+                                <thead>
+                                <tr>
+                                    <th>还款期数</th>
+                                    <th>应还本息</th>
+                                    <th>实还本息</th>
+                                    <th>应还本金</th>
+                                    <th>实还本金</th>
+                                    <th>应还本金日期</th>
+                                    <th>实还本金日期</th>
+                                    <th>应还利息</th>
+                                    <th>实还利息</th>
+                                    <th>应还利息日期</th>
+                                    <th>实还利息日期</th>
+                                    <th>还款状态</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(item, index) in list_repayPlan" v-bind:key="index">
+                                        <td>
+                                            {{ item.months }}
+                                        </td>
+                                        <td>
+                                            {{ item.paidMort }}
+                                        </td>
+                                        <td>
+                                            {{ item.haveMort }}
+                                        </td>
+                                        <td>
+                                            {{ item.paidTim }}
+                                        </td>
+                                        <td>
+                                            {{ item.haveTim }}
+                                        </td>
+                                        <td>
+                                            {{ substringTime(item.paidTimDate) }}
+                                        </td>
+                                        <td>
+                                            {{ substringTime(item.haveTimDate)}}
+                                        </td>
+                                        <td>
+                                            {{ item.paidInter }}
+                                        </td>
+                                        <td>
+                                            {{ item.haveInter }}
+                                        </td>
+                                        <td>
+                                            {{ substringTime(item.paidInterDate) }}
+                                        </td>
+                                        <td>
+                                            {{ substringTime(item.haveInterDate) }}
+                                        </td>
+                                        <td>
+                                            {{ updateStateName(item.statecode) }}
+                                        </td>
+                                        <td>
+                                             <button type='button' class='btn btn-white btn-close'  v-on:click='openRepayPlan(item.months,item.id,item.statecode,item.haveInterDate,item.projectId,item.paidInter)'>
+                                                {{ updateCaoZuo(item.haveInterDate) }}
+                                            </button>
+                                          </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 审核记录 end -->
+
+
+        </div>
+    </div>
+    <!-- 操作按钮 -->
+    <div class="modal-footer modal-footer-my">
+        <input type="hidden" id="projectId" value="${projectId}">
+        <input type="hidden" id="joinId" value="${joinId}">
+        <button type="button" class="btn btn-white btn-close" v-on:click="closeWindow">关闭</button>
+    </div>
+</div>
+
+@include("/common/_container_vue.html"){}
+
+
+<script src="${ctxPath}/static/modular/biz/joinin/joinin_info.js"></script>
+@}

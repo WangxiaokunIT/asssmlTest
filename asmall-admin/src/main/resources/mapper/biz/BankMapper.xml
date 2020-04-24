@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinshang.modular.biz.dao.BankMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xinshang.modular.biz.model.Bank">
+        <id column="id" property="id" />
+        <result column="master_id" property="masterId" />
+        <result column="bank_card_no" property="bankCardNo" />
+        <result column="bank_name" property="bankName" />
+        <result column="card_type" property="cardType" />
+        <result column="bank_card_pro" property="bankCardPro" />
+        <result column="is_default" property="isDefault" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="type" property="type" />
+        <result column="bank_code" property="bankCode" />
+        <result column="phone" property="phone" />
+    </resultMap>
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="VOResultMap" type="com.xinshang.modular.biz.vo.BankVO">
+        <id column="id" property="id" />
+        <result column="bank_card_no" property="cardNo" />
+        <result column="bank_name" property="bankName" />
+        <result column="card_type" property="cardType" />
+        <result column="bank_card_pro" property="bankCardPro" />
+        <result column="is_default" property="isDefault" />
+        <result column="create_time" property="createTime" />
+        <result column="bank_code" property="bankCode" />
+        <result column="phone" property="phone" />
+        <result column="name" property="name" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, master_id, bank_card_no, bank_name, card_type, bank_card_pro, is_default, create_time, update_time, type,bank_code,phone
+    </sql>
+
+    <select id="selectBankInfo" resultMap="VOResultMap">
+       select b.*,s.name from tb_bank b inner join
+        <choose>
+            <when test="type == 2">
+                tb_supplier s on b.master_id=s.id and b.`type`=2 and b.master_id=#{masterId}
+            </when>
+            <otherwise>
+                tb_member s on b.master_id=s.id and b.`type`=1 and b.master_id=#{masterId}
+            </otherwise>
+        </choose>
+        order by b.is_default desc
+    </select>
+</mapper>

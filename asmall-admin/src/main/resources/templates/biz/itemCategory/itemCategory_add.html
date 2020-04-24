@@ -1,0 +1,32 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal">
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <#input id="parentName" label="上级分类" readonly="readonly" hidden="parentId"
+                    clickFun="ItemCategoryInfoDlg.showSelectTree();"
+                    selectFlag="true" selectDivId="parentCategorySelect" selectTreeId="parentIdTree" />
+                    <#input id="name" label="名称" />
+                    <#input id="sortNum" type="number" label="排序" />
+                    <#dictSelector code="is_enabled" label="是否启用" id="isEnabled"/>
+                    <#input id="remark" label="描述"/>
+                </div>
+                <div class="col-sm-6">
+                    <#uploadimg id="icon" label="图标" />
+                </div>
+            </div>
+
+            <div class="row btn-group-m-t">
+                <div class="col-sm-10">
+                    <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="ItemCategoryInfoDlg.addSubmit()"/>
+                    <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="ItemCategoryInfoDlg.close()"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/biz/itemCategory/itemCategory_info.js"></script>
+@}

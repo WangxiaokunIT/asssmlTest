@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinshang.modular.system.dao.UserMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.xinshang.modular.system.model.User">
+		<id column="id" property="id" />
+		<result column="avatar" property="avatar" />
+		<result column="account" property="account" />
+		<result column="password" property="password" />
+		<result column="salt" property="salt" />
+		<result column="name" property="name" />
+		<result column="full_name" property="fullName" />
+		<result column="birthday" property="birthday" />
+		<result column="sex" property="sex" />
+		<result column="email" property="email" />
+		<result column="phone" property="phone" />
+		<result column="dept_id" property="deptId" />
+		<result column="state" property="state" />
+		<result column="version" property="version" />
+		<result column="pin_yin_index" property="pinYinIndex" />
+		<result column="remark" property="remark" />
+		<result column="creator" property="creator" />
+		<result column="gmt_create" property="gmtCreate" />
+		<result column="modifier" property="modifier" />
+		<result column="gmt_modified" property="gmtModified" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,avatar,account,name,full_name,birthday,sex,email,phone,dept_id,state,version,pin_yin_index,remark,creator,gmt_create,modifier,gmt_modified
+	</sql>
+
+	<sql id="Base_Column_List_With_Pwd">
+		id, account, name,full_name,birthday,password, sex, email, avatar, phone, salt,dept_id, state,pin_yin_index,remark,creator,gmt_create,modifier,gmt_modified
+	</sql>
+
+	<select id="selectUsers" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from sys_user
+		where state != 3
+		<if test="name != null and name != ''">
+			and (phone like CONCAT('%',#{name},'%')
+			or account like CONCAT('%',#{name},'%')
+			or name like CONCAT('%',#{name},'%')
+			or full_name like CONCAT('%',#{name},'%'))
+		</if>
+		<if test="deptId != null and deptId != 0">
+			and dept_id in (select id from sys_dept where seq like CONCAT('%.', #{deptId}, '.%'))
+		</if>
+		<if test="positionId != null and positionId != 0">
+			and id in ( select user_id from sys_position_user where position_id=#{positionId})
+		</if>
+		<if test="beginTime != null and beginTime != '' and endTime != null and endTime != ''">
+			and gmt_create between CONCAT(#{beginTime},' 00:00:00') and CONCAT(#{endTime},' 23:59:59')
+		</if>
+	</select>
+
+	<!-- 更改状态-->
+	<update id="setState">
+		update sys_user set state = #{state} where id = #{userId}
+	</update>
+	<!-- 修改密码-->
+	<update id="changePwd">
+		update sys_user set password = #{pwd} where id = #{userId}
+	</update>
+
+	<select id="getByAccount" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List_With_Pwd" />
+		from sys_user where account = #{account} and state != 3
+	</select>
+
+	<!--获取该部门及子部门的用户 -->
+	<select id="selectDeptUser"  parameterType="java.lang.Integer" resultType="com.xinshang.modular.system.model.User">
+		 select * from sys_user where dept_id in ( select id from sys_dept where seq like CONCAT('%.', #{deptId}, '.%'))
+	</select>
+
+</mapper>

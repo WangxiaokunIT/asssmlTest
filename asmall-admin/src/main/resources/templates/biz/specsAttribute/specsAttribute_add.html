@@ -1,0 +1,29 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal">
+
+            <div class="row">
+                <#input type="hidden" id="categoryId"/>
+                <div class="col-sm-12">
+                    <#input id="parentName" label="所属分类" readonly="readonly" hidden="parentId"
+                    clickFun="SpecsAttributeInfoDlg.showSelectTree();"
+                    selectFlag="true" selectDivId="parentCategorySelect" selectTreeId="parentIdTree" />
+                    <#input id="attributeName" label="属性名" placeholder="例如:颜色"/>
+                    <#input id="attributeValues" label="属性值" placeholder="例如:红色,蓝色,绿色"/>
+                    <#input id="sortNum" label="排序值" underline="true"/>
+                </div>
+            </div>
+
+            <div class="row btn-group-m-t">
+                <div class="col-sm-10">
+                    <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="SpecsAttributeInfoDlg.addSubmit()"/>
+                    <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="SpecsAttributeInfoDlg.close()"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/biz/specsAttribute/specsAttribute_info.js"></script>
+@}

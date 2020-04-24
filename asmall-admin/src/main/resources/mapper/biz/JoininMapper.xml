@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinshang.modular.biz.dao.JoininMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xinshang.modular.biz.model.Joinin">
+        <id column="join_id" property="joinId" />
+        <result column="custom_id" property="customId" />
+        <result column="project_id" property="projectId" />
+        <result column="investment_amount" property="investmentAmount" />
+        <result column="investment_time" property="investmentTime" />
+        <result column="payment_method" property="paymentMethod" />
+        <result column="status" property="status" />
+        <result column="create_time" property="createTime" />
+        <result column="create_user_id" property="createUserId" />
+        <result column="biz_order_no" property="bizOrderNo" />
+    </resultMap>
+
+    <resultMap id="BaseResultMap2" type="com.xinshang.modular.biz.dto.JoininDTO">
+
+        <result column="status" property="status" />
+        <result column="phone" property="phone" />
+        <result column="number" property="number" />
+        <result column="name" property="name" />
+        <result column="startTime" property="startTime" />
+        <result column="endTime" property="endTime" />
+    </resultMap>
+
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="contractMap" type="com.xinshang.modular.biz.model.ContractInfo">
+        <result column="number" property="number" />
+        <result column="name" property="name" />
+        <result column="brief_introduction" property="briefIntroduction" />
+        <result column="start_time" property="startTime" />
+        <result column="end_time" property="endTime" />
+        <result column="supplier_id" property="supplierId" />
+        <result column="min_money" property="minMoney" />
+        <result column="max_money" property="maxMoney" />
+        <result column="repayment_method" property="repaymentMethod" />
+        <result column="recruitment_cycle" property="recruitmentCycle" />
+        <result column="unit" property="unit" />
+        <result column="equity_rate" property="equityRate" />
+        <result column="details" property="details" />
+        <collection property="joininInfos" javaType="java.util.ArrayList" ofType="com.xinshang.modular.biz.model.JoininInfo">
+            <id column="join_id" property="joinId" />
+            <result column="custom_id" property="customId" />
+            <result column="project_id" property="projectId" />
+            <result column="investment_amount" property="investmentAmount" />
+            <result column="investment_time" property="investmentTime" />
+            <result column="payment_method" property="paymentMethod" />
+            <result column="username" property="username"/>
+            <result column="phone" property="phone"/>
+            <result column="number" property="number"/>
+            <result column="name" property="name"/>
+            <result column="card_number" property="cardNumber"/>
+            <result column="email" property="email"/>
+            <result column="sname" property="sname"/>
+            <result column="company_address" property="company_address"/>
+            <result column="legal_name" property="legal_name"/>
+        </collection>
+    </resultMap>
+
+    <resultMap id="BaseResultMap1" type="com.xinshang.modular.biz.model.JoininInfo">
+        <id column="join_id" property="joinId" />
+        <result column="biz_order_no" property="bizOrderNo" />
+        <result column="custom_id" property="customId" />
+        <result column="project_id" property="projectId" />
+        <result column="investment_amount" property="investmentAmount" />
+        <result column="investment_time" property="investmentTime" />
+        <result column="payment_method" property="paymentMethod" />
+        <result column="status" property="status" />
+        <result column="create_time" property="createTime" />
+        <result column="create_user_id" property="createUserId" />
+        <result column="username" property="username"/>
+        <result column="realName" property="realName"/>
+        <result column="phone" property="phone"/>
+        <result column="number" property="number"/>
+        <result column="name" property="name"/>
+        <result column="sname" property="sname"/>
+        <result column="contractUrl" property="contractUrl"/>
+        <result column="repayment_method" property="repaymentMethod"/>
+
+      </resultMap>
+
+    <resultMap id="JoininVOMap" type="com.xinshang.modular.biz.vo.JoininVO" extends="BaseResultMap">
+        <result column="username" property="username"/>
+        <result column="phone" property="phone"/>
+    </resultMap>
+
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        join_id, custom, recruitment_nformation, investment_amount, investment_time, payment_method, Status, create_time, create_user_id
+    </sql>
+
+    <select id="joinList"  parameterType="com.xinshang.modular.biz.dto.JoininDTO" resultMap="BaseResultMap1">
+        SELECT tec.contract_url as contractUrl,tj.*,tm.phone,tm.username,tm.real_name as realName,tp.number,tp.name,tp.repayment_method,tp.start_record_time as startRecordTime,tp.end_record_time as endRecordTime,ts.name AS sname
+        FROM tb_joinin  tj
+        left JOIN tb_member tm ON tj.custom_id=tm.id
+        left JOIN tb_project tp ON tj.project_id=tp.id
+        left JOIN tb_supplier ts ON tp.supplier_id=ts.id
+        INNER  JOIN  tb_eqb_contract tec ON tec.join_id=tj.join_id AND tec.`status`=1
+        <where>
+            <if test="status != null and status != ''">
+                and tj.status =  #{status}
+            </if>
+            <if test="phone != null and phone != ''">
+                and tm.phone =  #{phone}
+            </if>
+            <if test="number != null and number != ''">
+                and tp.number =  #{number}
+            </if>
+            <if test="name != null and name != ''">
+                and tp.name =  #{name}
+            </if>
+            <if test="startTime != null ">
+                and DATE_FORMAT(tp.start_record_time,'%Y-%m-%d') &gt;= DATE_FORMAT(#{startTime},'%Y-%m-%d')
+            </if>
+            <if test="endTime != null ">
+                and DATE_FORMAT(tp.start_record_time,'%Y-%m-%d') &lt;= DATE_FORMAT(#{endTime},'%Y-%m-%d')
+            </if>
+
+
+            <if test="startTime1 != null ">
+                and DATE_FORMAT(tp.end_record_time,'%Y-%m-%d') >= DATE_FORMAT(#{startTime1},'%Y-%m-%d')
+            </if>
+            <if test="endTime1!= null">
+                  and DATE_FORMAT(tp.end_record_time,'%Y-%m-%d') &lt;= DATE_FORMAT(#{endTime1},'%Y-%m-%d')
+            </if>
+        </where>
+        ORDER BY tj.investment_time desc
+    </select>
+
+    <select id="joinListByProjectId"  parameterType="java.lang.Long" resultMap="contractMap">
+
+        SELECT tj.*,tm.phone,tm.username,tm.card_number,tm.email,ts.name AS sname,ts.company_address,ts.legal_name,tp.*
+        FROM tb_project   tj
+         JOIN tb_joinin tp ON tj.id=tp.project_id
+        JOIN tb_supplier ts ON tj.supplier_id=ts.id
+         JOIN tb_member tm ON tp.custom_id=tm.id
+        where tj.id=#{projectId}
+
+    </select>
+
+    <select id="showJoinin" resultMap="JoininVOMap">
+        select a.*, b.username, b.phone from (
+            select * from tb_joinin
+            where project_id = #{projectId}
+        ) a
+        left join tb_member b
+        on a.custom_id = b.id
+    </select>
+
+
+
+</mapper>

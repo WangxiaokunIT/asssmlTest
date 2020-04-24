@@ -1,0 +1,73 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal">
+            <div class="row row-lg form-horizontal-detail">
+                    <div class="col-sm-4">
+                        职位名称：<strong>${position.name!}</strong>
+                    </div>
+                    <div class="col-sm-4">
+                         所属部门：<strong>${dept.simpleName!}</strong>
+                    </div>
+                    <div class="col-sm-4">
+                          创建人：<strong>${position.creatorName!}</strong>
+                    </div>
+                    <div class="col-sm-4">
+                         创建时间：<strong>${position.gmtCreate!,dateFormat="yyyy-MM-dd HH:mm:ss"}</strong>
+                    </div>
+                    <div class="col-sm-8">
+                         职位描述：<strong>${position.remark!}</strong>
+                    </div>
+            </div>
+
+            <div class="row" style="padding:0 20px;">
+                <div class="col-sm-4 col-sm-offset-1">
+                    <div class="ibox">
+                            <h3 style="text-align: center">待选人员列表</h3>
+
+
+                            <ul id="users_ul" class="sortable-list sortable-list-fix connectList agile-list agile-list-fix height-250">
+                                @for(user in userList){
+                                <li data-positionid="${position.id}" data-userid="${user.id}" >
+                                    ${user.name}
+                                </li>
+                                @}
+                            </ul>
+                            <button type="button" class="btn btn-block btn-primary btnselectAll"> <i class="fa fa-user-plus"></i> 全部选择</button>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+
+                </div>
+                <div class="col-sm-4">
+                    <div class="ibox">
+                            <h3 style="text-align: center">已选人员列表</h3>
+
+                            <ul id="addedUser_ul" class="sortable-list sortable-list-fix connectList agile-list agile-list-fix  height-250">
+                                @for(user in addedUserList){
+                                <li data-positionid="${position.id}" data-userid="${user.id}">
+                                    ${user.name}
+                                </li>
+                                @}
+                            </ul>
+                        <button type="button" class="btn btn-block btn-primary btnclearAll"> <i class="fa fa-user-times"></i> 清除已选</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row btn-group-m-t">
+                <div class="col-sm-10">
+                    <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="PositionInfoDlg.updatePositionUser()"/>
+                    <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="PositionInfoDlg.mgrUserClose()"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/system/position/position_info.js"></script>
+<script>
+    $(function() {
+        PositionInfoDlg.positionInfoData.positionId="${position.id!}";
+    });
+</script>
+@}

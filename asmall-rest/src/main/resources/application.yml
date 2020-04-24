@@ -1,0 +1,77 @@
+server:
+  port: 60000 #项目端口
+  tomcat:
+    uri-encoding: UTF-8
+  servlet:
+    context-path: /asmall-rest
+    connection-timeout: 30000
+#项目名称
+spring:
+  application:
+    name: asmall-rest
+  profiles:
+#    active: @spring.active@   #激活环境设置（dev|prod|test）
+    active: dev   #激活环境设置（dev|prod|test）
+  servlet:
+    multipart:
+      max-request-size: 100MB
+      max-file-size: 100MB
+  main:
+    allow-bean-definition-overriding: true #当遇到同样名字的时候，是否允许覆盖注册
+  http:
+    encoding:
+      charset: utf-8
+      force-response: true
+      force: true
+jwt:
+  header: Authorization            #http请求头所需要的字段
+  secret: af854b0d06f3740677300e494f078e0a        #jwt秘钥
+  expiration: 604800               #7天 单位:秒   604800
+  md5-key: randomKey               #md5加密混淆key
+  no-path:                         #不需要验证token的url
+    - /auth                        #登录验证接口
+    - /register                    #注册接口
+    - /resetPassword               #重置密码
+    - /getToken                    #根据用户名和密码获取token
+    - /isTokenExpired/*              #判断token是否有效
+    - /smsCaptcha*                 #发送验证码
+    - /file/upload                 #文件管理-文件上传
+    - /file/view/*                 #文件管理-文件预览
+    - /doc.html                    #接口文档地址
+    - /webjars/*                   #接口文档资源
+    - /swagger-resources*          #接口文档资源
+    - /v2/api-docs*                #接口文档资源
+    - /appuploadimage/upload
+    - /appuploadimage/view/*
+    - /file/showTest
+    - /meeting/shwoMeeting
+    - /send                        #jms消息发送接口
+    - /goods/*                     #商品接口
+    - /member/imageUpload          #图片上传接口
+    - /allinPayAsynRespNotice/* #异步接口
+    - /member/goResetPayPwdResult
+    - /member/goUpdatePayPwdResult
+    - /member/goSetPayPwdResult
+    - /weChat/*                 #获取微信用户信息相关接口
+    - /appset/*                 #获取用户协议、隐私协议、vip权益
+    - /itemCategory/*           #获取商品分类
+    - /banner/showBanner        #获取首页轮播图
+    - /eqbContract/contractCallBack
+mybatis-plus:
+  mapper-locations: classpath:/mapper/**/*.xml
+  typeAliasesPackage: com.xinshang.rest.modular.*.model
+  global-config:
+    id-type: 1  #0:数据库ID自增   1:用户输入id  2:全局唯一id(IdWorker)  3:全局唯一ID(uuid)
+    db-column-underline: false
+    refresh-mapper: true
+  configuration:
+    map-underscore-to-camel-case: false
+    cache-enabled: true #配置的缓存的全局开关
+    lazyLoadingEnabled: true #延时加载的开关
+    multipleResultSetsEnabled: true #开启的话，延时加载一个属性时会加载该对象全部属性，否则按需加载属性
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #打印sql语句,调试用
+
+#日志保存路径
+logging:
+  path: /usr/local/tomcat/logs/asmall-rest/
+  config: classpath:logback-spring.xml

@@ -1,0 +1,34 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal">
+            <div class="row">
+                <div class="col-sm-12">
+                    <#input id="id" type="hidden" value="${item.id}" />
+                    <#input labelId="nameLabel" value="${item.name}"  readonly="readonly" id="name" label="姓名" />
+                    <#input labelId="phoneLabel" value="${item.phone}" readonly="readonly" id="phone" type="number" label="手机号" />
+                    <#dictSelector id="identityType" code="identity_type" disabled="disabled" value="${item.identityType}"  readonly="readonly" label="证件类型"  />
+                    <#input id="identityNo" label="证件号码" value="${item.identityNo}" readonly="readonly" />
+                    <#input id="legalName" label="法人代表" value="${item.legalName}" placeholder="法人代表姓名"/>
+                    <#input id="remark" label="所属企业" value="${item.remark}" placeholder="所属企业名称" />
+                    <#input id="companyAddress" label="企业地址" value="${item.companyAddress}" placeholder="企业地址" />
+                    <#input id="loanLimit" required="required" value="0"  min="0" step="1" max="99999999" type="number" label="贷款总额度" value="${item.loanLimit}"  addonValue="元"/>
+                </div>
+            </div>
+
+            <div class="row btn-group-m-t">
+                <div class="col-sm-10">
+                    <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="SupplierInfoDlg.editSubmit()"/>
+                    <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="SupplierInfoDlg.close()"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/biz/supplier/supplier_info.js"></script>
+<script>
+    $(function() {
+        SupplierInfoDlg.addOrEditHandler(0,1);
+    });
+</script>
+@}

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinshang.modular.system.dao.FileCategoryMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xinshang.modular.system.model.FileCategory">
+        <id column="id" property="id" />
+        <result column="code" property="code" />
+        <result column="name" property="name" />
+        <result column="parent_id" property="parentId" />
+        <result column="parent_name" property="parentName" />
+        <result column="level" property="level" />
+        <result column="seq" property="seq" />
+        <result column="sort_num" property="sortNum" />
+        <result column="remark" property="remark" />
+        <result column="gmt_create" property="gmtCreate" />
+        <result column="gmt_modified" property="gmtModified" />
+        <result column="creator" property="creator" />
+        <result column="creator_name" property="creatorName" />
+        <result column="modifier" property="modifier" />
+        <result column="modifier_name" property="modifierName" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, code, name, parent_id AS parentId, level, seq, sort_num AS sortNum, remark, gmt_create AS gmtCreate, gmt_modified AS gmtModified, creator, modifier
+    </sql>
+
+    <select id="tree" resultType="com.xinshang.core.node.ZTreeNode">
+		select id,parent_id as parentId,name,
+		(
+		CASE
+		WHEN (parent_id = 0 OR parent_id IS NULL) THEN
+		'true'
+		ELSE
+		'false'
+		END
+		) as isOpen from sys_file_category
+	</select>
+
+    <select id="getById" resultMap="BaseResultMap">
+        select t.*,(select name from sys_file_category where id=t.parent_id) as parent_name
+        from sys_file_category t
+        where t.id=#{id,jdbcType=BIGINT}
+    </select>
+    <select id="queryList"  resultMap="BaseResultMap">
+        select t.*,(select name from sys_file_category where id=t.parent_id) as parent_name,(select name from sys_user where id=t.creator) as creator_name,(select name from sys_user where id=t.modifier) as modifier_name
+        from sys_file_category t
+        <if test="condition != null and condition != ''">
+            where t.name like CONCAT('%',#{condition},'%') or t.code like CONCAT('%',#{condition},'%')
+        </if>
+        order by t.sort_num ASC
+    </select>
+
+
+    <insert id="insertSelective" parameterType="com.xinshang.modular.system.model.FileCategory" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_file_category
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="code != null">
+                code,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="parentId != null">
+                parent_id,
+            </if>
+            <if test="level != null">
+                level,
+            </if>
+            <if test="seq != null">
+                seq,
+            </if>
+            <if test="sortNum != null">
+                sort_num,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="gmtCreate != null">
+                gmt_create,
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="code != null">
+                #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="parentId != null">
+                #{parentId,jdbcType=BIGINT},
+            </if>
+            <if test="level != null">
+                (select level+1 from sys_file_category where id =  #{parentId,jdbcType=BIGINT})
+            </if>
+            <if test="seq != null">
+                #{seq,jdbcType=VARCHAR},
+            </if>
+            <if test="sortNum != null">
+                #{sortNum,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="gmtCreate != null">
+                #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="gmtModified != null">
+                #{gmtModified,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creator != null">
+                #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="modifier != null">
+                #{modifier,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+</mapper>

@@ -1,0 +1,71 @@
+.m {
+    margin: 100px;
+}
+
+.tab {
+    width: 400px;
+    margin: 0 auto;
+    border: 1px solid #ddd;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.tab li {
+    float: left;
+    width: 100px;
+    position: relative;
+    overflow: hidden;
+}
+
+.tab li:before, .tab li:after, .tab li a {
+    -webkit-transition: all 0.25s ease-in-out;
+    transition: all 0.25s ease-in-out;
+}
+
+.tab li:before, .tab li:after {
+    content: "";
+    display: block;
+}
+
+.tab li:not(:first-child):after {
+    background: #ddd;
+    height: 20px;
+    width: 1px;
+    left: 0;
+    top: 10px;
+    position: absolute;
+}
+
+.tab li a {
+    display: block;
+    position: relative;
+    z-index: 2;
+    color: #000;
+    font-size: 14px;
+}
+
+.tab li:before {
+    width: 0;
+    height: 0;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+    position: absolute;
+}
+
+.tab li:hover a {
+    color: #fff;
+}
+
+.tab li:hover:before {
+    box-shadow: 0 0 0 100px #36bc99;
+}
+
+.tab li:hover + li:after, .tab li:hover:after {
+    height: 0;
+    top: 20px;
+}

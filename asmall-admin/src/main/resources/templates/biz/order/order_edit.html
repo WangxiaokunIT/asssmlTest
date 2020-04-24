@@ -1,0 +1,37 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal">
+
+            <#input id="orderId" type="hidden" value="${item.orderId}" />
+            <div class="row">
+                <div class="col-sm-6 b-r">
+                    <#input id="orderId" label="订单id" value="${item.orderId}" underline="true"/>
+                    <#input id="postFee" label="邮费" value="${item.postFee}" underline="true"/>
+                    <#input id="status" label="状态 0全部 1待付款 2待收货 3已完成 4已取消 5已结束 6退货中 7退货完成 8待发货" value="${item.status}" underline="true"/>
+                    <#input id="createTime" label="订单创建时间" value="${item.createTime}" underline="true"/>
+
+                    <#input id="endTime" label="交易完成时间" value="${item.endTime}" underline="true"/>
+                    <#input id="closeTime" label="交易关闭时间" value="${item.closeTime}" underline="true"/>
+
+                </div>
+
+                <div class="col-sm-6">
+
+                    <#input id="refundNum" label="退款编号[微信退款需要，支付宝退款无需生成退款编号]" value="${item.refundNum}" underline="true"/>
+                    <#input id="isHidden" label="app是否显示[0不显示，1显示]" value="${item.isHidden}" />
+                </div>
+            </div>
+
+            <div class="row btn-group-m-t">
+                <div class="col-sm-10">
+                    <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="OrderInfoDlg.editSubmit()"/>
+                    <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="OrderInfoDlg.close()"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/biz/order/order_info.js"></script>
+@}

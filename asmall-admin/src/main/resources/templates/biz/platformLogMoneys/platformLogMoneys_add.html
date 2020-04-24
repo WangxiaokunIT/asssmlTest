@@ -1,0 +1,33 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal">
+
+            <div class="row">
+                <div class="col-sm-6 b-r">
+                    <#input id="targetId" label="客户/供应商id" underline="true"/>
+                    <#input id="money" label="金额（元）" underline="true"/>
+                    <#input id="dataSrc" label="流水来源：1：充值 2：投资 3：提现" underline="true"/>
+                    <#input id="moneyType" label="流水标志：1：入账 2：出账"/>
+                </div>
+
+                <div class="col-sm-6">
+                    <#input id="tradeNo" label="通联流水号" underline="true"/>
+                    <#input id="deleteFlg" label="有效状态 ：1：有效 0：删除" underline="true"/>
+                    <#input id="createTime" label="创建时间" underline="true"/>
+                    <#input id="remark" label="流水备注" underline="true"/>
+                </div>
+            </div>
+
+            <div class="row btn-group-m-t">
+                <div class="col-sm-10">
+                    <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="PlatformLogMoneysInfoDlg.addSubmit()"/>
+                    <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="PlatformLogMoneysInfoDlg.close()"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/biz/platformLogMoneys/platformLogMoneys_info.js"></script>
+@}

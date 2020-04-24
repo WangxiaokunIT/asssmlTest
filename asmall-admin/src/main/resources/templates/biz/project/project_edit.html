@@ -1,0 +1,278 @@
+@layout("/common/_container.html"){
+
+<link href="${ctxPath}/static/css/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet"/>
+<link href="${ctxPath}/static/css/vueCss/select.css" rel="stylesheet">
+<link href="${ctxPath}/static/css/biz/project.css" rel="stylesheet">
+
+@include("/common/_container_vue.html"){}
+
+<style>
+    .ant-btn-primary {
+        color: #fff;
+        background-color: #1AB394;
+        border-color: #1AB394;
+        text-shadow: 0 -1px 0 rgba(0,0,0,.12);
+        box-shadow: 0 2px 0 rgba(0,0,0,.045);
+    }
+
+    .ant-btn-primary:focus, .ant-btn-primary:hover {
+        color: #fff;
+        background-color: #2fbb99;
+        border-color: #2fbb99;
+    }
+</style>
+
+<div class="ibox float-e-margins" id="project_info_vue" v-cloak>
+    <div class="ibox-content">
+        <div class="ibox-content" id="defaultForm">
+
+            <!-- 供应商信息选择 start -->
+            <div class="row">
+                <h3 class="font-bold" ><b>供应商信息</b></h3>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <h3><strong>{{ supplier.name }}</strong></h3>
+                    <address v-if="supplier.id != null && supplier.id != ''">
+                        法人：<strong>{{supplier.legalName || '无'}}</strong> &nbsp;&nbsp;
+                        手机号：<strong>{{supplier.phone || '无'}}</strong> &nbsp;&nbsp;
+                        证件号： <strong>{{supplier.identityNo || '无'}}</strong> &nbsp;&nbsp;
+<!--                        企业地址：<strong>{{supplier.companyAddress || '无' }}</strong>-->
+                    </address>
+                    <address v-if="supplier.id == null || supplier.id == ''">
+                        &nbsp;&nbsp;&nbsp;&nbsp;还未选择供应商
+                    </address>
+                    <hr>
+                </div>
+            </div>
+            <!-- 供应商信息选择 end -->
+
+            <!-- 代理信息填写 start -->
+            <div class="row">
+                <div class="ibox-tools ibox-tools-my-01">
+                    代理编号：<span class="project-number">{{obj.number}}</span>
+                </div>
+                <h3 class="font-bold" ><b>代理信息</b></h3>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <name-con name="代理名称" v-model="obj.name" v-bind:disabled="disabled"></name-con>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <textarea class="form-control" rows="3" placeholder="请填写代理简介..." v-model="obj.briefIntroduction" v-bind:disabled="disabled"></textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4" >
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button data-toggle="dropdown" class="btn btn-white dropdown-toggle"
+                                    type="button">招募开始时间
+                            </button>
+                        </div>
+                        <input type="text" class="form-control layer-date" id="startTime" id="startTime" readonly="readonly" v-bind:disabled="disabled"/>
+                    </div>
+                </div>
+                <div class="col-sm-4" >
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button data-toggle="dropdown" class="btn btn-white dropdown-toggle"
+                                    type="button">招募结束时间
+                            </button>
+                        </div>
+                        <input type="text" class="form-control layer-date" id="endTime" name="endTime" readonly="readonly" v-bind:disabled="disabled"/>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <name-con name="招募周期" v-model="obj.recruitmentCycle" placeholder="月数" v-bind:disabled="disabled"></name-con>
+                </div>
+<!--                <div class="col-sm-2">-->
+<!--                    <div class="input-group">-->
+<!--                        <div class="input-group-btn">-->
+<!--                            <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button">-->
+<!--                                单位-->
+<!--                            </button>-->
+<!--                        </div>-->
+<!--                        <select class="form-control" v-model="obj.unit" disabled="disabled">-->
+<!--                            <option value="月" selected>月</option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                </div>-->
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <name-con name="最低加盟金额" v-model="obj.minMoney" v-bind:disabled="disabled"></name-con>
+                </div>
+                <div class="col-sm-3">
+                    <name-con name="最高加盟金额" v-model="obj.maxMoney" v-bind:disabled="disabled" v-bind:placeholder="'最高 '+quota+' 元'"></name-con>
+                </div>
+                <div class="col-sm-3">
+                    <select-con  name="归还方式" v-model="obj.repaymentMethod" v-bind:options="select_way_of_restitution" v-bind:disabled="disabled"></select-con>
+                </div>
+                <div class="col-sm-3">
+                    <name-con name="权益率" v-model="obj.equityRate" v-bind:placeholder="'单位：%'" v-bind:disabled="disabled"></name-con>
+                </div>
+            </div>
+
+            <!-- 代理信息填写 end -->
+
+            <!-- 加盟积分奖励介绍，加盟权益详情（支持附件） start -->
+            <div class="row">
+                <h3 class="font-bold" ><b>加盟积分奖励介绍  /  加盟权益详情</b></h3>
+            </div>
+            <div class="row">
+                <div class="col-sm-12" v-show="!disabled">
+                    <textarea name="description" id="description"/></textarea>
+                </div>
+                <div class="col-sm-12" v-show="disabled">
+                    <div style="padding: 20px;border: 1px solid #1AB394;">
+                        <div style="width: 100%;" v-html="obj.details"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- 加盟积分奖励介绍，加盟权益详情（支持附件） end -->
+
+            <!-- 审核记录 start -->
+            <div class="row">
+                <h3 class="font-bold" ><b>审核记录</b></h3>
+            </div>
+            <div class="row">
+                <div class="col-sm-12" >
+                    <div class="ibox">
+                        <div class="ibox-content" style="border-style: hidden;">
+                            <table class="table table-bordered table-my-0" style="background-color: #fff;width: 100%" >
+                                <thead>
+                                <tr>
+                                    <th>操作人</th>
+                                    <th>操作类型</th>
+                                    <th>操作说明</th>
+                                    <th>操作时间</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(item, index) in list_examine" v-bind:key="index">
+                                        <td>
+                                            {{ item.userName }}
+                                        </td>
+                                        <td>
+                                            {{ updateStateName(item.state) }}
+                                        </td>
+                                        <td>
+                                            {{ item.remarks }}
+                                        </td>
+                                        <td>
+                                            {{ item.createTime }}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 审核记录 end -->
+
+            <!-- 加盟记录 start -->
+            <div class="row" v-show="list_joinin.length > 0">
+                <h3 class="font-bold" ><b>加盟记录</b></h3>
+            </div>
+            <div class="row" v-show="list_joinin.length > 0">
+                <div class="col-sm-12" >
+                    <div class="ibox">
+                        <div class="ibox-content" style="border-style: hidden;">
+                            <table class="table table-bordered table-my-0" style="background-color: #fff;width: 100%" >
+                                <thead>
+                                <tr>
+                                    <th>加盟时间</th>
+                                    <th>客户</th>
+                                    <th>客户手机号</th>
+                                    <th>加盟金额</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="(item, index) in list_joinin" v-bind:key="index">
+                                    <td>
+                                        {{ item.investmentTime }}
+                                    </td>
+                                    <td>
+                                        {{ item.username }}
+                                    </td>
+                                    <td>
+                                        {{ item.phone }}
+                                    </td>
+                                    <td>
+                                        {{ item.investmentAmount }}
+                                    </td>
+
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 加盟记录记录 end -->
+
+
+        </div>
+    </div>
+    <!-- 操作按钮 -->
+    <div class="modal-footer modal-footer-my">
+        <input type="hidden" id="projectId" value="${projectId}">
+        <input type="hidden" id="page_type" value="${type}">
+        <a-button v-on:click="closeWindow">关闭</a-button>
+        <a-button type="primary" v-if="page_type == 1 && obj.state == 3" v-on:click="updateDisabled()" >{{ disabled ? '编辑': '保存并申请' }}</a-button>
+<!--        <button type="button" class="btn btn-primary" v-if="page_type == 1 && obj.state == 3" v-on:click="updateDisabled()" >{{ disabled ? '编辑': '保存并申请' }}</button>-->
+        <button type="button" class="btn btn-primary" v-if="page_type == 3 && obj.state == 4" v-on:click="btnClickInit(7)">一键变更状态和生成还款计划</button>
+        <button type="button" class="btn btn-primary" v-if="page_type == 2 && obj.state == 1" v-on:click="btnClick(2)">通过</button>
+        <button type="button" class="btn btn-danger"  v-if="page_type == 2 && obj.state == 1" v-on:click="btnClick(3)">不通过</button>
+        <button type="button" class="btn btn-primary" v-if="page_type == 3 && obj.state == 2" v-on:click="btnClick(4)">招募结束</button>
+        <button type="button" class="btn btn-primary" v-if="page_type == 3 && obj.state == 4" v-on:click="btnClick(7)">招募完成</button>
+
+<!--        <button type="button" class="btn btn-primary" v-if="page_type == 4 && obj.state == 5" v-on:click="btnClick(6)">提现申请</button>-->
+<!--        <button type="button" class="btn btn-primary" v-if="page_type == 5 && obj.state == 6" v-on:click="btnClick(7)">审核通过</button>-->
+        <button type="button" class="btn btn-primary" v-if="page_type == 6 && obj.state == 7" v-on:click="btnClick(8)">招募归还</button>
+    </div>
+</div>
+
+
+
+<!-- 不通过原因填写 start -->
+<div class="modal inmodal" id="reasonModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" id="modal_reason_vue" style="width: 500px;">
+        <div class="modal-content animated bounceInDown">
+            <div class="modal-header modal-header-my-01">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">关闭</span>
+                </button>
+                <h4 class="modal-title">不通过原因填写</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <textarea class="form-control" rows="3" v-model="content" placeholder="请填写不通过的原因..."></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer modal-footer-my">
+                <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" v-on:click="saveAjax">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 不通过原因填写 end -->
+
+
+
+<script src="${ctxPath}/static/js/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+<script src="${ctxPath}/static/js/plugins/suggest/bootstrap-suggest.min.js"></script>
+
+<script src="${ctxPath}/static/js/plugins/ckeditor4/ckeditor.js"></script>
+<script src="${ctxPath}/static/modular/biz/project/project_info.js"></script>
+
+<script src="${ctxPath}/static/modular/biz/project/reason.js"></script>
+
+@}

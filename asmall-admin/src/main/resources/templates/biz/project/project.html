@@ -1,0 +1,65 @@
+@layout("/common/_container.html"){
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>招募信息申请管理</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <div class="row" id="ProjectTableSearch">
+                            <div class="col-sm-3">
+                                 <#inputcon name="projectNumber" id="projectNumber" tagName="代理编号"/>
+                            </div>
+                            <div class="col-sm-3">
+                                 <#inputcon name="projectName" id="projectName" tagName="代理名称"/>
+                            </div>
+                            <div class="col-sm-3">
+                                 <#inputcon name="startTime" id="startTime" tagName="开始时间" readonly="readonly"/>
+                            </div>
+                            <div class="col-sm-3">
+                                 <#inputcon name="endTime" id="endTime" tagName="结束时间" readonly="readonly"/>
+                            </div>
+                            <div class="col-sm-3">
+                                 <#inputcon name="supplierName" id="supplierName" tagName="供应商"/>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button">
+                                            状态
+                                        </button>
+                                    </div>
+                                    <select class="form-control" id="state" name="state">
+                                        <option value="">- 请选择 -</option>
+                                        <option v-for="(state, index) in select_state" v-bind:key="index" v-bind:value="state.code">{{ state.name }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <input id="page_type" value="${type}" type="hidden">
+                                <#button name="搜索" icon="fa-search" clickFun="Project.search()"/>
+                                &nbsp;
+                                <button type="button" class="btn btn-white button-margin" onclick="Project.clearSearch()">
+                                    <i class="fa fa-refresh" ></i>&nbsp;重置
+                                </button>
+                            </div>
+                        </div>
+                        <div class="hidden-xs" id="ProjectTableToolbar" role="group" >
+                            <div id="btn_apply" style="display: none;">
+                                <#button name="招募信息申请" icon="fa-plus" clickFun="Project.openAddProject()"/>
+                            </div>
+                        </div>
+                        <#table id="ProjectTable"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@include("/common/_container_vue.html"){}
+
+<script src="${ctxPath}/static/modular/biz/project/project.js"></script>
+@}

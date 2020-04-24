@@ -1,0 +1,132 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal">
+            <h3 class="content-title-h3">详细信息</h3>
+            <hr class="content-title-hr">
+            <div class="row">
+                <div class="col-sm-6 b-r">
+                    <#input  label="手机号" value="${item.username}" readonly="readonly" />
+                    <#input  label="昵称" value="${item.nickname}" readonly="readonly" />
+                    <#input  label="证件类型" value="${item.documenTypeName}" readonly="readonly" />
+                    <#input  label="状态" value="${item.state}" readonly="readonly" />
+                    <#input  label="通联用户标识" value="${item.bizUserId}" readonly="readonly" />
+                </div>
+                <div class="col-sm-6">
+                    <#input  label="姓名" value="${item.realName}" readonly="readonly" />
+                    <#input  label="是否是VIP" value="${item.vip}" readonly="readonly" />
+                    <#input  label="证件号码" value="${item.cardNumber}" readonly="readonly" />
+                    <#input  label="创建时间" value="${item.created}" readonly="readonly" />
+                </div>
+            </div>
+            <h3 class="content-title-h3">账户信息</h3>
+            <hr class="content-title-hr">
+            <div class="row">
+                <div class="col-sm-6">
+                    <#input  label="总金额" value="${account.totleAmount}"  readonly="readonly" addonValue="元"/>
+                    <#input  label="可用余额" value="${account.availableBalance}"  readonly="readonly" addonValue="元"/>
+                </div>
+                <div class="col-sm-6">
+                    <#input  label="冻结金额" value="${account.freezingAmount}"  readonly="readonly" addonValue="元"/>
+                    <#input  label="积分" value="${item.points}" readonly="readonly" addonValue="积分"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-content">
+                            <div class="row row-lg">
+                                <div class="col-sm-12">
+                                    <!-- 银行卡 start -->
+                                    <div class="row">
+                                        <h3 class="font-bold"><b>客户绑定银行卡</b></h3>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="ibox">
+                                                <div class="ibox-content" style="border-style: hidden;">
+                                                    <table class="table table-bordered table-my-0" id="bankList"
+                                                           style="background-color: #fff;width: 100%">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>用户类型</th>
+                                                            <th>银行名称</th>
+                                                            <th>银行卡号</th>
+                                                            <th>银行卡类型</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        @for(it in bankList){
+                                                        <tr>
+                                                            <td>${it.type==2?"供应商":'用户'}</td>
+                                                            <td>${it.bankName}</td>
+                                                            <td>${it.bankCardNo}</td>
+                                                            <td>${it.cardType==1?"借记卡":'信用卡'}</td>
+                                                        </tr>
+                                                        @}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- 银行卡 end -->
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-content">
+                            <div class="row row-lg">
+                                <div class="col-sm-12">
+                                    <!-- 审核记录 start -->
+                                    <div class="row">
+                                        <h3 class="font-bold"><b>审核记录</b></h3>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="ibox">
+                                                <div class="ibox-content" style="border-style: hidden;">
+                                                    <table class="table table-bordered table-my-0" id="auditList"
+                                                           style="background-color: #fff;width: 100%">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>操作人</th>
+                                                            <th>操作类型</th>
+                                                            <th>操作说明</th>
+                                                            <th>操作时间</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        @for(it in list){
+                                                        <tr>
+                                                            <td>${it.userName}</td>
+                                                            <td>${it.typeName}</td>
+                                                            <td>${it.remarks}</td>
+                                                            <td>${it.time}</td>
+                                                        </tr>
+                                                        @}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- 审核记录 end -->
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/biz/member/member_info.js"></script>
+@}

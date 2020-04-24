@@ -1,0 +1,161 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal" id="itemInfoForm">
+            <h3 class="content-title-h3">商品信息</h3>
+            <hr class="content-title-hr">
+            <div class="row">
+                <div class="col-sm-4">
+                    <input id="attrInfo" type="hidden">
+                    <#dictSelector code="goods_type" onchange="ItemInfoDlg.categoryChange" label="类型" name="cid" id="cid"/>
+                    <#input id="title" required="true" label="标题" />
+                    <#input id="stockWarning" required="true" label="库存预警数量" type="number" value="10"/>
+                    <#input id="vipDiscount" required="true" label="vip价格" type="number" addonValue="元"/>
+                </div>
+                <div class="col-sm-4">
+                    <#input id="parentName" required="true" label="所属分类" readonly="readonly" hidden="categoryId"
+                    clickFun="ItemInfoDlg.showSelectTree();"
+                    selectFlag="true" selectDivId="parentCategorySelect" selectTreeId="parentIdTree" />
+                    <#input id="numAll" label="销量" type="number" />
+                    <#input id="limitNum" required="true" label="售卖数量限制" type="number" />
+                    <#input id="profits" label="利润" type="number" />
+                </div>
+                <div class="col-sm-4">
+                    <#input id="itemNumber" label="商品编号" readonly="true"/>
+                    <#input id="num" required="true" label="库存数量" type="number" />
+                    <#input id="price" required="true" label="价格" type="number" addonValue="元" />
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <#textarea labelCol="1" valueCol="11" id="sellPoint" label="商品描述" />
+                </div>
+            </div>
+            <h3 class="content-title-h3">属性规格</h3> <span style="color: red">提示:先维护好规格属性在使用</span>
+            <hr class="content-title-hr">
+            <div id="attrContent"></div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <#button btnCss="info" name="添加规格" title="勾选规格属性生成规格商品" icon="fa-plus" clickFun="ItemInfoDlg.specsRefresh()"/>
+                    <#button btnCss="info" name="同步商品信息" title="同步主商品的价格、VIP价格、商品图片" icon="fa-exchange" clickFun="ItemInfoDlg.synchronizationItem()"/>
+                    <table class="table table-bordered" id="specs-able"></table>
+                </div>
+            </div>
+            <h3 class="content-title-h3">运费模版</h3>
+            <hr class="content-title-hr">
+
+            <div class="row">
+                <div class="col-sm-12" id="areaDiv">
+
+                    <div id="new-value-div-4" class="input-group" style="display: inline-flex;margin-right: 10px;">
+                        <input type="text" id="fee" style="width: 100px;" class="form-control">
+                        <span class="input-group-btn">
+                        <button type="button" class="btn btn-info" title="添加属性" onclick="ItemInfoDlg.addPostage()"><i class="fa fa-plus"></i></button></span>
+                    </div>
+                </div>
+                <div class="col-sm-12" style="margin-bottom: 10px;">
+                    <div class="form-horizontal" id="areaSelect" >
+                        <div class="row">
+                            <div class="col-xs-8">
+                                <input type="text" style="color:#0d8ddb" class='form-control' readonly value='默认运费' >
+                            </div>
+                            <div class="col-xs-4">
+                                <div class="input-group">
+                                    <input type="number" id="postageDefault" class='form-control'>
+                                    <span class="input-group-addon">元</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h3 class="content-title-h3">商品详情</h3>
+            <hr class="content-title-hr">
+            <div class="row" style="width: 1100px">
+                <div class="col-sm-4">
+                    <#uploadFile required="true" id="image" label="商品图" width="200px" maxsize="10" height="200px" placeholder="推荐分辨率:200*200" type="img"/>
+                </div>
+                <div class="col-sm-4">
+                    <#uploadFile id="infoVideoImage" label="视频封面" width="200px" maxsize="10" placeholder="推荐分辨率:800*800" height="200px" type="img"/>
+                </div>
+                <div class="col-sm-4">
+                    <#uploadFile id="detailVideo" label="视频" width="300px" maxsize="10" height="200px" type="video"/>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="row">
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">
+                        &nbsp;&nbsp;&nbsp;轮播图<span style="color: red">*</span>
+                    </label>
+                    <div class="col-sm-7">
+                        <div class="item-banner">
+                            <ul></ul>
+                        </div>
+                        <div id="detailBannerZyUpload" class="zyupload"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <h3 class="font-bold"><b>商品详情</b></h3>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <textarea name="detail" id="detail"/></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row btn-group-m-t">
+            <div class="col-sm-10">
+                <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="ItemInfoDlg.addSubmit()"/>
+                <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="ItemInfoDlg.close()"/>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script src="${ctxPath}/static/modular/biz/item/item_info.js"></script>
+<script src="${ctxPath}/static/js/plugins/ckeditor4/ckeditor.js"></script>
+<script type="text/javascript">
+    /**
+     * 初始化 富文本
+     */
+    $(function () {
+        CKEDITOR.replace('detail', {
+            filebrowserImageUploadUrl: "/editor/upload?",
+            removePlugins: 'elementspath,resize',
+            codeSnippet_theme: 'zenburn',
+            height: '500',
+            toolbar:
+                [
+                    //加粗     斜体，     下划线      穿过线      下标字        上标字
+                    ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript'],
+                    // 数字列表          实体列表            减小缩进    增大缩进
+                    ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent'],
+                    //左对 齐             居中对齐          右对齐          两端对齐
+                    ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+                    //超链接  取消超链接 锚点
+                    ['Link', 'Unlink', 'Anchor'],
+                    //图片    flash    表格       水平线            表情       特殊字符        分页符
+                    ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak'],
+                    '/',
+                    // 样式       格式      字体    字体大小
+                    ['Styles', 'Format', 'Font', 'FontSize'],
+                    //文本颜色     背景颜色
+                    ['TextColor', 'BGColor'],
+                    //全屏           显示区块
+                    ['Maximize', 'ShowBlocks', '-']
+                ]
+        });
+
+        let provinceCheck ="";
+        for (let i = 0; i < ItemInfoDlg.province.length; i++) {
+            provinceCheck+=" <label class=\"checkbox-inline i-checks\"><div class=\"icheckbox_square-green\" style=\"position: relative;\"><input type=\"checkbox\" value=\""+ItemInfoDlg.province[i]+"\" style=\"position: absolute; opacity: 0;\"><ins class=\"iCheck-helper\" style=\"position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;\"></ins></div>"+ItemInfoDlg.province[i]+"</label>";
+        }
+        $("#areaDiv").prepend(provinceCheck);
+
+    });
+
+</script>
+@}

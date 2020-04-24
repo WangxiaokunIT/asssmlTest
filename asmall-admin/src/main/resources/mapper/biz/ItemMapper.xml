@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xinshang.modular.biz.dao.ItemMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xinshang.modular.biz.model.Item" extends="com.xinshang.modular.biz.dao.ItemAuditMapper.BaseResultMap">
+        <id column="id" property="id" />
+        <result column="title" property="title" />
+        <result column="sell_point" property="sellPoint" />
+        <result column="price" property="price" />
+        <result column="profits" property="profits" />
+        <result column="num" property="num" />
+        <result column="limit_num" property="limitNum" />
+        <result column="image" property="image" />
+        <result column="cid" property="cid" />
+        <result column="status" property="status" />
+        <result column="created" property="created" />
+        <result column="updated" property="updated" />
+        <result column="num_all" property="numAll" />
+        <result column="detail_video" property="detailVideo" />
+        <result column="detail_banner" property="detailBanner" />
+        <result column="info_video_image" property="infoVideoImage" />
+        <result column="audit_status" property="auditStatus" />
+        <result column="freight" property="freight" />
+        <result column="detail" property="detail" />
+        <result column="item_number" property="itemNumber" />
+    </resultMap>
+
+    <resultMap id="ItemVOMap" type="com.xinshang.modular.biz.vo.ItemVO">
+        <result column="item_id" property="itemId" />
+        <result column="title" property="title" />
+        <result column="cnum" property="cnum" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, title, sell_point, price,  profits,  num, limit_num, image,  cid, status, created, updated, num_all,  detail_video, detail_banner, info_video_image, audit_status,freight,detail,item_number
+    </sql>
+
+    <select id="showItemNum" resultMap="ItemVOMap">
+        select item_id, title, SUM(num) as cnum from tb_order_item
+        where order_id
+        in (select order_id from tb_order where status = 5)
+        group by item_id, title
+    </select>
+
+    <select id="selectItemPage" resultType="com.xinshang.modular.biz.model.Item">
+        <if test="item.isWarning !=null">
+           select a.* from (
+        </if>
+        select id, image,cid,item_number as itemNumber ,title, category_id as categoryId,num,num_all as
+        num_all,stock_warning as stockWarning,created,status,audit_status as auditStatus ,(select count(id) from
+        tb_item_specs where stock &lt; stock_warning and item_no = item_number) as specsStockWarningNum from tb_item
+        <where>
+            <if test="item.title !=null and item.title !=''">
+                and title like CONCAT('%',#{item.title},'%')
+            </if>
+
+            <if test="item.cid !=null and item.cid !=''">
+                and cid = #{item.cid}
+            </if>
+
+            <if test="item.status !=null and item.status !=''">
+                and status = #{item.status}
+            </if>
+
+            <if test="item.status !=null and item.status !=''">
+                and status = #{item.status}
+            </if>
+            <if test="item.minNum !=null and item.minNum !=''">
+                and (num &gt; #{item.minNum} or num = #{item.minNum})
+            </if>
+
+            <if test="item.maxNum !=null and item.maxNum !=''">
+                and (num &lt; #{item.maxNum} or num = #{item.maxNum})
+            </if>
+
+            <if test="item.minNumAll !=null and item.minNumAll !=''">
+                and (num_all &gt; #{item.minNumAll} or num_all = #{item.minNumAll}
+            </if>
+
+            <if test="item.maxNumAll !=null and item.maxNumAll !=''">
+                and (num_all &lt; #{item.maxNumAll} or num_all = #{item.maxNumAll})
+            </if>
+
+        </where>
+        order by created desc
+
+        <if test="item.isWarning == 1">
+            ) a where  a.specsStockWarningNum &gt; 0 or a.stockWarning &gt; a.num
+        </if>
+
+        <if test="item.isWarning == 0">
+            ) a where  a.specsStockWarningNum = 0 and ( a.stockWarning &lt; a.num or a.stockWarning = a.num)
+        </if>
+
+    </select>
+</mapper>

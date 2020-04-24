@@ -1,0 +1,9 @@
+.ant-btn-primary {
+    background-color: #1ab394;
+    border-color: #1ab394;
+}
+
+.ant-btn-primary:active, .ant-btn-primary.active {
+    background-color: #11bd9a;
+    border-color: #11bd9a;
+}
