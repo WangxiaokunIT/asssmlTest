@@ -38,7 +38,7 @@
         <sbu.version>1.9.6</sbu.version>
         <commons-lang3.version>3.7</commons-lang3.version>
         <ehcache.core.version>2.6.11</ehcache.core.version>
-        <mysql-connector-java.version>8.0.15</mysql-connector-java.version>
+        <mysql-connector-java.version>8.0.28</mysql-connector-java.version>
         <jwt.version>0.9.0</jwt.version>
         <hutool.version>5.0.6</hutool.version>
         <easypoi.version>3.2.0</easypoi.version>
